@@ -1,0 +1,64 @@
+'use client';
+
+import Image from 'next/image';
+import { useState } from 'react';
+import ProductGallery from './ProductGallery';
+import ProductInfo from './ProductInfo';
+import { ChevronRight } from 'lucide-react';
+
+
+const product = {
+    id: 1,
+    name: 'Ultimate Facelift Day Cream',
+    price: '$30.00',
+    badge: 'New',
+    images: [
+        'https://zest-cosmo.myshopify.com/cdn/shop/files/69.jpg?v=1740561521&width=800',
+        'https://zest-cosmo.myshopify.com/cdn/shop/files/72.jpg?v=1740561715&width=800',
+        'https://zest-cosmo.myshopify.com/cdn/shop/files/73.jpg?v=1740561767&width=800',
+    ],
+};
+
+export default function SingleProduct() {
+    const [selectedSize, setSelectedSize] = useState('100ml');
+
+    return (
+        <>
+            <div className='bg-[#fcfaf7]'>
+                <div className="container mx-auto px-4 md:px-8 lg:px-12">
+                    {/* Breadcrumb */}
+                    <div className="flex items-center gap-2 text-[14px] text-black py-4">
+
+                        <span className="hover:text-black cursor-pointer transition">
+                            Home
+                        </span>
+
+                        <ChevronRight size={14} className="text-black" />
+
+                        <span className="hover:text-black cursor-pointer transition">
+                            Bodycare
+                        </span>
+
+                        <ChevronRight size={14} className="text-black" />
+
+                        <span className="text-black  truncate max-w-[200px]">
+                            {product.name}
+                        </span>
+
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+                        {/* LEFT: IMAGE GRID */}
+
+                        <ProductGallery />
+
+                        {/* RIGHT: PRODUCT INFO */}
+                        <ProductInfo product={product} />
+
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
