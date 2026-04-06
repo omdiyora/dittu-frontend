@@ -25,7 +25,7 @@ const config: Config = {
       },
       colors: {
         "custom-blue": "#1F8DF5",
-        primary: "#54221c",
+        primary: "#000000",
         accent: "#6b2a23", // optional lighter/darker shade
       },
       width: {

@@ -561,7 +561,7 @@ export default function ReportList() {
                 <div className="flex gap-2 mt-2">
                     <Button
                         color="primary"
-                        onPress={() => router.push("/dashboard/reports/create")}
+                        onPress={() => router.push("/admin/product/create")}
                     >
                         Add Report
                     </Button>

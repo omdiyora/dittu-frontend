@@ -1,4 +1,5 @@
 "use client";
+
 import { Flowbite, ThemeModeScript } from "flowbite-react";
 import { twMerge } from "tailwind-merge";
 import "@/styles/globals.css";
@@ -6,6 +7,7 @@ import { flowbiteTheme } from "@/styles/flowbit-theme";
 import { AuthProvider } from "@/lib/Providers";
 import PageWrapper from "@/components/PageWrapper";
 import SnackbarProviderWrapper from "@/components/SnackbarProviderWrapper";
+import { CartProvider } from "@/context/CartContext"; // ✅ ADD THIS
 
 const theme = { theme: flowbiteTheme };
 
@@ -31,10 +33,14 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <body className={twMerge("bg-gray-50 dark:bg-gray-900 font-nunito")}>
         <PageWrapper>
           <AuthProvider>
-            {/* @ts-ignore */}
-            <SnackbarProviderWrapper>
-              <Flowbite theme={theme}>{children}</Flowbite>
-            </SnackbarProviderWrapper>
+            <CartProvider> {/* ✅ ADD HERE */}
+              {/* @ts-ignore */}
+              <SnackbarProviderWrapper>
+                <Flowbite theme={theme}>
+                  {children}
+                </Flowbite>
+              </SnackbarProviderWrapper>
+            </CartProvider>
           </AuthProvider>
         </PageWrapper>
       </body>

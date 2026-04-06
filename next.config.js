@@ -11,6 +11,7 @@ const nextConfig = {
 
   images: {
     domains: ['zest-cosmo.myshopify.com'],
+    // domains: ["via.placeholder.com"],
   },
 };
 

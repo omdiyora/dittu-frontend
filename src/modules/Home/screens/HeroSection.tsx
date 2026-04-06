@@ -6,23 +6,23 @@ export default function HeroSection() {
     <section className="relative w-full overflow-hidden" style={{ height: '100vh', minHeight: '600px' }}>
       {/* Split background images */}
       <div className="absolute inset-0 flex">
-        {/* Left - woman portrait */}
-        <div className="w-1/2 h-full relative overflow-hidden">
+        <div className="w-full h-full relative overflow-hidden">
+
+          {/* Desktop Image */}
           <img
-            src="https://zest-cosmo.myshopify.com/cdn/shop/files/hero-banner.webp?v=1740558419&width=3000"
+            src="https://res.cloudinary.com/dbfyydres/image/upload/v1775135093/hero-banner_xg1qux.png"
             alt="Universal Beauty"
-            className="w-full h-full object-cover object-center"
-            style={{ objectPosition: '30% center' }} />
-          
-        </div>
-        {/* Right - sandy/nature */}
-        <div className="w-1/2 h-full relative overflow-hidden">
+            className="w-full h-full object-cover object-center hidden md:block"
+            style={{ objectPosition: "30% center" }}
+          />
+
+          {/* Mobile Image */}
           <img
-            src="https://zest-cosmo.myshopify.com/cdn/shop/files/hero-banner.webp?v=1740558419&width=3000"
-            alt="Universal Beauty"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: '70% center' }} />
-          
+            src="https://res.cloudinary.com/dbfyydres/image/upload/v1775135113/hero-banner-m_yisyl4.png"
+            alt="Universal Beauty Mobile"
+            className="w-full h-full object-cover object-center block md:hidden"
+          />
+
         </div>
       </div>
 
@@ -39,7 +39,7 @@ export default function HeroSection() {
             textShadow: 'none',
             mixBlendMode: 'normal'
           }}>
-          
+
           DITTU
         </div>
       </div>
@@ -53,11 +53,11 @@ export default function HeroSection() {
             fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
             fontWeight: '400'
           }}>
-          
+
           Universal <em>Beauty</em>
         </h2>
         <a
-          href="#"
+          href="/collections"
           className="btn-primary"
           style={{
             background: 'white',
@@ -68,7 +68,7 @@ export default function HeroSection() {
             letterSpacing: '0.15em',
             fontWeight: '500'
           }}>
-          
+
           SHOW NOW
         </a>
       </div>

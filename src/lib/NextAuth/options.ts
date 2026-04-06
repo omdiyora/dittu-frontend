@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
               endpointUrlPath: "/api/auth/login", // 🔥 PASSWORD LOGIN API
             }),
           });
-
+          console.log("LOGIN RESPONSE 👉", res);
           if (res?.data?.status === 200 && res?.data?.data) {
             return res.data.data; // user object
           }

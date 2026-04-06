@@ -21,6 +21,8 @@ import HomeHeader from "./HomeHeader";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import CartDrawer from "@/modules/Cart/screens/CartDrawer";
+import { Heart, Plus, Truck, Package } from 'lucide-react';
+
 dayjs.extend(relativeTime);
 const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
   const router = useRouter();
@@ -132,11 +134,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
           <div className="hidden md:flex items-center gap-8">
 
 
-            <div className="relative group">
-              <a href="#" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
-                Blog
-              </a>
-            </div>
+
             <div className="relative group">
               <a href="#" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
                 About Us
@@ -148,14 +146,30 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
               </a>
             </div>
             <div className="flex items-center gap-4">
-              <button className="text-[#1a1a1a] hover:opacity-60 transition-opacity">
+              <button
+              onClick={() => router.push("/account/wishlist")}
+                className="text-[#1a1a1a] hover:opacity-60 transition-opacity"
+              >
+                <Heart size={18} />
+              </button>
+              {/* <button className="text-[#1a1a1a] hover:opacity-60 transition-opacity">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.35-4.35" />
                 </svg>
-              </button>
-              <button className="text-[#1a1a1a] hover:opacity-60 transition-opacity">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              </button> */}
+              <button
+                onClick={() => router.push("/account")}
+                className="text-[#1a1a1a] hover:opacity-60 transition-opacity"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
@@ -206,7 +220,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
             </button>
           </div>
           <nav className="flex flex-col gap-6">
-            {['Home', 'Shop', 'Collections', 'Pages', 'Blog', 'Contact']?.map(item => (
+            {['Home', 'Shop', 'Collections', 'Pages', 'Contact']?.map(item => (
               <a key={item} href="#" className="text-2xl font-light text-[#1a1a1a]" onClick={() => setMobileOpen(false)}>{item}</a>
             ))}
           </nav>

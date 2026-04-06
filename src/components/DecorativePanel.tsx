@@ -1,135 +1,102 @@
+"use client";
+
 import { motion } from "framer-motion";
-import { Building2, Shield, TrendingUp, Users } from "lucide-react";
-// import heroImage from "/assets/images/hero-consultancy.jpg";
+import { Sparkles, Heart, Leaf } from "lucide-react";
 
 export function DecorativePanel() {
     return (
         <div className="relative hidden h-full overflow-hidden lg:block">
-            {/* Background Image */}
+
+            {/* Background Image (Skincare theme) */}
             <div
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(/assets/images/hero-consultancy.jpg)` }}
-            />
-
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/85 via-primary/75 to-primary/70" />
-
-            {/* Animated Accent Shapes */}
-            <motion.div
-                className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-accent/20 blur-3xl"
-                animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.2, 0.3, 0.2],
-                }}
-                transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
+                style={{
+                    backgroundImage: `url(https://res.cloudinary.com/dbfyydres/image/upload/v1775287974/laura-jaeger-_dSHqe4mcWE-unsplash_nhvqtg.jpg?q=80&w=1400&auto=format&fit=crop)`
                 }}
             />
+
+            {/* Soft Beauty Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#f8f5f2]/90 via-[#eee7df]/80 to-[#e4dcd3]/90" />
+
+            {/* Glow Effect */}
             <motion.div
-                className="absolute -bottom-20 -right-20 h-96 w-96 rounded-full bg-accent/15 blur-3xl"
-                animate={{
-                    scale: [1.2, 1, 1.2],
-                }}
-                transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
+                className="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-pink-300/30 blur-3xl"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 8, repeat: Infinity }}
+            />
+            <motion.div
+                className="absolute -bottom-20 -right-20 h-96 w-96 rounded-full bg-orange-200/30 blur-3xl"
+                animate={{ scale: [1.2, 1, 1.2] }}
+                transition={{ duration: 10, repeat: Infinity }}
             />
 
             {/* Content */}
-            <div className="relative z-10 flex h-full flex-col items-center justify-center p-12 text-primary-foreground">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-center max-w-md"
-                >
-                    {/* Logo */}
-                    <motion.div
-                        className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20"
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{
-                            type: "spring",
-                            stiffness: 200,
-                            damping: 15,
-                            delay: 0.4,
-                        }}
-                    >
-                        <Building2 className="h-10 w-10" />
-                    </motion.div>
+            <div className="relative z-10 flex h-full flex-col items-center justify-center p-12 text-gray-800">
 
-                    <h2 className="font-display mb-4 text-4xl font-bold tracking-tight">
-                        Diyora Consultancy
-                    </h2>
-                    <p className="text-lg text-primary-foreground/80 leading-relaxed">
-                        Your trusted partner for all loan consultancy services. Helping you achieve your financial goals with expert guidance.
-                    </p>
+                {/* Logo */}
+                <motion.div
+                    className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/30 backdrop-blur-md border border-white/40 shadow-lg"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                >
+                    <Sparkles className="h-10 w-10 text-black-600" />
                 </motion.div>
 
+                {/* Brand Name */}
+                <h2 className="text-4xl font-bold tracking-tight mb-3">
+                    Dittu
+                </h2>
+
+                {/* Tagline */}
+                <p className="text-lg text-gray-700/80 text-center max-w-md leading-relaxed">
+                    Discover radiant, healthy skin with our premium skincare products.
+                    Nourish your beauty naturally.
+                </p>
+
                 {/* Features */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                    className="mt-12 grid grid-cols-3 gap-6"
-                >
+                <div className="mt-12 grid grid-cols-3 gap-6">
                     {[
-                        { icon: Shield, label: "Trusted" },
-                        { icon: TrendingUp, label: "Expert" },
-                        { icon: Users, label: "Personal" },
-                    ].map((feature, i) => (
+                        { icon: Leaf, label: "Natural" },
+                        { icon: Heart, label: "Skin Safe" },
+                        { icon: Sparkles, label: "Glow Boost" },
+                    ].map((item, i) => (
                         <motion.div
-                            key={feature.label}
+                            key={item.label}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.9 + i * 0.1 }}
+                            transition={{ delay: 0.3 + i * 0.2 }}
                             className="flex flex-col items-center gap-2"
                         >
-                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20">
-                                <feature.icon className="h-5 w-5" />
+                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/40 backdrop-blur-md shadow">
+                                <item.icon className="h-5 w-5 text-pink-600" />
                             </div>
-                            <span className="text-sm font-medium text-primary-foreground/70">
-                                {feature.label}
+                            <span className="text-sm font-medium text-gray-700">
+                                {item.label}
                             </span>
                         </motion.div>
                     ))}
-                </motion.div>
+                </div>
 
-                {/* Trust Badge */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.2 }}
-                    className="mt-16 text-center"
-                >
-                    <p className="text-sm text-primary-foreground/60">
-                        Serving clients since 2010
+                {/* Review / Trust */}
+                <div className="mt-16 text-center">
+                    <p className="text-sm text-gray-600">
+                        Trusted by 10,000+ happy customers
                     </p>
-                    <div className="mt-2 flex items-center justify-center gap-1">
+
+                    <div className="mt-2 flex justify-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                            <motion.span
-                                key={i}
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 1.3 + i * 0.1 }}
-                                className="text-yellow-400 text-lg"
-                            >
+                            <span key={i} className="text-yellow-400 text-lg">
                                 ★
-                            </motion.span>
+                            </span>
                         ))}
                     </div>
-
-                </motion.div>
+                </div>
             </div>
 
             {/* Bottom Wave */}
             <div className="absolute bottom-0 left-0 right-0">
-                <svg viewBox="0 0 1440 120" className="w-full h-auto fill-background">
-                    <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" />
+                <svg viewBox="0 0 1440 120" className="w-full fill-white">
+                    <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,120L0,120Z" />
                 </svg>
             </div>
         </div>

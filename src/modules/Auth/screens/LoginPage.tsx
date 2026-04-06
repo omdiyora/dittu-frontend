@@ -1,83 +1,102 @@
 "use client"
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { LoginForm } from "@/components/LoginForm";
-import { DecorativePanel } from "@/components/DecorativePanel";
+import { RegisterForm } from "./RegisterForm";
+// import { RegisterForm } from "@/components/RegisterForm"; // create this
 
 const LoginPages = () => {
+    const [isLogin, setIsLogin] = useState(true);
+
     return (
         <>
-            <title>Login | Welcome Back</title>
-            <meta
-                name="description"
-                content="Sign in to your account securely. Access your personalized dashboard and continue your journey."
-            />
+            {/* CENTER BRAND */}
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <motion.h1
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 0.06, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-6xl md:text-8xl font-extrabold tracking-widest text-gray-900 select-none"
+                >
+                    DITTU
+                </motion.h1>
+            </div>
 
-            <div className="grid min-h-screen lg:grid-cols-2">
-                {/* Decorative Panel */}
-                <DecorativePanel />
+            <div className="relative grid min-h-screen">
 
-                {/* Login Panel */}
-                <div className="flex flex-col items-center justify-center px-6 py-12 lg:px-12">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full max-w-sm"
-                    >
-                        {/* Mobile Logo */}
-                        <div className="mb-8 flex flex-col items-center lg:hidden">
-                            <motion.div
-                                className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                            >
-                                <span className="text-2xl font-bold text-primary-foreground">L</span>
-                            </motion.div>
+                {/* FORM PANEL */}
+                <div className="relative z-10 flex flex-col items-center justify-center px-6 py-12">
+
+                    {/* CARD */}
+                    <div className="w-full max-w-sm bg-white/70 backdrop-blur-xl p-8 rounded-2xl shadow-xl border">
+
+                        {/* HEADER */}
+                        <div className="mb-6 text-center">
+                            <h1 className="text-3xl font-bold">
+                                {isLogin ? "Welcome back" : "Create account"}
+                            </h1>
+                            <p className="text-sm text-muted-foreground mt-2">
+                                {isLogin
+                                    ? "Please enter your credentials"
+                                    : "Start your skincare journey"}
+                            </p>
                         </div>
 
-                        {/* Header */}
-                        <div className="mb-8 text-center lg:text-left">
-                            <motion.h1
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 }}
-                                className="text-3xl font-bold tracking-tight"
-                            >
-                                Welcome back
-                            </motion.h1>
-                            <motion.p
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
-                                className="mt-2 text-muted-foreground"
-                            >
-                                Please enter your credentials to continue
-                            </motion.p>
+                        {/* FORM SWITCH ANIMATION */}
+                        <AnimatePresence mode="wait">
+                            {isLogin ? (
+                                <motion.div
+                                    key="login"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 20 }}
+                                >
+                                    <LoginForm />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="register"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                >
+                                    <RegisterForm />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* TOGGLE BUTTON */}
+                        <div className="mt-6 text-center text-sm">
+                            {isLogin ? (
+                                <p>
+                                    Don’t have an account?{" "}
+                                    <button
+                                        onClick={() => setIsLogin(false)}
+                                        className="text-black font-semibold hover:underline"
+                                    >
+                                        Sign up
+                                    </button>
+                                </p>
+                            ) : (
+                                <p>
+                                    Already have an account?{" "}
+                                    <button
+                                        onClick={() => setIsLogin(true)}
+                                        className="text-black font-semibold hover:underline"
+                                    >
+                                        Login
+                                    </button>
+                                </p>
+                            )}
                         </div>
+                    </div>
 
-                        {/* Login Form */}
-                        <LoginForm />
-                    </motion.div>
-
-                    {/* Footer */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1 }}
-                        className="mt-12 text-center text-xs text-muted-foreground"
-                    >
+                    {/* FOOTER */}
+                    <div className="mt-10 text-xs text-muted-foreground text-center">
                         <p>
-                            By signing in, you agree to our{" "}
-                            <a href="#" className="underline hover:text-primary">
-                                Terms of Service
-                            </a>{" "}
-                            and{" "}
-                            <a href="#" className="underline hover:text-primary">
-                                Privacy Policy
-                            </a>
+                            By continuing, you agree to our Terms & Privacy Policy
                         </p>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </>

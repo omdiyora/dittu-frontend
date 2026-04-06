@@ -12,7 +12,9 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { usePathname } from "next/navigation";
 import Footer from "@/components/Layouts/Footer";
-
+import SidebarMenu from "@/components/Layouts/Sidebar/Sidebar";
+import AdminHeader from "@/components/Layouts/AdminHeader";
+// import "flowbite/dist/flowbite.css";
 const DashboardLayoutContent: React.FC<React.PropsWithChildren> = function ({
   children,
 }) {
@@ -80,12 +82,12 @@ const DashboardLayoutContent: React.FC<React.PropsWithChildren> = function ({
               // isCollapsed ? "lg:ml-[4.5rem]" : "lg:ml-64"  
             )}
           >
-            {/* {!isPdfViewer && <SidebarMenu isOpen={isOpen} setIsOpen={setIsOpen} />} */}
-            <div className={`w-full h-screen overflow-y-auto ${isPdfViewer ? "p-0" : "p-0"
+            {!isPdfViewer && <SidebarMenu isOpen={isOpen} setIsOpen={setIsOpen} />}
+            <div className={`w-full h-screen overflow-y-auto ${isPdfViewer ? "p-0" : "p-5"
               }`}>
-              <Header isOpen={isOpen} setIsOpen={setIsOpen} />
+              <AdminHeader isOpen={isOpen} setIsOpen={setIsOpen} />
               {children}
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </div>
         </Container>

@@ -50,9 +50,15 @@ export default function InstagramSection() {
               Tag <strong>@dittu</strong> in your Instagram photos for a chance to be featured here.
             </p>
 
-            <button className="bg-black text-white text-xs tracking-widest uppercase px-8 py-3 rounded-full">
-              FOLLOW US
-            </button>
+            <a
+              href="https://www.instagram.com/dittu.9/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="bg-black text-white text-xs tracking-widest uppercase px-8 py-3 rounded-full">
+                FOLLOW US
+              </button>
+            </a>
           </div>
         </div>
 

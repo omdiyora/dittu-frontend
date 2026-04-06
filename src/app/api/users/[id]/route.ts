@@ -66,7 +66,7 @@ export async function PUT(
     }
 
     const { data, error } = await supabase
-      .from("users")
+      .from("profiles")
       .update(updatedData)
       .eq("id", params.id)
       .select("id, email, user_name, first_name, last_name, role, avatar_url")
@@ -102,7 +102,7 @@ export async function DELETE(
 ) {
   try {
     const { data, error } = await supabase
-      .from("users")
+      .from("profiles")
       .delete()
       .eq("id", params.id)
       .select("id")

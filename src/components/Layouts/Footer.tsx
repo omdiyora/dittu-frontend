@@ -64,10 +64,10 @@ export default function Footer() {
             {/* PRESETS */}
             <div className="w-[189px] h-[150px]">
               <h4 className="text-xs font-semibold tracking-widest uppercase text-white mb-4">
-                PRESETS
+                Categories
               </h4>
               <ul className="flex flex-col gap-2">
-                {['Flairy', 'Gusto', 'Cosmo', 'Fleek', 'Laura'].map(item => (
+                {['Body Care', 'Cleansers', 'Serums', 'Skincare'].map(item => (
                   <li key={item}>
                     <a href="#" className="text-sm text-white/80 hover:text-white">
                       {item}
@@ -83,7 +83,7 @@ export default function Footer() {
                 ABOUT
               </h4>
               <ul className="flex flex-col gap-2">
-                {['Contact', 'Blog', 'About', 'FAQs', 'Find a store'].map(item => (
+                {['Contact', 'About', 'Privacy Policy', 'Terms of Service'].map(item => (
                   <li key={item}>
                     <a href="#" className="text-sm text-white/80 hover:text-white">
                       {item}

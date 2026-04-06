@@ -93,7 +93,7 @@ export function LoginForm() {
                 description: "You have successfully logged in.",
             });
 
-            router.push("/dashboard/reports");
+            router.push("/account");
         } catch (error) {
             setLoginError("Login failed. Please try again.");
         } finally {
@@ -193,7 +193,7 @@ export function LoginForm() {
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="group w-full"
+                    className="group w-full bg-black    "
                     size="lg"
                 >
                     {isLoading ? (

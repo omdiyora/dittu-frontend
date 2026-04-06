@@ -29,13 +29,13 @@ const Home = () => {
             <MarqueeSection />
             <BannerSection />
             <HandpickedSection />
-            <CollectionsSection />
+            {/* <CollectionsSection /> */}
             <LuxurySection />
-            <PressSection />
+            {/* <PressSection /> */}
             <BeforeAfterSection />
             <hr className='container mx-auto px-6 md:px-8 lg:px-10 mt-4' />
-            <EleganceSection />
-            <SaleSection />
+            {/* <EleganceSection /> */}
+            {/* <SaleSection /> */}
             {/* <BundleSection /> */}
             {/* <TestimonialsSection /> */}
             <FAQSection />

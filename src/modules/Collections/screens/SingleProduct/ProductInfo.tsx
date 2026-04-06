@@ -2,9 +2,14 @@
 
 import { useState } from 'react';
 import { Heart, Plus, Truck, Package } from 'lucide-react';
+import { useCart } from "@/context/CartContext"; // ✅ ADD
+import { useSnackbar } from "notistack";
 
 export default function ProductInfo({ product }: any) {
   const [open, setOpen] = useState<string | null>('features');
+
+  const { enqueueSnackbar } = useSnackbar();
+  const { addToCart } = useCart(); // ✅ ADD
 
   const toggle = (section: string) => {
     setOpen(open === section ? null : section);
@@ -24,27 +29,22 @@ export default function ProductInfo({ product }: any) {
 
     return (
       <div className="border-b">
-        {/* Header */}
         <button
           onClick={() => toggle(id)}
           className="w-full flex justify-between items-center py-4 text-[14px] font-medium hover:text-black transition"
         >
           {title}
 
-          {/* Rotating Icon */}
           <Plus
             size={18}
-            className={`transition-transform duration-300 ${
-              isOpen ? 'rotate-45' : ''
-            }`}
+            className={`transition-transform duration-300 ${isOpen ? 'rotate-45' : ''
+              }`}
           />
         </button>
 
-        {/* Animated Content */}
         <div
-          className={`grid transition-all duration-300 ease-in-out ${
-            isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-          }`}
+          className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+            }`}
         >
           <div className="overflow-hidden">
             <div className="pb-4 text-[14px] text-gray-600 leading-relaxed">
@@ -54,6 +54,29 @@ export default function ProductInfo({ product }: any) {
         </div>
       </div>
     );
+  };
+
+  // ✅ HANDLE ADD TO CART
+  const handleAddToCart = () => {
+    // @ts-ignore
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price:
+        typeof product.price === "string"
+          ? Number(product.price.replace(/[^\d]/g, ""))
+          : product.price,
+      image: product.image || product.images?.[0] || "",
+    });
+
+    enqueueSnackbar("Added to cart", {
+      variant: "success",
+      anchorOrigin: {
+        vertical: "bottom",
+        horizontal: "right",
+      },
+      autoHideDuration: 1500,
+    });
   };
 
   return (
@@ -86,7 +109,11 @@ export default function ProductInfo({ product }: any) {
       {/* CTA */}
       <div className="grid grid-cols-[1fr_1fr_auto] gap-3">
 
-        <button className="bg-black text-white py-3 rounded-full font-medium hover:opacity-90 transition">
+        {/* ✅ UPDATED BUTTON */}
+        <button
+          onClick={handleAddToCart}
+          className="bg-black text-white py-3 rounded-full font-medium hover:opacity-90 transition"
+        >
           ADD TO CART
         </button>
 
@@ -115,7 +142,7 @@ export default function ProductInfo({ product }: any) {
 
       </div>
 
-      {/* 🔥 PREMIUM ACCORDION */}
+      {/* Accordion */}
       <div className="border-t pt-4">
 
         <AccordionItem title="CORE FEATURES" id="features">
