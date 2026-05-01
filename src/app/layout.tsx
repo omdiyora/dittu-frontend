@@ -2,43 +2,43 @@
 
 import { Flowbite, ThemeModeScript } from "flowbite-react";
 import { twMerge } from "tailwind-merge";
+// @ts-ignore
 import "@/styles/globals.css";
 import { flowbiteTheme } from "@/styles/flowbit-theme";
 import { AuthProvider } from "@/lib/Providers";
 import PageWrapper from "@/components/PageWrapper";
 import SnackbarProviderWrapper from "@/components/SnackbarProviderWrapper";
-import { CartProvider } from "@/context/CartContext"; // ✅ ADD THIS
+import { CartProvider } from "@/context/CartContext";
+import { DM_Sans } from "next/font/google"; // ✅ ADD
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-body-family",
+});
 
 const theme = { theme: flowbiteTheme };
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="en">
+    <html lang="en" className={dmSans.variable}>
       <head>
         <ThemeModeScript />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          // @ts-ignore
-          crossOrigin="true"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
-          rel="stylesheet"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
       </head>
 
-      <body className={twMerge("bg-gray-50 dark:bg-gray-900 font-nunito")}>
+      <body
+        className={twMerge(
+          "bg-gray-50 dark:bg-gray-900 font-body"
+        )}
+      >
         <PageWrapper>
           <AuthProvider>
-            <CartProvider> {/* ✅ ADD HERE */}
+            <CartProvider>
               {/* @ts-ignore */}
               <SnackbarProviderWrapper>
-                <Flowbite theme={theme}>
-                  {children}
-                </Flowbite>
+                <Flowbite theme={theme}>{children}</Flowbite>
               </SnackbarProviderWrapper>
             </CartProvider>
           </AuthProvider>
