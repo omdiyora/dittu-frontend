@@ -1,27 +1,14 @@
 "use client";
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
-
-
 import { signOut } from "next-auth/react";
 import { useStore } from "@/lib/zustand/store";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { IoIosArrowDown } from "react-icons/io";
-import HomeHeader from "./HomeHeader";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import CartDrawer from "@/modules/Cart/screens/CartDrawer";
-import { Heart, Plus, Truck, Package } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 dayjs.extend(relativeTime);
 const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
@@ -81,32 +68,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
             >
               <a href="/collections" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
                 SHOP
-                {/* <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                  <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg> */}
               </a>
-              {/* {shopOpen && (
-                <div className="absolute top-full left-0 mt-2 bg-white shadow-xl rounded-lg p-6 flex gap-8 z-50 min-w-[600px]">
-                  <div>
-                    <p className="text-xs font-semibold tracking-widest uppercase text-[#1a1a1a] mb-3">Categories</p>
-                    {['Serums', 'Cleansers', 'Toners', 'Body & Hands', 'Masks', 'Moisturizer', 'Shop All']?.map(item => (
-                      <a key={item} href="#" className="block text-sm text-[#1a1a1a] hover:opacity-60 py-1 transition-opacity">{item}</a>
-                    ))}
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold tracking-widest uppercase text-[#1a1a1a] mb-3">Discover</p>
-                    {['Best Sellers', 'New Arrivals', 'Essential Routine', 'Oil Remover', 'Holiday Gifting']?.map(item => (
-                      <a key={item} href="#" className="block text-sm text-[#1a1a1a] hover:opacity-60 py-1 transition-opacity">{item}</a>
-                    ))}
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold tracking-widest uppercase text-[#1a1a1a] mb-3">Featured</p>
-                    {['Power Couple Kit', 'Natural Body Wash', 'Bio-retinol Mask', 'Pure free oil cleanser']?.map(item => (
-                      <a key={item} href="#" className="block text-sm text-[#1a1a1a] hover:opacity-60 py-1 transition-opacity">{item}</a>
-                    ))}
-                  </div>
-                </div>
-              )} */}
             </div>
             <div className="relative group">
               <a href="/collections" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
@@ -133,8 +95,6 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
           {/* Right Nav */}
           <div className="hidden md:flex items-center gap-8">
 
-
-
             <div className="relative group">
               <a href="#" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
                 About Us
@@ -147,17 +107,11 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
             </div>
             <div className="flex items-center gap-4">
               <button
-              onClick={() => router.push("/account/wishlist")}
+                onClick={() => router.push("/account/wishlist")}
                 className="text-[#1a1a1a] hover:opacity-60 transition-opacity"
               >
                 <Heart size={18} />
               </button>
-              {/* <button className="text-[#1a1a1a] hover:opacity-60 transition-opacity">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                </svg>
-              </button> */}
               <button
                 onClick={() => router.push("/account")}
                 className="text-[#1a1a1a] hover:opacity-60 transition-opacity"
@@ -193,6 +147,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
               </button>
             </div>
           </div>
+
           <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
           {/* Mobile hamburger */}
           <button
@@ -203,6 +158,23 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="md:hidden text-[#1a1a1a] hover:opacity-60 transition-opacity"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            >
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
             </svg>
           </button>
         </div>
@@ -220,7 +192,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
             </button>
           </div>
           <nav className="flex flex-col gap-6">
-            {['Home', 'Shop', 'Collections', 'Pages', 'Contact']?.map(item => (
+            {['Home', 'Shop', 'Collections', 'Pages', 'Contact', 'Wishlist', 'My Account']?.map(item => (
               <a key={item} href="#" className="text-2xl font-light text-[#1a1a1a]" onClick={() => setMobileOpen(false)}>{item}</a>
             ))}
           </nav>

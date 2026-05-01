@@ -7,22 +7,21 @@ export default function HeroSection() {
       {/* Split background images */}
       <div className="absolute inset-0 flex">
         <div className="w-full h-full relative overflow-hidden">
+          <picture>
+            {/* Desktop Image */}
+            <source
+              media="(min-width: 768px)"
+              srcSet="https://res.cloudinary.com/dbfyydres/image/upload/v1775135093/hero-banner_xg1qux.png"
+            />
 
-          {/* Desktop Image */}
-          <img
-            src="https://res.cloudinary.com/dbfyydres/image/upload/v1775135093/hero-banner_xg1qux.png"
-            alt="Universal Beauty"
-            className="w-full h-full object-cover object-center hidden md:block"
-            style={{ objectPosition: "30% center" }}
-          />
-
-          {/* Mobile Image */}
-          <img
-            src="https://res.cloudinary.com/dbfyydres/image/upload/v1775135113/hero-banner-m_yisyl4.png"
-            alt="Universal Beauty Mobile"
-            className="w-full h-full object-cover object-center block md:hidden"
-          />
-
+            {/* Fallback / Mobile Image */}
+            <img
+              src="https://res.cloudinary.com/dbfyydres/image/upload/v1775135113/hero-banner-m_yisyl4.png"
+              alt="Universal Beauty"
+              className="w-full h-full object-cover"
+              style={{ objectPosition: "30% center" }}
+            />
+          </picture>
         </div>
       </div>
 
