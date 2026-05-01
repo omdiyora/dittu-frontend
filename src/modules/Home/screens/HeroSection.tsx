@@ -5,8 +5,8 @@ export default function HeroSection() {
   return (
 
     <section
-      className="relative w-full overflow-hidden"
-      style={{ height: "100vh", minHeight: "600px" }}
+      className="relative w-full h-full  overflow-hidden"
+    // style={{ height: "100vh", minHeight: "600px" }}
     >
       {/* Background Image */}
       <div className="absolute inset-0">
@@ -14,6 +14,8 @@ export default function HeroSection() {
           {/* Desktop image */}
           <source
             media="(min-width: 768px)"
+            className="object-cover"
+            style={{ objectPosition: "center top" }}
             srcSet="https://res.cloudinary.com/dbfyydres/image/upload/v1775135093/hero-banner_xg1qux.png"
           />
 
