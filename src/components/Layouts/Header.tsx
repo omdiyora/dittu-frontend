@@ -36,6 +36,17 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
     { name: "Enquiries", href: "/dashboard/reviews" },
   ];
 
+  const menuItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Shop', href: '/collections' },
+    { label: 'Collections', href: '/collections' },
+    { label: 'Pages', href: '/pages' },
+    { label: 'Contact', href: '/contact' },
+    { label: 'Wishlist', href: '/wishlist' },
+    { label: 'My Account', href: '/account' },
+  ];
+
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
@@ -192,9 +203,19 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
             </button>
           </div>
           <nav className="flex flex-col gap-6">
-            {['Home', 'Shop', 'Collections', 'Pages', 'Contact', 'Wishlist', 'My Account']?.map(item => (
-              <a key={item} href="#" className="text-2xl font-light text-[#1a1a1a]" onClick={() => setMobileOpen(false)}>{item}</a>
+            {menuItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="text-2xl font-light text-[#1a1a1a]"
+                onClick={() => setMobileOpen(false)}
+              >
+                {item.label}
+              </a>
             ))}
+            {/* {['Home', 'Shop', 'Collections', 'Pages', 'Contact', 'Wishlist', 'My Account']?.map(item => (
+              <a key={item} href="#" className="text-2xl font-light text-[#1a1a1a]" onClick={() => setMobileOpen(false)}>{item}</a>
+            ))} */}
           </nav>
         </div>
       )}

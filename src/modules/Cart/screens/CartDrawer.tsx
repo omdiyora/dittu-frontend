@@ -35,7 +35,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
 
             {/* DRAWER */}
             <div
-                className={`fixed top-0 right-0 h-full w-[400px] bg-white z-50 shadow-xl transform transition-transform duration-300 flex flex-col
+                className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white z-50 shadow-xl transform transition-transform duration-300 flex flex-col
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* HEADER */}
@@ -164,19 +164,32 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
                     </div>
 
                     <p className="text-xs text-gray-500">
-                        Taxes and shipping calculated at checkout
+                        Taxes and shipping calculated at checkouts
                     </p>
 
                     {/* BUTTONS */}
                     <div className="flex gap-3">
-                        <Link href="/cart" className="flex-1">
-                            <button className="w-full border py-3 rounded-full hover:bg-gray-100 transition">
+                        {/* VIEW CART */}
+                        <Link
+                            href="/cart"
+                            onClick={onClose}
+                            className="flex-1"
+                        >
+                            <div className="w-full text-center border py-3 rounded-full hover:bg-gray-100 transition text-sm">
                                 VIEW CART
-                            </button>
+                            </div>
                         </Link>
-                        <button className="flex-1 bg-black text-white py-3 rounded-full hover:opacity-90 transition">
-                            CHECK OUT
-                        </button>
+
+                        {/* CHECKOUT */}
+                        <Link
+                            href="/checkout"
+                            onClick={onClose}
+                            className="flex-1"
+                        >
+                            <div className="w-full text-center bg-black text-white py-3 rounded-full hover:opacity-90 transition text-sm">
+                                CHECK OUT
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>
