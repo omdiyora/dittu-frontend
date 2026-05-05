@@ -8,6 +8,7 @@ export default function HeroSection() {
       className="relative w-full h-full  overflow-hidden"
     // style={{ height: "100vh", minHeight: "600px" }}
     >
+      
       {/* Background Image */}
       <div className="absolute inset-0">
         <picture>
@@ -16,7 +17,7 @@ export default function HeroSection() {
             media="(min-width: 768px)"
             className="object-cover"
             style={{ objectPosition: "center top" }}
-            srcSet="https://res.cloudinary.com/dbfyydres/image/upload/v1775135093/hero-banner_xg1qux.png"
+            srcSet="https://res.cloudinary.com/dbfyydres/image/upload/v1777995676/hero-banner-desktop_amen47.png"
           />
 
           {/* Mobile image */}
@@ -30,7 +31,7 @@ export default function HeroSection() {
       </div>
 
       {/* Brand name overlay */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
+      {/* <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div
           className="text-white text-center"
           style={{
@@ -43,10 +44,10 @@ export default function HeroSection() {
         >
           DITTU
         </div>
-      </div>
+      </div> */}
 
       {/* Bottom text and CTA */}
-      <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center gap-6">
+      {/* <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center gap-6">
         <h2
           className="text-white text-center"
           style={{
@@ -73,7 +74,7 @@ export default function HeroSection() {
         >
           SHOP NOW
         </a>
-      </div>
+      </div> */}
     </section>
     // <section className="relative w-full overflow-hidden" style={{ height: '100vh', minHeight: '600px' }}>
     //   {/* Split background images */}

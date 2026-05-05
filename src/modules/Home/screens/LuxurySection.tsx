@@ -5,27 +5,27 @@ import React from 'react';
 const categories = [
     {
         name: 'Body Care',
-        image: 'https://zest-cosmo.myshopify.com/cdn/shop/files/collection-1.webp?v=1740562525&width=1500',
+        image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Body_Care_r1xtaa.png',
         href: '#',
     },
     {
-        name: 'Cleansers',
-        image: 'https://zest-cosmo.myshopify.com/cdn/shop/files/collection-2.webp?v=1740562526&width=1500',
+        name: 'Clean Care',
+        image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Clean_Care_m4bra1.png',
         href: '#',
     },
     {
-        name: 'Serums',
-        image: 'https://zest-cosmo.myshopify.com/cdn/shop/files/collection-3.webp?v=1740562525&width=1500',
+        name: 'Hair Care',
+        image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996120/Hair_Care_voplwa.png',
         href: '#',
     },
     {
-        name: 'Skincare',
-        image: 'https://zest-cosmo.myshopify.com/cdn/shop/files/collection-4.webp?v=1740562526&width=1500',
+        name: 'Skin Care',
+        image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Skin_Care_vywmex.png',
         href: '#',
     },
     {
-        name: 'Moisturizer',
-        image: 'https://zest-cosmo.myshopify.com/cdn/shop/files/collection-5.webp?v=1740562525&width=1500',
+        name: 'Moisturizer Care',
+        image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Moisturizer_Care_petilv.png',
         href: '#',
     },
 ];
@@ -63,10 +63,10 @@ export default function LuxurySection() {
                         <a
                             key={cat.name}
                             href={cat.href}
-                            className="flex-shrink-0 lg:flex-shrink group"
+                            className="flex-shrink-0 lg:flex-shrink group object-cover"
                             style={{ width: '220px' }}
                         >
-                            <div className="overflow-hidden rounded-lg bg-[#f5f0e8] aspect-[3/4]">
+                            <div className="overflow-hidden rounded-lg bg-[#f5f0e8] aspect-square">
                                 <img
                                     src={cat.image}
                                     alt={cat.name}
