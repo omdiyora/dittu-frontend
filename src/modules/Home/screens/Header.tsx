@@ -71,7 +71,7 @@ export default function Header() {
 
           {/* Logo - Center */}
           <div className="absolute left-1/2 -translate-x-1/2">
-            <a href="#" className="flex items-center">
+            <a href="/" className="flex items-center">
               <span
                 className="font-serif-italic text-2xl tracking-wider text-[#1a1a1a]"
                 style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: '26px', letterSpacing: '0.05em' }}
