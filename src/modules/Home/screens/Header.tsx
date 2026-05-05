@@ -139,7 +139,7 @@ export default function Header() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-[#fcfaf7] flex flex-col p-6">
           <div className="flex justify-between items-center mb-8">
-            <span style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: '26px' }}>Dittu</span>
+            <a href="/"><span style={{ fontFamily: "'Instrument Serif', serif", fontStyle: 'italic', fontSize: '26px' }}>Dittu</span></a>
             <button onClick={() => setMobileOpen(false)}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <line x1="18" y1="6" x2="6" y2="18" />
