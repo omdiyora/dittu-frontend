@@ -5,13 +5,89 @@ export default function HeroSection() {
   return (
     <>
       {/* Desktop Banner */}
+
+
       <section className="relative hidden md:block w-full h-[700px] lg:h-screen overflow-hidden">
+
+        {/* Background Image */}
         <img
           src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139179/ChatGPT_Image_May_6__2026__01_06_53_PM_Picsart_AiImageEnhancer_bxpal4.png"
           alt="Universal Beauty"
           className="w-full h-full object-cover"
-          style={{ objectPosition: "100% center" }}
+          style={{ objectPosition: "center center" }}
         />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-white/10" />
+
+        {/* Content */}
+        <div className="absolute inset-0 flex items-center">
+
+          <div className="max-w-xl xl:max-w-2xl lg:max-w-2xl px-8 lg:px-16">
+
+            {/* Heading */}
+            <h1 className="
+        text-[42px]
+        lg:text-[56px]
+        xl:text-[61px]
+        leading-[1.1]
+        font-light
+        text-[#3E3A39]
+        tracking-tight
+      ">
+              Skincare that
+              <br />
+              nourishes, protects &
+              <br />
+              brings out{" "}
+              <span className="text-[#C9A063] italic font-normal">
+                your glow.
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p className="
+        mt-5
+        lg:mt-8
+        text-[16px]
+        lg:text-[20px]
+        leading-relaxed
+        text-[#5F5B58]
+      ">
+              Pure ingredients. Proven results.
+              <br />
+              For healthy, radiant skin every day.
+            </p>
+
+            {/* Button */}
+            <button className="
+        mt-6
+        lg:mt-10
+        flex
+        items-center
+        gap-3
+        bg-[#C9A063]
+        hover:bg-[#b58d52]
+        transition-all
+        duration-300
+        text-white
+        uppercase
+        tracking-[2px]
+        px-5
+        lg:px-4
+        py-3
+        lg:py-2.5
+        rounded-full
+        text-sm
+        lg:text-base
+      ">
+              Shop Now
+              <span className="text-xl lg:text-2xl">→</span>
+            </button>
+
+          </div>
+
+        </div>
       </section>
 
       {/* Mobile Banner */}
