@@ -1,7 +1,9 @@
 'use client';
 import React from 'react';
-
+import { useRouter } from "next/navigation";
 export default function HeroSection() {
+  const router = useRouter();
+
   return (
     <>
       {/* Desktop Banner */}
@@ -60,7 +62,9 @@ export default function HeroSection() {
             </p>
 
             {/* Button */}
-            <button className="
+            <button
+              onClick={() => router.push('/collections')}
+              className="
         mt-6
         lg:mt-10
         flex
@@ -91,13 +95,85 @@ export default function HeroSection() {
       </section>
 
       {/* Mobile Banner */}
-      <section className="relative block md:hidden w-full h-[500px] overflow-hidden">
+      <section className="relative block md:hidden w-full h-screen overflow-hidden">
+
+        {/* Background Image */}
         <img
           src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139832/Mobile-banner_k26agj.png"
           alt="Universal Beauty"
           className="w-full h-full object-cover"
           style={{ objectPosition: "center center" }}
         />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-white/10" />
+
+        {/* Content */}
+        <div className="absolute inset-0 px-6 pt-24">
+
+          <div className="max-w-[260px]">
+
+            {/* Heading */}
+            <h1 className="
+        text-[34px]
+        leading-[1.12]
+        font-light
+        text-[#3E3A39]
+        tracking-tight
+      ">
+              Skincare that
+              <br />
+              nourishes,
+              <br />
+              protects &
+              <br />
+              brings out{" "}
+              <span className="text-[#C9A063] italic font-normal">
+                your glow.
+              </span>
+            </h1>
+
+            {/* Divider */}
+            <div className="w-12 h-[2px] bg-[#C9A063] mt-6 mb-6" />
+
+            {/* Description */}
+            <p className="
+        text-[15px]
+        leading-8
+        text-[#5F5B58]
+      ">
+              Pure ingredients.
+              <br />
+              Proven results.
+              <br />
+              For healthy, radiant skin every day.
+            </p>
+
+            {/* Button */}
+            <button
+              onClick={() => router.push('/collections')}
+              className="
+        mt-8
+        flex
+        items-center
+        justify-center
+        gap-3
+        bg-[#C9A063]
+        text-white
+        uppercase
+        tracking-[2px]
+        px-6
+        py-3
+        rounded-full
+        text-sm
+      ">
+              Shop Now
+              <span className="text-lg">→</span>
+            </button>
+
+          </div>
+
+        </div>
       </section>
     </>
     // <section className="relative w-full overflow-hidden" style={{ height: '100vh', minHeight: '600px' }}>
