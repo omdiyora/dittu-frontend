@@ -10,7 +10,7 @@ export default function HeroSection() {
           src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139179/ChatGPT_Image_May_6__2026__01_06_53_PM_Picsart_AiImageEnhancer_bxpal4.png"
           alt="Universal Beauty"
           className="w-full h-full object-cover"
-          style={{ objectPosition: "center center" }}
+          style={{ objectPosition: "100% center" }}
         />
       </section>
 
