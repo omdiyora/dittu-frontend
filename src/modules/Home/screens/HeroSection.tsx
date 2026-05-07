@@ -48,7 +48,7 @@ export default function HeroSection() {
             </h1>
 
             {/* Description */}
-            <p className="
+            {/* <p className="
         mt-5
         lg:mt-8
         text-[16px]
@@ -59,7 +59,7 @@ export default function HeroSection() {
               Pure ingredients. Proven results.
               <br />
               For healthy, radiant skin every day.
-            </p>
+            </p> */}
 
             {/* Button */}
             <button
@@ -109,7 +109,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-white/10" />
 
         {/* Content */}
-        <div className="absolute inset-0 px-6 pt-24">
+        <div className="absolute inset-0 px-6 pt-4">
 
           <div className="max-w-[260px]">
 
@@ -137,7 +137,7 @@ export default function HeroSection() {
             <div className="w-12 h-[2px] bg-[#C9A063] mt-6 mb-6" />
 
             {/* Description */}
-            <p className="
+            {/* <p className="
         text-[15px]
         leading-8
         text-[#5F5B58]
@@ -147,13 +147,13 @@ export default function HeroSection() {
               Proven results.
               <br />
               For healthy, radiant skin every day.
-            </p>
+            </p> */}
 
             {/* Button */}
             <button
               onClick={() => router.push('/collections')}
               className="
-        mt-8
+        mt-4
         flex
         items-center
         justify-center
