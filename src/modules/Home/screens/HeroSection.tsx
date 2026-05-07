@@ -3,79 +3,31 @@ import React from 'react';
 
 export default function HeroSection() {
   return (
-
-    <section
-      className="relative w-full h-full  overflow-hidden"
-    // style={{ height: "100vh", minHeight: "600px" }}
-    >
-      
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <picture>
-          {/* Desktop image */}
-          <source
-            media="(min-width: 768px)"
-            className="object-cover"
-            style={{ objectPosition: "center top" }}
-            srcSet="https://res.cloudinary.com/dbfyydres/image/upload/v1777995676/hero-banner-desktop_amen47.png"
-          />
-
-          {/* Mobile image */}
+    <>
+      {/* Desktop Banner */}
+      <section className="relative w-full h-full overflow-hidden hidden md:block">
+        <div className="absolute inset-0">
           <img
-            src="https://res.cloudinary.com/dbfyydres/image/upload/v1775135113/hero-banner-m_yisyl4.png"
+            src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139179/ChatGPT_Image_May_6__2026__01_06_53_PM_Picsart_AiImageEnhancer_bxpal4.png"
             alt="Universal Beauty"
             className="w-full h-full object-cover"
-            style={{ objectPosition: "30% center" }}
+            style={{ objectPosition: "100% center" }}
           />
-        </picture>
-      </div>
-
-      {/* Brand name overlay */}
-      {/* <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <div
-          className="text-white text-center"
-          style={{
-            fontFamily: "'Instrument Serif', serif",
-            fontSize: "clamp(5rem, 18vw, 14rem)",
-            lineHeight: "0.85",
-            letterSpacing: "-0.01em",
-            fontWeight: "400",
-          }}
-        >
-          DITTU
         </div>
-      </div> */}
+      </section>
 
-      {/* Bottom text and CTA */}
-      {/* <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center gap-6">
-        <h2
-          className="text-white text-center"
-          style={{
-            fontFamily: "'Instrument Serif', serif",
-            fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
-            fontWeight: "400",
-          }}
-        >
-          Universal <em>Beauty</em>
-        </h2>
-
-        <a
-          href="/collections"
-          className="btn-primary"
-          style={{
-            background: "white",
-            color: "#1a1a1a",
-            borderRadius: "100px",
-            padding: "14px 40px",
-            fontSize: "11px",
-            letterSpacing: "0.15em",
-            fontWeight: "500",
-          }}
-        >
-          SHOP NOW
-        </a>
-      </div> */}
-    </section>
+      {/* Mobile Banner */}
+      <section className="relative w-full h-[500px] overflow-hidden block md:hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139832/Mobile-banner_k26agj.png"
+            alt="Universal Beauty"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: "55% center" }}
+          />
+        </div>
+      </section>
+    </>
     // <section className="relative w-full overflow-hidden" style={{ height: '100vh', minHeight: '600px' }}>
     //   {/* Split background images */}
     //   <div className="absolute inset-0 flex">
