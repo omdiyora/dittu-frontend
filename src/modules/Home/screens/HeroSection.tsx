@@ -5,27 +5,23 @@ export default function HeroSection() {
   return (
     <>
       {/* Desktop Banner */}
-      <section className="relative w-full h-full overflow-hidden hidden md:block">
-        <div className="absolute inset-0">
-          <img
-            src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139179/ChatGPT_Image_May_6__2026__01_06_53_PM_Picsart_AiImageEnhancer_bxpal4.png"
-            alt="Universal Beauty"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: "100% center" }}
-          />
-        </div>
+      <section className="relative hidden md:block w-full h-[700px] lg:h-screen overflow-hidden">
+        <img
+          src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139179/ChatGPT_Image_May_6__2026__01_06_53_PM_Picsart_AiImageEnhancer_bxpal4.png"
+          alt="Universal Beauty"
+          className="w-full h-full object-cover"
+          style={{ objectPosition: "center center" }}
+        />
       </section>
 
       {/* Mobile Banner */}
-      <section className="relative w-full h-[500px] overflow-hidden block md:hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139832/Mobile-banner_k26agj.png"
-            alt="Universal Beauty"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: "55% center" }}
-          />
-        </div>
+      <section className="relative block md:hidden w-full h-[500px] overflow-hidden">
+        <img
+          src="https://res.cloudinary.com/dbfyydres/image/upload/v1778139832/Mobile-banner_k26agj.png"
+          alt="Universal Beauty"
+          className="w-full h-full object-cover"
+          style={{ objectPosition: "center center" }}
+        />
       </section>
     </>
     // <section className="relative w-full overflow-hidden" style={{ height: '100vh', minHeight: '600px' }}>
