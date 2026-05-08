@@ -8,7 +8,8 @@ import ProductInfo from './ProductInfo';
 const product = {
     id: 1,
     name: 'Ultimate Facelift Day Cream',
-    price: '$30.00',
+    price: '$27.00',
+    originalPrice: '$30.00',
     badge: 'New',
     images: [
         'https://zest-cosmo.myshopify.com/cdn/shop/files/69.jpg?v=1740561521&width=800',
@@ -16,6 +17,7 @@ const product = {
         'https://zest-cosmo.myshopify.com/cdn/shop/files/72.jpg?v=1740561715&width=800',
         'https://zest-cosmo.myshopify.com/cdn/shop/files/73.jpg?v=1740561767&width=800',
     ],
+
 };
 
 export default function ProductPage() {
@@ -51,7 +53,7 @@ export default function ProductPage() {
                 <ProductGallery />
 
                 {/* RIGHT: PRODUCT INFO */}
-            <ProductInfo product={product} />
+                <ProductInfo product={product} />
 
             </div>
         </div>

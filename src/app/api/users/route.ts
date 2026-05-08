@@ -65,7 +65,7 @@ import { supabase } from "@/lib/db";
 export async function GET() {
   try {
     const { data, error } = await supabase
-      .from("users")
+      .from("dittu_users")
       .select("*");
 
     if (error) throw error;

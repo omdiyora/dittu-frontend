@@ -66,8 +66,8 @@ const LoginInput = React.forwardRef<HTMLInputElement, LoginInputProps>(
               isFocused
                 ? "text-primary"
                 : error
-                ? "text-destructive"
-                : "text-muted-foreground"
+                  ? "text-destructive"
+                  : "text-muted-foreground"
             )}
           >
             {label}
@@ -83,6 +83,7 @@ const LoginInput = React.forwardRef<HTMLInputElement, LoginInputProps>(
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-1.5 text-xs text-destructive"
+            style={{ color: 'red' }}
           >
             {error}
           </motion.p>

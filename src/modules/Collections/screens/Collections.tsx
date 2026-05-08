@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilterSidebar from './FilterSidebar';
 import Link from 'next/link';
+import { useCart } from "@/context/CartContext"; // ✅ ADD
 type Product = {
     id: number;
     name: string;
@@ -126,9 +127,111 @@ const products: Product[] = [
     },
 ];
 
+function getBadgeStyle(type?: string) {
+    if (type === 'sale') return { background: '#e8ddd0', color: '#1a1a1a' };
+    if (type === 'new') return { background: '#2d5a4e', color: 'white' };
+    if (type === 'bestseller') return { background: '#2d5a4e', color: 'white' };
+    return {};
+}
+
+
+function ProductCard({ product }: { product: Product; }) {
+    const [hovered, setHovered] = useState(false);
+
+    return (
+        <div
+            className="product-card flex-shrink-0"
+            style={{ width: '280px' }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}>
+
+            <div className="relative overflow-hidden rounded-lg" style={{ background: '#f5f0e8', aspectRatio: '3/4' }}>
+                <img
+                    src={hovered ? product.hoverImage : product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-all duration-500" />
+
+                {product.badge &&
+                    <span
+                        className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded"
+                        style={getBadgeStyle(product.badgeType)}>
+
+                        {product.badge}
+                    </span>
+                }
+                <button className="choose-options-btn">
+                    Choose options
+                </button>
+            </div>
+            <div className="mt-3 px-1">
+                <h3 className="text-sm font-medium text-[#1a1a1a]">{product.name}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                    {product.originalPrice ?
+                        <>
+                            <span className="text-sm font-medium text-[#1a1a1a]">{product.price}</span>
+                            <span className="text-sm text-[#1a1a1a] opacity-50 line-through">{product.originalPrice}</span>
+                        </> :
+
+                        <span className="text-sm font-medium text-[#1a1a1a]">{product.price}</span>
+                    }
+                </div>
+            </div>
+        </div>);
+
+}
+
 export default function Collections() {
 
+    const [products, setProducts] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { addToCart } = useCart(); // ✅ ADD
+
+    const API_ENDPOINT = `/api/products`;
+
+
+    
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch(API_ENDPOINT);
+                const data = await res.json();
+
+                setProducts(data || []);
+            } catch (error) {
+                console.error("Failed to fetch products", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
     // const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+
+    const handleAddToCart = (product: any) => {
+        // @ts-ignore
+        addToCart({
+            id: product?.id,
+            name: product?.name,
+            price:
+                typeof product?.price === "string"
+                    ? Number(product?.price.replace(/[^\d]/g, ""))
+                    : product?.price,
+            image: product?.image || product?.images?.[0] || "",
+        });
+
+        // enqueueSnackbar("Added to cart", {
+        //     variant: "success",
+        //     anchorOrigin: {
+        //         vertical: "bottom",
+        //         horizontal: "right",
+        //     },
+        //     autoHideDuration: 1500,
+        // });
+    };
 
     return (
         <>
@@ -166,67 +269,82 @@ export default function Collections() {
                             </div>
 
 
-
-                            {/* Grid */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {products.map((product) => {
+                                    const mainImage = product.images?.[0] || "/placeholder.png";
+                                    const hoverImage =
+                                        product.images?.[1] || product.images?.[0];
 
-                                {products.map((product) => (
-                                    <div key={product.id}>
-                                        <Link href={`/products`} className="block group cursor-pointer">
+                                    return (
+                                        <div key={product.id} className="product-card group">
 
-                                            {/* Image */}
-                                            <div className="relative bg-[#f5f3f0] rounded-lg h-[320px] overflow-hidden">
+                                            <Link
+                                                href={`/products/${product.id}`}
+                                                className="block cursor-pointer"
+                                            >
+                                                {/* Image */}
+                                                <div className="relative bg-[#f5f3f0] rounded-lg h-[320px] overflow-hidden">
 
-                                                {/* Badge */}
-                                                {product.badge && (
-                                                    <span
-                                                        className={`absolute top-3 left-3 text-xs px-2 py-1 text-white z-10
-          ${product.badgeType === 'sale'
-                                                                ? 'bg-orange-500'
-                                                                : product.badgeType === 'new'
-                                                                    ? 'bg-green-700'
-                                                                    : 'bg-black'
-                                                            }`}
-                                                    >
-                                                        {product.badge}
-                                                    </span>
-                                                )}
-
-                                                {/* Main Image */}
-                                                <Image
-                                                    src={product.image}
-                                                    alt={product.name}
-                                                    fill
-                                                    className="object-contain transition duration-500 group-hover:opacity-0"
-                                                />
-
-                                                {/* Hover Image */}
-                                                <Image
-                                                    src={product.hoverImage}
-                                                    alt={product.name}
-                                                    fill
-                                                    className="object-contain opacity-0 transition duration-500 group-hover:opacity-100"
-                                                />
-                                            </div>
-
-                                            {/* Info */}
-                                            <div className="mt-3">
-                                                <h4 className="text-sm font-medium">{product.name}</h4>
-
-                                                <div className="text-sm mt-1">
-                                                    <span className="font-semibold">{product.price}</span>
-
-                                                    {product.originalPrice && (
-                                                        <span className="line-through text-gray-400 ml-2">
-                                                            {product.originalPrice}
+                                                    {/* Badge */}
+                                                    {product.badge && (
+                                                        <span
+                                                            className={`absolute top-3 left-3 text-xs px-2 py-1 text-white z-20
+                ${product.badgeType === "sale"
+                                                                    ? "bg-orange-500"
+                                                                    : product.badgeType === "new"
+                                                                        ? "bg-green-700"
+                                                                        : "bg-black"
+                                                                }`}
+                                                        >
+                                                            {product.badge}
                                                         </span>
                                                     )}
-                                                </div>
-                                            </div>
 
-                                        </Link>
-                                    </div>
-                                ))}
+                                                    {/* Button */}
+                                                    <button className="choose-options-btn z-30"
+                                                        onClick={(e) => {
+                                                            e.preventDefault(); // stop Link navigation
+                                                            e.stopPropagation(); // stop bubbling
+                                                            handleAddToCart(product);
+                                                        }}>
+                                                        Add to cart
+                                                    </button>
+
+                                                    {/* Main Image */}
+                                                    <Image
+                                                        src={mainImage}
+                                                        alt={product.name}
+                                                        fill
+                                                        className="object-contain transition duration-500 group-hover:opacity-0"
+                                                    />
+
+                                                    {/* Hover Image */}
+                                                    <Image
+                                                        src={hoverImage}
+                                                        alt={product.name}
+                                                        fill
+                                                        className="object-contain opacity-0 transition duration-500 group-hover:opacity-100"
+                                                    />
+                                                </div>
+
+                                                {/* Info */}
+                                                <div className="mt-3">
+                                                    <h4 className="text-sm font-medium">{product.name}</h4>
+
+                                                    <div className="text-sm mt-1">
+                                                        <span className="font-semibold">₹{product.price}</span>
+
+                                                        {product.original_price && (
+                                                            <span className="line-through text-gray-400 ml-2">
+                                                                ₹{product.original_price}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </section>
 

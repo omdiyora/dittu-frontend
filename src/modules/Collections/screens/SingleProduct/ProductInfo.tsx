@@ -60,13 +60,13 @@ export default function ProductInfo({ product }: any) {
   const handleAddToCart = () => {
     // @ts-ignore
     addToCart({
-      id: product.id,
-      name: product.name,
+      id: product?.id,
+      name: product?.name,
       price:
-        typeof product.price === "string"
-          ? Number(product.price.replace(/[^\d]/g, ""))
-          : product.price,
-      image: product.image || product.images?.[0] || "",
+        typeof product?.price === "string"
+          ? Number(product?.price.replace(/[^\d]/g, ""))
+          : product?.price,
+      image: product?.image || product?.images?.[0] || "",
     });
 
     enqueueSnackbar("Added to cart", {
@@ -85,18 +85,27 @@ export default function ProductInfo({ product }: any) {
       {/* Top Info */}
       <div className="space-y-2">
 
-        {product.badge && (
+        {product?.badge && (
           <span className="inline-block bg-green-700 text-white text-[12px] px-2 py-[2px] rounded">
-            {product.badge}
+            {product?.badge}
           </span>
         )}
 
         <h1 className="text-[28px] font-medium leading-tight text-gray-900">
-          {product.name}
+          {product?.name}
         </h1>
 
+        {/* <div className="text-[18px] font-medium text-gray-900">
+          {product?.price}
+        </div> */}
         <div className="text-[18px] font-medium text-gray-900">
-          {product.price}
+          <span className="font-medium">₹{product?.price}</span>
+
+          {product?.original_price && (
+            <span className="line-through text-gray-400 ml-2">
+              ₹{product?.original_price}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-1 text-[14px] leading-none">
@@ -143,18 +152,21 @@ export default function ProductInfo({ product }: any) {
       </div>
 
       {/* Accordion */}
+      {/* Accordion */}
       <div className="border-t pt-4">
-
-        <AccordionItem title="CORE FEATURES" id="features">
-          Lightweight formula that deeply hydrates and nourishes the skin.
-          Helps improve texture and provides a smooth, radiant finish.
-        </AccordionItem>
-
-        <AccordionItem title="INGREDIENTS" id="ingredients">
-          Enriched with natural extracts, vitamins, and antioxidants that
-          support healthy and glowing skin.
-        </AccordionItem>
-
+        {product?.product_details?.length > 0 ? (
+          product.product_details.map((item: any, index: number) => (
+            <AccordionItem
+              key={index}
+              title={item.title?.toUpperCase()}
+              id={`accordion-${index}`}
+            >
+              {item.accordion_description}
+            </AccordionItem>
+          ))
+        ) : (
+          <p className="text-sm text-gray-500">No product details available.</p>
+        )}
       </div>
 
     </div>

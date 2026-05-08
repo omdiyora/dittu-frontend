@@ -1,5 +1,5 @@
 import AuthWrapper from "@/app/AuthWrapper";
-import AddReport from "@/modules/Reports/form/AddReports";
+import AddReport from "@/modules/Reports/form/AddProduct";
 
 
 const AddReportPage = async () => {

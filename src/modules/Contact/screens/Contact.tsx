@@ -1,249 +1,160 @@
 "use client";
 
-import { useInView } from 'react-intersection-observer';
-import { Formik } from "formik";
-import { FiMapPin } from "react-icons/fi";
-import { BsTelephone } from "react-icons/bs";
-import { VscMail } from "react-icons/vsc";
-import { LuClock4 } from "react-icons/lu";
-import {
-    Input,
-    Textarea,
-    Button,
-} from "@heroui/react";
-import { Select, SelectItem } from "@nextui-org/react";
-import { IoStar, IoStarOutline } from "react-icons/io5";
-import * as Yup from "yup";
-import { useStore } from "@/lib/zustand/store";
-
-// import Footer from '@/modules/Home/screens/Footer/Footer';
-
-const ContactSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    phone_number: Yup.string()
-        .matches(/^[0-9]{10}$/, "Enter valid 10-digit number")
-        .required("Phone number is required"),
-    loan_type: Yup.string().required("Loan type is required"),
-    message: Yup.string(),
-});
-
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
+import { Mail } from "lucide-react";
 const Contact = () => {
-    const { ref: heroRef, inView: heroInView } = useInView({
-        threshold: 0.1,
-        triggerOnce: true
-    });
-    const createContact = useStore((m) => m.createContact);
-
     return (
         <>
-            <section className="bg-[#faf6f2] py-24">
-                <div className="max-w-5xl mx-auto px-4 text-center mt-16">
-                    {/* Title */}
-                    <h1 className="font-nunito text-4xl md:text-5xl font-semibold text-[#54221c] mb-6">
-                        Contact Us
-                    </h1>
-                    {/* Subtitle */}
-                    <p className="text-lg md:text-xl text-black max-w-3xl mx-auto leading-relaxed">
-                        We’re here to answer your questions and guide you every step of the way.
-                    </p>
+            <section className="relative w-full h-[500px] sm:h-[650px] lg:h-[780px] overflow-hidden">
+
+                {/* Background Image */}
+                <Image
+                    src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2000&auto=format&fit=crop"
+                    alt="Contact Us"
+                    fill
+                    priority
+                    className="object-cover"
+                />
+
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/50"></div>
+
+                {/* Content */}
+                <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <div className="text-center max-w-4xl">
+
+                        {/* Small Title */}
+                        <p className="uppercase tracking-[4px] text-white text-xs sm:text-sm mb-6">
+                            Contact Us
+                        </p>
+
+                        {/* Main Heading */}
+                        <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight font-light">
+                            Let’s connect and
+                            <br />
+                            create something
+                            <br />
+
+                            <span className="italic font-serif">
+                                beautiful together.
+                            </span>
+                        </h1>
+
+                    </div>
                 </div>
             </section>
-            <section className="py-20 bg-gray-50">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+            <section className="bg-[#f5f4f1] py-12 md:py-20">
+                <div className="max-w-7xl mx-auto px-5 md:px-8">
 
-                        {/* LEFT – Contact Info */}
-                        <div className="bg-[#F9F5F0] rounded-2xl p-10 text-[#54221c] shadow-lg">
-                            <h3 className="font-nunito text-2xl font-semibold mb-8">
-                                Contact Information
-                            </h3>
+                    {/* Main Content */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
 
-                            <ul className="space-y-6">
-                                <li className="flex items-start gap-4">
-                                    <FiMapPin className="text-accent-light mt-1" size={26} />
-                                    <a href='https://maps.app.goo.gl/rQHzurv67eUzF4dt5' target='_blank' className="leading-relaxed text-[#54221c]/90">
-                                        112, Anupam Arcade BRTS Canal Road,<br />
-                                        Parvat Patiya, Opp Amazia Amusement Park,<br />
-                                        Surat, Gujarat 395010, India
-                                    </a>
-                                </li>
-
-                                <li className="flex items-center gap-4">
-                                    <BsTelephone className="text-accent-light" size={20} />
-                                    <a
-                                        href="tel:+919574493000"
-                                        className="hover:text-white transition"
-                                    >
-                                        +91 95744 93000
-                                    </a>
-                                </li>
-
-                                <li className="flex items-center gap-4">
-                                    <VscMail className="text-accent-light" size={20} />
-                                    <a
-                                        href="mailto:diyoraconsultancy@gmail.com"
-                                        className="hover:text-white transition"
-                                    >
-                                        diyoraconsultancy@gmail.com
-                                    </a>
-                                </li>
-
-                                <li className="flex items-start gap-4">
-                                    <LuClock4 className="text-accent-light mt-1" size={20} />
-                                    <span className="text-[#54221c]/90">
-                                        Mon – Fri: 9:00 AM – 6:00 PM <br />
-                                        Sat: 10:00 AM – 2:00 PM <br />
-                                        Sunday: Closed
-                                    </span>
-                                </li>
-                            </ul>
+                        {/* Left Image */}
+                        <div className="relative w-full h-[350px] sm:h-[500px] lg:h-[560px]">
+                            <Image
+                                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop"
+                                alt="Boutique"
+                                fill
+                                priority
+                                className="object-cover"
+                            />
                         </div>
 
-                        {/* RIGHT – Contact Form */}
-                        <div className="bg-white rounded-2xl p-10 shadow-lg">
-                            <h2 className="text-3xl font-semibold text-[#54221c] mb-2">
-                                Get in Touch
-                            </h2>
-                            <p className="text-gray-500 mb-8">
-                                Fill out the form and our team will contact you shortly.
-                            </p>
+                        {/* Right Content */}
+                        <div className="bg-[#e9e3d8] flex items-center">
+                            <div className="px-6 py-10 sm:px-10 md:px-14 lg:px-20">
 
-                            <Formik
-                                initialValues={{
-                                    name: "",
-                                    email: "",
-                                    phone_number: "",
-                                    loan_type: "",
-                                    message: "",
-                                }}
-                                validationSchema={ContactSchema}
-                                onSubmit={async (values, { resetForm }) => {
-                                    await createContact(values);
-                                    resetForm();
-                                }}
-                            >
-                                {({
-                                    values,
-                                    errors,
-                                    touched,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit,
-                                    setFieldValue,
-                                }) => (
-                                    <form onSubmit={handleSubmit} className="space-y-6">
+                                {/* City */}
+                                <p className="uppercase tracking-[3px] text-xs sm:text-sm text-black mb-6">
+                                    Mumbai
+                                </p>
 
-                                        {/* Row 1 */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <Input
-                                                name="name"
-                                                label="Your Name"
-                                                labelPlacement="outside"
-                                                placeholder="Enter full name"
-                                                variant="bordered"
-                                                radius="lg"
-                                                value={values.name}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                isInvalid={!!(touched.name && errors.name)}
-                                                errorMessage={errors.name}
-                                            />
+                                {/* Title */}
+                                <h2 className="text-4xl sm:text-4xl lg:text-5xl leading-tight font-medium text-black mb-8">
+                                    DITTU
+                                </h2>
 
-                                            <Input
-                                                name="email"
-                                                type="email"
-                                                label="Email Address"
-                                                labelPlacement="outside"
-                                                placeholder="Enter email"
-                                                variant="bordered"
-                                                radius="lg"
-                                                value={values.email}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                isInvalid={!!(touched.email && errors.email)}
-                                                errorMessage={errors.email}
-                                            />
-                                        </div>
+                                {/* Address */}
+                                <div className="space-y-5 text-gray-800 text-base sm:text-lg">
+                                    <p>4b/39 James St, Fortitude Valley QLD 4006</p>
 
-                                        {/* Row 2 */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <Input
-                                                name="phone_number"
-                                                type="tel"
-                                                label="Phone Number"
-                                                labelPlacement="outside"
-                                                placeholder="Enter phone number"
-                                                variant="bordered"
-                                                radius="lg"
-                                                value={values.phone_number}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                isInvalid={!!(touched.phone_number && errors.phone_number)}
-                                                errorMessage={errors.phone_number}
-                                            />
+                                    <p>+391 (0)35 2568</p>
 
-                                            <Select
-                                                label="Loan Type"
-                                                labelPlacement="outside"
-                                                placeholder="Select loan type"
-                                                selectedKeys={values.loan_type ? [values.loan_type] : []}
-                                                onSelectionChange={(keys) =>
-                                                    setFieldValue("loan_type", Array.from(keys)[0])
-                                                }
-                                                variant="bordered"
-                                                radius="lg"
-                                                isInvalid={!!(touched.loan_type && errors.loan_type)}
-                                                errorMessage={errors.loan_type}
-                                            >
-                                                <SelectItem key="home">Home Loan</SelectItem>
-                                                <SelectItem key="personal">Personal Loan</SelectItem>
-                                                <SelectItem key="business">Business Loan</SelectItem>
-                                                <SelectItem key="education">Education Loan</SelectItem>
-                                                <SelectItem key="vehicle">Vehicle Loan</SelectItem>
-                                            </Select>
-                                        </div>
+                                    <p>Mon–Sat: 10am–8pm</p>
+                                </div>
 
-                                        {/* Message */}
-                                        <Textarea
-                                            name="message"
-                                            label="Message (Optional)"
-                                            labelPlacement="outside"
-                                            placeholder="Write your message..."
-                                            variant="bordered"
-                                            radius="lg"
-                                            minRows={4}
-                                            value={values.message}
-                                            onChange={handleChange}
-                                        />
-
-                                        {/* Submit */}
-                                        <Button
-                                            type="submit"
-                                            size="lg"
-                                            className="bg-[#54221c] hover:bg-[#6b2c25] text-white font-medium px-8"
-                                        >
-                                            Submit Enquiry
-                                        </Button>
-                                    </form>
-                                )}
-                            </Formik>
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </section>
 
-            <div className="mt-10 overflow-hidden">
-                <iframe
-                    className="w-full h-[450px]"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4412.613592709945!2d72.86594287584444!3d21.193587482095836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04fa4a2b9bdd9%3A0x6602f4011b50709b!2sDiyora%20Consultancy!5e1!3m2!1sen!2sin!4v1766603029051!5m2!1sen!2sin"
-                    loading="lazy"
-                />
-            </div>
+            <section className="bg-[#f5f4f1] py-16 md:py-24">
+                <div className="max-w-4xl mx-auto px-5">
 
+                    {/* Heading */}
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl md:text-5xl font-medium text-black">
+                            Get In Touch
+                        </h2>
+                    </div>
 
-            {/* <Footer /> */}
+                    {/* Form */}
+                    <form className="space-y-8">
+
+                        {/* Name & Phone */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                className="w-full h-14 rounded-full border border-gray-300 bg-transparent px-6 text-black placeholder:text-gray-500 outline-none focus:border-black transition"
+                            />
+
+                            <input
+                                type="text"
+                                placeholder="Phone"
+                                className="w-full h-14 rounded-full border border-gray-300 bg-transparent px-6 text-black placeholder:text-gray-500 outline-none focus:border-black transition"
+                            />
+                        </div>
+
+                        {/* Email */}
+                        <div className="relative">
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                className="w-full h-14 rounded-full border border-gray-300 bg-transparent px-6 pr-14 text-black placeholder:text-gray-500 outline-none focus:border-black transition"
+                            />
+
+                            <Mail
+                                size={18}
+                                className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500"
+                            />
+                        </div>
+
+                        {/* Message */}
+                        <textarea
+                            rows={5}
+                            placeholder="Your message"
+                            className="w-full rounded-3xl border border-gray-300 bg-transparent px-6 py-5 text-black placeholder:text-gray-500 outline-none focus:border-black transition resize-none"
+                        ></textarea>
+
+                        {/* Button */}
+                        <div className="flex justify-center pt-4">
+                            <button
+                                type="submit"
+                                className="bg-black text-white px-10 sm:px-14 py-4 rounded-full text-sm sm:text-base uppercase tracking-wide hover:bg-gray-800 transition"
+                            >
+                                Submit Now
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
         </>
     );
 };

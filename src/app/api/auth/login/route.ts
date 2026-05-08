@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
         // ✅ Find user by email OR username
         const { data: user, error } = await supabase
-            .from("users")
+            .from("dittu_users")
             .select("*")
             .or(`email.eq.${identifier},user_name.eq.${identifier}`)
             .single();

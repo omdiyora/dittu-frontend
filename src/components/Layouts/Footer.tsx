@@ -1,6 +1,14 @@
 'use client';
 import React from 'react';
 
+
+const pages = [
+  { name: "Contact", link: "/contact" },
+  { name: "About", link: "/about" },
+  { name: "Privacy Policy", link: "/privacy-policy" },
+  { name: "Terms of Service", link: "/terms-of-service" },
+];
+
 export default function Footer() {
   return (
     <footer style={{ background: '#192c38', color: 'white' }} className='mt-12'>
@@ -83,10 +91,13 @@ export default function Footer() {
                 ABOUT
               </h4>
               <ul className="flex flex-col gap-2">
-                {['Contact', 'About', 'Privacy Policy', 'Terms of Service'].map(item => (
-                  <li key={item}>
-                    <a href="#" className="text-sm text-white/80 hover:text-white">
-                      {item}
+                {pages.map((item) => (
+                  <li key={item.name}>
+                    <a
+                      href={item.link}
+                      className="text-sm text-white/80 hover:text-white transition"
+                    >
+                      {item.name}
                     </a>
                   </li>
                 ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/context/CartContext";
+// import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
 import { useState } from "react";
@@ -19,16 +19,24 @@ import { useSession } from "next-auth/react";
 import { RadioGroup, Radio } from "@nextui-org/react";
 import { Formik, Form } from "formik";
 import { supabase } from "@/lib/db";
+import { useCart } from "@/context/CartContext";
 
 export default function Checkout() {
   const { data: session } = useSession();
-  const { cart } = useCart();
+
   const router = useRouter();
+  const { cart } = useCart();
+
+  console.log(cart, 'cart');
+
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [paymentMethod, setPaymentMethod] = useState("upi");
   const [txnId, setTxnId] = useState("");
   const [formData, setFormData] = useState<any>({});
+
+  console.log(paymentMethod, 'paymentMethod');
+
 
   const Field = ({ label, children }: any) => (
     <div className="space-y-1">
@@ -78,34 +86,99 @@ export default function Checkout() {
     }
 
     try {
-      const { error } = await supabase.from("orders").insert([
-        {
-          customer_id: session?.user?.id || null,
-          customer_name: formData.name,
-          email: formData.email,
-          phone_number: formData.phone_number,
 
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          pin_code: formData.pin_code,
+      // order_id
+      // order_date
+      // customer_id
+      // total
+      // payment_status
+      // payment_actions
+      // payment_mode
+      // fulfillment_status
+      // delivery_status
+      // product_id
+      // return_status
+      // notes
+      // created_by
+      // updated_by
+      // created
+      // updated
 
-          items: cart,
+      const newData = {
+        customer_id: session?.user?.id,
+        total: total,
+        payment_status: 'Paid',
+        payment_actions: 'Pending',
+        payment_mode: paymentMethod,
+        fulfillment_status: 'Unfulfilled',
+        delivery_status: 'Prepared for shipment',
+        items: cart,
+        return_status: 'Pending',
+        notes: formData.notes,
+        transaction_id: txnId,
+        created_by: session?.user?.id,
+      }
 
-          subtotal,
-          shipping,
-          total,
+      const data = {
+        customer_id: session?.user?.id || null,
+        customer_name: formData.name,
+        email: formData.email,
+        phone_number: formData.phone_number,
 
-          payment_method: "upi",
-          payment_status: "pending",
-          order_status: "pending",
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        pin_code: formData.pin_code,
 
-          notes: formData.notes,
-          transaction_id: txnId,
-        },
-      ]);
+        items: cart && cart,
 
-      if (error) throw error;
+        subtotal,
+        shipping,
+        total,
+
+        payment_method: "upi",
+        payment_status: "pending",
+        order_status: "pending",
+
+        notes: formData.notes,
+        transaction_id: txnId,
+      }
+
+      const res = await fetch("/api/order", {
+        method: "POST",
+        body: JSON.stringify(newData),
+      });
+
+      const datas = await res.json();
+
+      // const { error } = await supabase.from("orders").insert([
+      //   {
+      //     customer_id: session?.user?.id || null,
+      //     customer_name: formData.name,
+      //     email: formData.email,
+      //     phone_number: formData.phone_number,
+
+      //     address: formData.address,
+      //     city: formData.city,
+      //     state: formData.state,
+      //     pin_code: formData.pin_code,
+
+      //     // items: cart && cart,
+
+      //     subtotal,
+      //     shipping,
+      //     total,
+
+      //     payment_method: "upi",
+      //     payment_status: "pending",
+      //     order_status: "pending",
+
+      //     notes: formData.notes,
+      //     transaction_id: txnId,
+      //   },
+      // ]);
+
+      // if (error) throw error;
 
       alert("✅ Order placed successfully!");
 
@@ -125,12 +198,12 @@ export default function Checkout() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fcfaf7] px-6 py-10">
+    <div className="bg-[#fcfaf7] px-6 py-10">
+      <h1 className="max-w-6xl mx-auto text-2xl font-semibold mb-6">Checkout</h1>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
 
         {/* LEFT SIDE */}
-        <div>
-          <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
+        <div className="bg-white p-6 rounded-xl shadow-sm ">
 
           <h2 className="text-sm font-medium mb-4">Shipping Information</h2>
 
@@ -152,33 +225,48 @@ export default function Checkout() {
             {({ handleChange, values, setFieldValue }) => (
 
               <Form className="space-y-6">
-                <Field label="Full name *">
-                  <Input
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    variant="bordered"
-                    placeholder="Enter full name"
-                  />
-                </Field>
-                <Field label="Email address *">
-                  <Input
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    variant="bordered"
-                    placeholder="Enter Email address"
-                  />
-                </Field>
-                <Field label="Phone number *">
-                  <Input
-                    name="phone_number"
-                    value={values.phone_number}
-                    onChange={handleChange}
-                    variant="bordered"
-                    placeholder="Enter Phone number"
-                  />
-                </Field>
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="First name *">
+                    <Input
+                      name="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      variant="bordered"
+                      placeholder="Enter full name"
+                    />
+                  </Field>
+                  <Field label="Last name *">
+                    <Input
+                      name="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      variant="bordered"
+                      placeholder="Enter full name"
+                    />
+                  </Field>
+
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Email address *">
+                    <Input
+                      name="email"
+                      value={values.email}
+                      onChange={handleChange}
+                      variant="bordered"
+                      placeholder="Enter Email address"
+                    />
+                  </Field>
+                  <Field label="Phone number *">
+                    <Input
+                      name="phone_number"
+                      value={values.phone_number}
+                      onChange={handleChange}
+                      variant="bordered"
+                      placeholder="Enter Phone number"
+                    />
+                  </Field>
+
+                </div>
                 <div className="grid grid-cols-3 gap-3">
                   <Field label="State *">
                     <Input
@@ -199,7 +287,7 @@ export default function Checkout() {
                     />
                   </Field>
 
-                  <Field label="PIN Code *">
+                  <Field label="PIN code *">
                     <Input
                       name="pin_code"
                       value={values.pin_code}
@@ -222,7 +310,7 @@ export default function Checkout() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Notes</label>
+                  <label className="text-sm font-medium">Notes ( Optional )</label>
                   <Textarea
                     name="notes"
                     value={values.notes}
@@ -238,79 +326,89 @@ export default function Checkout() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div>
+          <div className="bg-white p-6 rounded-xl shadow-sm">
 
-          <h2 className="text-sm font-medium mb-4">Review your cart</h2>
+            <h2 className="text-sm font-medium mb-4">Your cart</h2>
 
-          {/* CART ITEMS */}
-          <div className="space-y-4 mb-6">
-            {cart.map((item: any) => (
-              <div key={item.id} className="flex gap-4 items-center">
-                <img
-                  src={item.image}
-                  className="w-14 h-14 object-cover rounded"
-                />
-                <div className="flex-1">
-                  <p className="text-sm">{item.name}</p>
-                  <p className="text-xs text-gray-500">
-                    {item.quantity} × ₹{item.price}
+            {/* CART ITEMS */}
+            <div className="space-y-4 mb-6">
+              {cart.map((item: any) => (
+                <div key={item.id} className="flex gap-4 items-center">
+                  <img
+                    src={item.image}
+                    className="w-14 h-14 object-cover rounded"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm">{item.name}</p>
+                    <p className="text-xs text-gray-500">
+                      {item.quantity} × ₹{item.price}
+                    </p>
+                  </div>
+                  <p className="text-sm font-medium">
+                    ₹{item.price * item.quantity}
                   </p>
                 </div>
-                <p className="text-sm font-medium">
-                  ₹{item.price * item.quantity}
-                </p>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-sm mt-4">
+
+            <h2 className="text-sm font-medium mb-4">Order summary</h2>
+
+
+            {/* PRICE */}
+            <div className="text-sm space-y-2 border-t pt-4">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>₹{subtotal}</span>
               </div>
-            ))}
-          </div>
 
-          {/* PRICE */}
-          <div className="text-sm space-y-2 border-t pt-4">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>₹{subtotal}</span>
+              <div className="flex justify-between">
+                <span>Shipping</span>
+                <span>₹{shipping}</span>
+              </div>
+
+              <div className="flex justify-between font-medium text-black">
+                <span>Total</span>
+                <span>₹{total}</span>
+              </div>
             </div>
 
-            <div className="flex justify-between">
-              <span>Shipping</span>
-              <span>₹{shipping}</span>
+            <div className="mt-2">
+
+              <RadioGroup
+                label="Select Payment Method"
+                value={paymentMethod}
+                onValueChange={setPaymentMethod}
+              >
+                <Radio value="upi">Pay with UPI</Radio>
+                <Radio value="bank">Bank Transfer</Radio>
+                {/* <Radio value="bank">Bank Transfer</Radio> */}
+              </RadioGroup>
             </div>
 
-            <div className="flex justify-between font-medium text-black">
-              <span>Total</span>
-              <span>₹{total}</span>
-            </div>
-          </div>
-
-          <div className="mt-2">
-
-            <RadioGroup
-              label="Select Payment Method"
-              value={paymentMethod}
-              onValueChange={setPaymentMethod}
+            {/* PAY BUTTON */}
+            <Button
+              className="w-full mt-5 bg-black text-white rounded-full"
+              onPress={() => {
+                if (paymentMethod === "upi") {
+                  onOpen();
+                } else {
+                  alert("Bank transfer flow coming soon");
+                }
+              }}
             >
-              <Radio value="upi">Pay with UPI</Radio>
-              {/* <Radio value="bank">Bank Transfer</Radio> */}
-            </RadioGroup>
+              Confirm
+            </Button>
+
+            <p className="text-xs text-gray-400 mt-3 text-center">
+              Secure Checkout • UPI Supported
+            </p>
           </div>
-
-          {/* PAY BUTTON */}
-          <Button
-            className="w-full mt-5 bg-black text-white rounded-full"
-            onPress={() => {
-              if (paymentMethod === "upi") {
-                onOpen();
-              } else {
-                alert("Bank transfer flow coming soon");
-              }
-            }}
-          >
-            Confirm
-          </Button>
-
-          <p className="text-xs text-gray-400 mt-3 text-center">
-            Secure Checkout • UPI Supported
-          </p>
         </div>
+
 
         <Modal isOpen={isOpen} onClose={onClose} placement="center">
           <ModalContent>

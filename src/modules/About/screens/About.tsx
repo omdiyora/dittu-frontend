@@ -1,230 +1,276 @@
 "use client";
-import { useInView } from 'react-intersection-observer';
-import AnimatedCounter from './AnimatedCounter';
-import Link from "next/link";
-import { FiFacebook, FiMapPin } from "react-icons/fi";
-import { SiInstagram } from "react-icons/si";
-import { BsTelephone } from "react-icons/bs";
-import { VscMail } from "react-icons/vsc";
-import { LuClock4 } from "react-icons/lu";
-import { IoStar, IoStarOutline } from "react-icons/io5";
-// import LeadershipTeamSection from '@/modules/Home/screens/LeadershipTeamSection/LeadershipTeamSection';
-import SectionHeading from '@/components/SectionHeading';
+
+import Image from "next/image";
+
+
+const features = [
+    {
+        title: "Natural and organic Ingredients",
+        description:
+            "From nourishing botanical extracts to nutrient-rich plant oils, each ingredient is carefully chosen for its effectiveness and purity.",
+        image:
+            "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+        title: "Eco-friendly packaging",
+        description:
+            "We are committed to minimizing our environmental footprint, which is why our packages are recyclable and biodegradable.",
+        image:
+            "https://images.unsplash.com/photo-1556228578-8c89e6adf883?q=80&w=1200&auto=format&fit=crop",
+    },
+    {
+        title: "Cruelty-free and vegan formulas",
+        description:
+            "None of our products or ingredients are tested on animals, and they contain absolutely no animal-derived ingredients whatsoever.",
+        image:
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
+    },
+];
+
 
 
 const About = () => {
-    const { ref: heroRef, inView: heroInView } = useInView({
-        threshold: 0.1,
-        triggerOnce: true
-    });
-
     return (
         <>
-            <section className="bg-[#faf6f2] py-24">
-                <div className="max-w-5xl mx-auto px-4 text-center mt-16">
-                    {/* Title */}
-                    <h1 className="font-nunito text-4xl md:text-5xl font-semibold text-[#54221c] mb-6">
-                        About Us
-                    </h1>
-                    {/* Subtitle */}
-                    <p className="text-lg md:text-xl text-black max-w-3xl mx-auto leading-relaxed">
-                        Dedicated to guiding you with transparent, reliable, and personalized financial solutions.
-                    </p>
+            <section className="relative w-full h-[500px] sm:h-[650px] lg:h-[780px] overflow-hidden">
+
+                {/* Background Image */}
+                <Image
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop"
+                    alt="Nature Background"
+                    fill
+                    priority
+                    className="object-cover"
+                />
+
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/40"></div>
+
+                {/* Content */}
+                <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <div className="text-center max-w-4xl">
+
+                        <p className="uppercase tracking-[4px] text-white text-xs sm:text-sm mb-6">
+                            Our Story
+                        </p>
+
+                        <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight font-light">
+                            We empower your
+                            <br />
+                            skin to thrive with the
+                            <br />
+
+                            <span className="italic font-serif">
+                                goodness of nature.
+                            </span>
+                        </h1>
+
+                    </div>
                 </div>
             </section>
 
-            <section className="py-24 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <section className="bg-[#f5f4f1] py-14 md:py-20">
+                <div className="max-w-7xl mx-auto px-5 md:px-8">
 
-                        {/* LEFT CONTENT */}
-                        <div className="max-w-xl">
-                            <h2 className="text-4xl font-semibold text-[#54221c] mb-6">
-                                Our Mission
-                            </h2>
+                    {/* Heading */}
+                    <div className="max-w-4xl mx-auto text-center mb-14">
+                        <h2 className="text-3xl sm:text-4xl lg:text-4xl font-medium text-black leading-tight">
+                            Revitalize And Rejuvenate Your Skin Naturally
+                        </h2>
 
-                            <p className="text-secondary-dark mb-6 leading-relaxed">
-                                Our mission is to simplify and transform the loan acquisition journey for our clients by making it clear, accessible, and stress-free. We understand that securing a loan can often feel overwhelming due to complex procedures, unfamiliar terminology, and numerous financial options. Our goal is to remove this uncertainty by guiding our clients through every step of the process with clarity, confidence, and transparency.
-                            </p>
+                        <p className="mt-6 text-gray-700 text-sm sm:text-base leading-8">
+                            Embracing the philosophy that nature knows best, our skincare
+                            brand takes pride in treating your skin with the purest,
+                            most natural ingredients available. We believe that the earth
+                            provides everything we need to achieve healthy, radiant skin.
+                        </p>
+                    </div>
+
+                    {/* Cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+                        {features.map((item, index) => (
+                            <div key={index}>
+
+                                {/* Image */}
+                                <div className="relative w-full h-[320px] sm:h-[380px] lg:h-[430px] overflow-hidden">
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        fill
+                                        className="object-cover hover:scale-105 transition duration-500"
+                                    />
+                                </div>
+
+                                {/* Content */}
+                                <div className="pt-6">
+                                    <h3 className="text-2xl font-medium text-black mb-4 leading-snug">
+                                        {item.title}
+                                    </h3>
+
+                                    <p className="text-gray-700 leading-8 text-sm sm:text-base">
+                                        {item.description}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                </div>
+            </section>
+            {/* Our Vision */}
+            <section className="bg-[#f5f4f1] py-12 md:pt-20">
+                <div className="max-w-7xl mx-auto px-5 md:px-8">
+
+                    {/* Heading */}
+                    <div className="mb-8">
+                        <h2 className="text-2xl md:text-3xl font-medium text-black">
+                            Our Vision
+                        </h2>
+
+                        <div className="w-20 h-[1px] bg-black mt-2"></div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+
+                        {/* Left Image */}
+                        <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[520px]">
+                            <Image
+                                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1600&auto=format&fit=crop"
+                                alt="Our Vision"
+                                fill
+                                priority
+                                className="object-cover"
+                            />
                         </div>
 
-                        {/* RIGHT IMAGE */}
-                        <div className="flex justify-end items-center pr-10">
-                            <img
-                                src="/assets/images/mission.png"
-                                alt="Diyora Consultancy Mission"
-                                className="w-[420px] h-auto"
+                        {/* Right Content */}
+                        <div className="bg-[#e9e3d8] flex items-center">
+                            <div className="px-6 py-10 sm:px-10 md:px-14 lg:px-16">
+                                <p className="uppercase tracking-[3px] text-xs md:text-sm text-black mb-5">
+                                    Our Vision
+                                </p>
+
+                                <h3 className="text-3xl sm:text-4xl lg:text-5xl leading-tight font-medium text-black mb-6">
+                                    Harmonize between
+                                    <br />
+                                    nature and beauty
+                                </h3>
+
+                                <p className="text-gray-700 leading-8 text-sm sm:text-base max-w-xl">
+                                    We strive to harness the power of nature to create skincare
+                                    solutions that are both effective and environmentally friendly.
+                                    We believe that beauty should not come at the expense of the
+                                    planet, and we're committed to proving that natural skincare can
+                                    deliver exceptional results.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Our Mission */}
+
+            <section className="bg-[#f5f4f1] py-12 md:pt-20">
+                <div className="max-w-7xl mx-auto px-5 md:px-8">
+
+                    {/* Heading */}
+                    <div className="mb-8">
+                        <h2 className="text-2xl md:text-3xl font-medium text-black">
+                            Our Mission
+                        </h2>
+
+                        <div className="w-20 h-[1px] bg-black mt-2"></div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+
+                        {/* Left Text */}
+                        <div className="bg-[#e9e3d8] flex items-center order-2 lg:order-1">
+                            <div className="px-6 py-10 sm:px-10 md:px-14 lg:px-16">
+                                <p className="uppercase tracking-[3px] text-xs md:text-sm text-black mb-5">
+                                    Our Mission
+                                </p>
+
+                                <h3 className="text-3xl sm:text-4xl lg:text-5xl leading-tight font-medium text-black mb-6">
+                                    Quality and
+                                    <br />
+                                    Sustainability
+                                </h3>
+
+                                <p className="text-gray-700 leading-8 text-sm sm:text-base max-w-xl">
+                                    We are committed to delivering high-quality products while promoting sustainability, transparency, and innovation. Our goal is to create a positive impact on our customers, communities, and the environment.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Right Image */}
+                        <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[520px] order-1 lg:order-2">
+                            <Image
+                                src="https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=1600&auto=format&fit=crop"
+                                alt="Our Vision"
+                                fill
+                                priority
+                                className="object-cover"
                             />
                         </div>
 
                     </div>
                 </div>
             </section>
-            <section className="py-24 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
-                        {/* LEFT CONTENT */}
-                        <div className="flex justify-end items-center pr-10">
-                            <img
-                                src="/assets/images/vision.png"
-                                alt="Diyora Consultancy Mission"
-                                className="w-[420px] h-auto"
+            {/* Our Sciences */}
+            <section className="bg-[#f5f4f1] py-12 md:pt-20">
+                <div className="max-w-7xl mx-auto px-5 md:px-8">
+
+                    {/* Heading */}
+                    <div className="mb-8">
+                        <h2 className="text-2xl md:text-3xl font-medium text-black">
+                            Our Sciences
+                        </h2>
+
+                        <div className="w-20 h-[1px] bg-black mt-2"></div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+
+                        {/* Left Image */}
+                        <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[520px]">
+                            <Image
+                                src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1600&auto=format&fit=crop"
+                                alt="Our Vision"
+                                fill
+                                priority
+                                className="object-cover"
                             />
                         </div>
 
-                        {/* RIGHT IMAGE */}
-                        <div className="max-w-xl">
-                            <h2 className="text-4xl font-semibold text-[#54221c] mb-6">
-                                Our Vision
-                            </h2>
+                        {/* Right Content */}
+                        <div className="bg-[#e9e3d8] flex items-center">
+                            <div className="px-6 py-10 sm:px-10 md:px-14 lg:px-16">
+                                <p className="uppercase tracking-[3px] text-xs md:text-sm text-black mb-5">
+                                    Our Sciences
+                                </p>
 
-                            <p className="text-secondary-dark mb-6 leading-relaxed">
-                                Our vision is to become the most trusted and respected loan consultancy firm, recognized for our unwavering integrity, deep expertise, and genuine commitment to the success of every client we serve. We aspire to set new standards in the financial consulting industry by building a reputation rooted in honesty, transparency, and consistent value delivery. Trust is the foundation of all meaningful financial relationships, and our ultimate goal is to earn and maintain that trust through ethical practices and client-first decision-making.
-                            </p>
+                                <h3 className="text-3xl sm:text-4xl lg:text-5xl leading-tight font-medium text-black mb-6">
+                                    Science and
+                                    <br />
+                                    Innovation
+                                </h3>
+
+                                <p className="text-gray-700 leading-8 text-sm sm:text-base max-w-xl">
+                                    We leverage cutting-edge research and innovation to develop solutions that drive progress and sustainability. Our commitment to science ensures high-quality, effective, and environmentally responsible products.
+                                </p>
+                            </div>
                         </div>
-
-
                     </div>
                 </div>
             </section>
-
-
-            <section className="py-20 text-black bg-white">
-                <div className="container mx-auto px-4">
-                    <SectionHeading
-                        title="Milestones That Define Our Success"
-                        subtitle="Years of expertise, thousands of clients, and strong partnerships built on results."
-                    // isDark={true}
-                    />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <AnimatedCounter end={15} suffix="+" title="Years Experience" />
-                        <AnimatedCounter end={8500} suffix="+" title="Happy Clients" />
-                        <AnimatedCounter end={40} suffix="+" title="Partnered Banks" />
-                        <AnimatedCounter end={12500} suffix="+" title="Loans Processed" />
-                    </div>
-                </div>
-            </section>
-
-            {/* <LeadershipTeamSection /> */}
-
-
-            {/* <footer className="bg-[#3b1a16] text-white"> */}
-            <footer className="bg-[#4a1f19] text-white border-t border-white/10">
-                <div className="container mx-auto px-4 py-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                        <div>
-                            <div className="flex items-center mb-4">
-                                {/* <Briefcase className="mr-2" size={24} /> */}
-                                <span className="font-nunito text-2xl font-semibold">Diyora Consultancy</span>
-                            </div>
-                            <p className="text-secondary-dark mb-6">
-                                Providing expert consultation for all your loan needs. We connect you with the best financial solutions tailored to your requirements.
-                            </p>
-                            <div className="flex space-x-4">
-                                <a href="https://www.facebook.com/nodiyora/" className="text-white hover:text-accent-light transition-colors" aria-label="Facebook">
-                                    <FiFacebook size={20} />
-                                </a>
-                                <a href="#" className="text-white hover:text-accent-light transition-colors" aria-label="Instagram">
-                                    <SiInstagram size={20} />
-                                </a>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className="font-nunito text-xl font-semibold mb-6">Quick Links</h3>
-                            <ul className="space-y-3">
-                                {['Home', 'Services', 'Reviews', 'About', 'Contact'].map((item) => (
-                                    <li key={item}>
-                                        <Link
-                                            href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                                            className="text-white hover:text-white/80 transition-colors"
-                                        >
-                                            {item}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 className="font-nunito text-xl font-semibold mb-6 ">Our Services</h3>
-                            <ul className="space-y-3">
-                                <li><a href="/services" className="text-white hover:text-white/80 transition-colors">Education Loan</a></li>
-                                <li><a href="/services" className="text-white hover:text-white/80 transition-colors">Mortgage Loan</a></li>
-                                <li><a href="/services" className="text-white hover:text-white/80 transition-colors">Home Loan</a></li>
-                                <li><a href="/services" className="text-white hover:text-white/80 transition-colors">Business Loan</a></li>
-                                <li><a href="/services" className="text-white hover:text-white/80 transition-colors">Loan Refinancing</a></li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 className="font-nunito text-xl font-semibold mb-6">Contact Info</h3>
-                            <ul className="space-y-4">
-                                <li className="flex items-star cursor-pointert">
-                                    <FiMapPin className="mr-3 mt-1 text-accent-light" size={60} />
-                                    <span className="text-white hover:text-white/80 transition-colors cursor-pointer">112, Anupam Arcade BRTS Canal Road, Parvat Patiya, Opp Amazia Amusment Park, Surat, Gujarat 395010, India</span>
-                                </li>
-                                <li className="flex items-center cursor-pointer">
-                                    <BsTelephone className="mr-3 text-accent-light" size={18} />
-                                    <a href="tel:+11234567890" className="text-white hover:text-white/80 transition-colors">+91 - 95744 93000</a>
-                                </li>
-                                <li className="flex items-center cursor-pointer">
-                                    <VscMail className="mr-3 text-accent-light" size={18} />
-                                    <a href="mailto:info@diyoraconsultancy.com" className="text-white hover:text-white/80 transition-colors">diyoraconsultancy@gmail.com</a>
-                                </li>
-                                <li className="flex items-start cursor-pointer">
-                                    <LuClock4 className="mr-3 mt-1 text-accent-light" size={18} />
-                                    <span className="text-white hover:text-white/80 transition-colors">Mon - Fri: 9:00 AM - 6:00 PM<br />Sat: 10:00 AM - 2:00 PM</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="cursor-pointer border-t border-secondary-dark/30 mt-12 pt-8 text-center text-white hover:text-white/80 transition-colors">
-                        <p>&copy; {new Date().getFullYear()} Diyora Consultancy. All rights reserved.</p>
-                    </div>
-                </div>
-            </footer>
         </>
     );
 };
-
-// Testimonial Preview Component (used only in Home page)
-const TestimonialPreview = ({ name, testimonial, rating }: { name: string; testimonial: string; rating: number }) => {
-    const { ref, inView } = useInView({
-        threshold: 0.1,
-        triggerOnce: true
-    });
-
-    return (
-        <div
-            ref={ref}
-            className={`
-    bg-white rounded-lg p-6
-    shadow-lg hover:shadow-xl
-    transform transition-all duration-500 ease-out
-    ${inView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
-  `}
-        >
-
-            <div className="flex mb-4">
-                {[...Array(5)].map((_, i) => (
-                    <span key={i}>
-                        {i < rating ? (
-                            <IoStar className="text-yellow-400" />
-                        ) : (
-                            <IoStarOutline className="text-gray-300" />
-                        )}
-                    </span>
-                ))}
-            </div>
-            <p className="text-gray-600 mb-4 italic">"{testimonial}"</p>
-            <p className="font-medium text-[#54221c]">{name}</p>
-        </div>
-    );
-};
-
 
 export default About;

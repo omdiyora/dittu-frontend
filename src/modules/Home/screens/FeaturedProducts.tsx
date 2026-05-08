@@ -179,6 +179,7 @@ function ProductCard({ product }: { product: Product; }) {
 
 export default function FeaturedProducts() {
     const [activeTab, setActiveTab] = useState<'skin' | 'body'>('skin');
+    
     const products = activeTab === 'skin' ? skinCareProducts : bodyProducts;
 
     return (

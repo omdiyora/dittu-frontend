@@ -12,6 +12,16 @@ export default function FilterSidebar() {
         { id: 4, name: 'Sensitive Skin (0)', disabled: true },
     ];
 
+    const productOption = [
+        { id: 1, name: 'New', disabled: false },
+        { id: 2, name: 'Featured', disabled: false },
+        { id: 3, name: 'Best selling', disabled: false },
+        { id: 4, name: 'Sale', disabled: false },
+        { id: 5, name: 'Price, low to high', disabled: false },
+        { id: 6, name: 'Price, high to low', disabled: false },
+    ];
+
+
     const [openSections, setOpenSections] = useState({
         price: true,
         size: false,
@@ -88,6 +98,68 @@ export default function FilterSidebar() {
                     </div>
                 )}
             </div>
+
+            <div className="border-t pt-4">
+                <div
+                    className="flex justify-between items-center cursor-pointer mb-3 p-2 text-base"
+                    onClick={() => toggle('skin')}
+                >
+                    <h3 className="font-medium text-base">SKIN TYPE</h3>
+                    <span className="text-[30px]">{openSections.skin ? '−' : '+'}</span>
+                </div>
+
+                {openSections.skin && (
+                    <div className="space-y-3 p-2">
+                        {productOption.map((item) => (
+                            <label
+                                key={item.id}
+                                className={`flex items-center gap-3 ${item.disabled
+                                    ? 'text-gray-400 cursor-not-allowed'
+                                    : 'cursor-pointer'
+                                    } group`}
+                            >
+                                {/* Input */}
+                                <input
+                                    type="checkbox"
+                                    disabled={item.disabled}
+                                    checked={selectedFilters.includes(item.name)}
+                                    onChange={(e) => {
+                                        if (e.target.checked) {
+                                            setSelectedFilters((prev) =>
+                                                prev.includes(item.name) ? prev : [...prev, item.name]
+                                            );
+                                        } else {
+                                            setSelectedFilters((prev) =>
+                                                prev.filter((f) => f !== item.name)
+                                            );
+                                        }
+                                    }}
+                                    className="hidden"
+                                />
+
+                                {/* Custom Checkbox */}
+                                <div
+                                    className={`w-[16px] h-[16px] border flex items-center justify-center
+                                    ${item.disabled ? 'border-gray-200' : 'border-gray-300'}`}
+                                >
+                                    <div
+                                        className={`w-[10px] h-[10px] transition
+                                                ${item.disabled
+                                                ? 'bg-gray-300'
+                                                : selectedFilters.includes(item.name)
+                                                    ? 'bg-[#e07a5f] opacity-100'
+                                                    : 'opacity-0'
+                                            }`}
+                                    />
+                                </div>
+
+                                <span className="text-[14px]">{item.name}</span>
+                            </label>
+                        ))}
+                    </div>
+                )
+                }
+            </div >
             {/* SKIN TYPE */}
             <div className="border-t pt-4">
                 <div

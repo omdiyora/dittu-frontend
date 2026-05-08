@@ -10,15 +10,18 @@ const images = [
     'https://zest-cosmo.myshopify.com/cdn/shop/files/73.jpg?v=1740561767&width=800',
 ];
 
-export default function ProductGallery() {
-    const [selectedImage, setSelectedImage] = useState(images[0]);
+export default function ProductGallery({ product }: any) {
+    const [selectedImage, setSelectedImage] = useState(product && product[0]);
+
+    console.log(product,'productproduct');
+    
 
     return (
         <div className="flex gap-4">
 
             {/* LEFT: Thumbnails */}
             <div className="flex flex-col gap-3">
-                {images.map((img, index) => (
+                {product?.map((img: any, index: any) => (
                     <div
                         key={index}
                         onClick={() => setSelectedImage(img)}

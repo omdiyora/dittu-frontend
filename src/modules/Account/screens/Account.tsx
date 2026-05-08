@@ -14,6 +14,7 @@ import {
     Heart,
     ShoppingCart
 } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const accountItems = [
     {
@@ -64,6 +65,10 @@ const accountItems = [
 const Account = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
+      const { cart } = useCart();
+
+      console.log(cart,'cart');
+      
 
     // ⏳ Loading state
     if (status === "loading") {

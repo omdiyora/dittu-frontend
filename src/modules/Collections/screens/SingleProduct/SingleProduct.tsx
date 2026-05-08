@@ -1,16 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductGallery from './ProductGallery';
 import ProductInfo from './ProductInfo';
 import { ChevronRight } from 'lucide-react';
-
+import { useRouter, useParams } from "next/navigation";
 
 const product = {
     id: 1,
     name: 'Ultimate Facelift Day Cream',
-    price: '$30.00',
+    price: '$27.00',
+    originalPrice: '$30.00',
     badge: 'New',
     images: [
         'https://zest-cosmo.myshopify.com/cdn/shop/files/69.jpg?v=1740561521&width=800',
@@ -20,7 +21,33 @@ const product = {
 };
 
 export default function SingleProduct() {
-    const [selectedSize, setSelectedSize] = useState('100ml');
+    const router = useRouter();
+    const params = useParams();
+    const [productData, setProductData] = useState<any>(null);
+    const productId = params?.id;
+
+    console.log(productData, 'productData');
+
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const res = await fetch(`/api/products/${productId}`);
+                const data = await res.json();
+
+                setProductData(data);
+
+
+
+            } catch (error) {
+                console.error("Error fetching product", error);
+            }
+        };
+
+        if (productId) {
+            fetchProduct();
+        }
+    }, [productId]);
 
     return (
         <>
@@ -42,7 +69,7 @@ export default function SingleProduct() {
                         <ChevronRight size={14} className="text-black" />
 
                         <span className="text-black  truncate max-w-[200px]">
-                            {product.name}
+                            {productData?.name}
                         </span>
 
                     </div>
@@ -51,10 +78,10 @@ export default function SingleProduct() {
 
                         {/* LEFT: IMAGE GRID */}
 
-                        <ProductGallery />
+                        <ProductGallery product={productData?.images} />
 
                         {/* RIGHT: PRODUCT INFO */}
-                        <ProductInfo product={product} />
+                        <ProductInfo product={productData} />
 
                     </div>
                 </div>

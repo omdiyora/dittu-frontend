@@ -1,125 +1,133 @@
 "use client";
 
-import { Sidebar } from "flowbite-react";
+import {
+    LayoutDashboard,
+    BarChart3,
+    Users,
+    FileText,
+    Calendar,
+    Shield,
+    Settings,
+    LogOut,
+    Tag
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import Link from "next/link";
-import { Tooltip } from "@nextui-org/react";
-import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
-import { sidebarMenu } from "@/constants/sidebarMenu";
 
-const SidebarMenu = ({
-    isOpen,
-    setIsOpen,
-}: {
-    isOpen: boolean;
-    setIsOpen: (val: boolean) => void;
-}) => {
-    const path = usePathname();
+const topMenu = [
+    {
+        title: "Insights",
+        items: [
+            { name: "Dashboard", icon: LayoutDashboard, route: "/admin/dashboard" },
+            { name: "Analytics", icon: BarChart3, route: "/admin/analytics" },
+        ],
+    },
+    {
+        title: "Manage Business",
+        items: [
+            { name: "Product", icon: Tag, route: "/admin/product" },
+            { name: "Users", icon: Users, route: "/admin/users" },
+            { name: "Order", icon: FileText, route: "/admin/orders" },
+            { name: "Reviews", icon: Calendar, route: "/admin/review" },
+            { name: "Coupons", icon: Shield, route: "/admin/coupons" },
+        ],
+    },
+];
+
+const bottomMenu = {
+    title: "Account Settings",
+    items: [
+        { name: "Settings", icon: Settings, route: "/login/user-setting" },
+    ],
+};
+
+export default function Sidebar() {
+    const pathname = usePathname();
     const router = useRouter();
-    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
-    const handleNavigate = (url: string) => {
-        router.push(url);
-    };
-
-    // ✅ Detect active submenu
-    const isSubMenuActive = (subMenu: any[]): boolean => {
-        return subMenu.some((item) => {
-            if (item.subMenu) return isSubMenuActive(item.subMenu);
-            return path === item.route || path.startsWith(item.route + "/");
-        });
-    };
-
-    // ✅ Render Menu Items
-    const renderSidebarItems = (items: any[]) => {
-        return items.map((item) => {
-            // 👉 WITH SUBMENU
-            if (item.subMenu) {
-                return (
-                    <Sidebar.Collapse
-                        key={item.label}
-                        icon={item.icon}
-                        label={item.label}
-                        open={openMenus[item.label] ?? isSubMenuActive(item.subMenu)}
-                        onClick={() =>
-                            setOpenMenus((prev) => ({
-                                ...prev,
-                                [item.label]: !prev[item.label],
-                            }))
-                        }
-                    >
-                        {renderSidebarItems(item.subMenu)}
-                    </Sidebar.Collapse>
-                );
-            }
-
-            // 👉 NORMAL ITEM
-            return (
-                <Sidebar.Item
-                    key={item.label}
-                    active={path === item.route}
-                    as={Link}
-                    href={item.route}
-                    icon={item.icon}
-                    className={
-                        path === item.route
-                            ? "bg-blue-600 text-white"
-                            : "hover:bg-gray-100"
-                    }
-                >
-                    {item.label}
-                </Sidebar.Item>
-            );
-        });
+    const handleLogout = () => {
+        // Add logout logic here
+        router.push("/login");
     };
 
     return (
-        <div className="flex h-screen">
-            {/* SIDEBAR */}
-            <Sidebar className={`${isOpen ? "block" : "hidden"} w-64`}>
-                {/* LOGO */}
-                <Sidebar.Items>
-                    <Sidebar.ItemGroup>
-                        <Sidebar.Item onClick={() => handleNavigate("/")}>
-                            <div className="flex items-center justify-between w-full">
-                                {/* Left */}
-                                <span className="font-bold tracking-wide">DITTU</span>
-
-                                {/* Right */}
-                                <span className="text-sm opacity-60">→</span>
-                            </div>
-                        </Sidebar.Item>
-                    </Sidebar.ItemGroup>
-
-                    {/* ✅ IMPORTANT: wrap menu inside ItemGroup */}
-                    <Sidebar.ItemGroup>
-                        {renderSidebarItems(sidebarMenu)}
-                    </Sidebar.ItemGroup>
-                </Sidebar.Items>
-            </Sidebar>
-
-            {/* TOGGLE BUTTON */}
-            <div
-                className="mt-32 cursor-pointer"
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                {isOpen ? (
-                    <Tooltip content="Hide menu">
-                        <div className="bg-white p-2 shadow rounded-r">
-                            <FaAnglesLeft />
-                        </div>
-                    </Tooltip>
-                ) : (
-                    <Tooltip content="Show menu">
-                        <div className="bg-white p-2 shadow rounded-r">
-                            <FaAnglesRight />
-                        </div>
-                    </Tooltip>
-                )}
+        <aside className="w-64 h-screen bg-white border-r flex flex-col">
+            {/* Logo */}
+            <div className="p-5 text-xl font-bold border-b">
+                DITTU Store
             </div>
-        </div>
-    );
-};
 
-export default SidebarMenu;
+            {/* Top Menu */}
+            <div className="flex-1 overflow-y-auto px-3 py-4">
+                {topMenu.map((section, i) => (
+                    <div key={i} className="mb-6">
+                        <p className="text-xs text-gray-400 uppercase tracking-wider px-2 mb-3">
+                            {section.title}
+                        </p>
+
+                        {section.items.map((item, idx) => {
+                            const Icon = item.icon;
+
+                            const isActive =
+                                pathname === item.route ||
+                                pathname.startsWith(item.route + "/");
+
+                            return (
+                                <div
+                                    key={idx}
+                                    onClick={() => router.push(item.route)}
+                                    className={`flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition mb-2
+                  ${isActive
+                                            ? "bg-black text-white shadow-sm"
+                                            : "text-gray-600 hover:bg-gray-100"
+                                        }`}
+                                >
+                                    <Icon size={18} />
+                                    <span className="text-sm font-medium">{item.name}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ))}
+            </div>
+
+            {/* Bottom Section */}
+            <div className="border-t p-3">
+                <p className="text-xs text-gray-400 uppercase tracking-wider px-2 mb-3">
+                    {bottomMenu.title}
+                </p>
+
+                {bottomMenu.items.map((item, idx) => {
+                    const Icon = item.icon;
+
+                    const isActive =
+                        pathname === item.route ||
+                        pathname.startsWith(item.route + "/");
+
+                    return (
+                        <div
+                            key={idx}
+                            onClick={() => router.push(item.route)}
+                            className={`flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition mb-2
+              ${isActive
+                                    ? "bg-black text-white"
+                                    : "text-gray-600 hover:bg-gray-100"
+                                }`}
+                        >
+                            <Icon size={18} />
+                            <span className="text-sm font-medium">{item.name}</span>
+                        </div>
+                    );
+                })}
+
+                {/* Logout Button */}
+                <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-red-500 hover:bg-red-50 transition"
+                >
+                    <LogOut size={18} />
+                    <span className="text-sm font-medium">Logout</span>
+                </button>
+            </div>
+        </aside>
+    );
+}

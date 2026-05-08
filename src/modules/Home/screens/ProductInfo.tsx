@@ -34,17 +34,15 @@ export default function ProductInfo({ product }: any) {
           {/* Rotating Icon */}
           <Plus
             size={18}
-            className={`transition-transform duration-300 ${
-              isOpen ? 'rotate-45' : ''
-            }`}
+            className={`transition-transform duration-300 ${isOpen ? 'rotate-45' : ''
+              }`}
           />
         </button>
 
         {/* Animated Content */}
         <div
-          className={`grid transition-all duration-300 ease-in-out ${
-            isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-          }`}
+          className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+            }`}
         >
           <div className="overflow-hidden">
             <div className="pb-4 text-[14px] text-gray-600 leading-relaxed">
@@ -72,8 +70,14 @@ export default function ProductInfo({ product }: any) {
           {product.name}
         </h1>
 
-        <div className="text-[18px] font-medium text-gray-900">
-          {product.price}
+        <div className="text-sm mt-1">
+          <span className="font-semibold">{product.price}</span>
+
+          {product.originalPrice && (
+            <span className="line-through text-gray-400 ml-2">
+              {product.originalPrice}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-1 text-[14px] leading-none">

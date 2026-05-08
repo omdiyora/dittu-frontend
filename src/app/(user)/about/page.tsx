@@ -1,13 +1,13 @@
 import AuthWrapper from "@/app/AuthWrapper";
-import Account from "@/modules/Account/screens/Account";
+import About from "@/modules/About/screens/About";
 
 
 export default async function HomePage() {
   return (
     <>
-      <AuthWrapper>
-      <Account />
-      </AuthWrapper>
+      {/* <AuthWrapper> */}
+      <About />
+      {/* </AuthWrapper> */}
     </>
   );
 }

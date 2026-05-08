@@ -139,7 +139,7 @@ export default function Collections() {
                         <div className="max-w-[1200px] w-full px-4 text-center">
                             <h1 className="text-[28px] font-medium">Shop All</h1>
                             <p className="text-sm text-gray-500 mt-1">
-                                Explore our full collection of beauty essentials.
+                                Explore our full collection of beauty essentials.s
                             </p>
                         </div>
                     </div>
@@ -211,7 +211,7 @@ export default function Collections() {
 
                                             {/* Info */}
                                             <div className="mt-3">
-                                                <h4 className="text-sm font-medium">{product.name}</h4>
+                                                {/* <h4 className="text-sm font-medium">{product.name}</h4> */}
 
                                                 <div className="text-sm mt-1">
                                                     <span className="font-semibold">{product.price}</span>

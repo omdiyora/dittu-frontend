@@ -40,7 +40,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
     { label: 'Home', href: '/' },
     { label: 'Shop', href: '/collections' },
     { label: 'Collections', href: '/collections' },
-    { label: 'Pages', href: '/pages' },
+    { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
     { label: 'Wishlist', href: '/wishlist' },
     { label: 'My Account', href: '/account' },
@@ -107,12 +107,12 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
           <div className="hidden md:flex items-center gap-8">
 
             <div className="relative group">
-              <a href="#" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
-                About Us
+              <a href="/about" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
+                About
               </a>
             </div>
             <div className="relative group">
-              <a href="#" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
+              <a href="/contact" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
                 Contact
               </a>
             </div>

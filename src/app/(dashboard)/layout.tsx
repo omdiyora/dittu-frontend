@@ -22,53 +22,7 @@ const DashboardLayoutContent: React.FC<React.PropsWithChildren> = function ({
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(true);
-  // useEffect(() => {
-  //   // Add the Tawk.to script to the document
-  //   const tawkScript = document.createElement("script");
-  //   tawkScript.src = "https://embed.tawk.to/66bb407d0cca4f8a7a755bfd/1i55n7qv2";
-  //   tawkScript.charset = "UTF-8";
-  //   tawkScript.async = true;
-  //   tawkScript.setAttribute("crossorigin", "*");
-  //   document.body.appendChild(tawkScript);
-
-  //   // Add custom styles to hide Tawk.to branding
-  //   const style = document.createElement("style");
-  //   style.innerHTML = `
-  //     .tawk-branding {
-  //       display: none !important;
-  //     }
-  //   `;
-  //   document.head.appendChild(style);
-
-  //   // Polling function to remove branding elements
-  //   const removeBranding = () => {
-  //     try {
-  //       const iframe = document.querySelector("iframe[title*=chat]:nth-child(2)");
-  //       //@ts-ignore
-  //       if (iframe && iframe.contentDocument) {
-  //         //@ts-ignore
-  //         const brandingElement = iframe.contentDocument.querySelector(
-  //           "a[class*=tawk-branding]"
-  //         );
-
-  //         if (brandingElement) brandingElement.remove();
-
-  //       }
-  //     } catch (e) {
-  //       // Catch and handle errors silently
-  //     }
-  //   };
-
-  //   // Set an interval to keep trying to remove the branding
-  //   const intervalId = setInterval(removeBranding, 10);
-
-  //   // Cleanup function to remove script, style, and interval
-  //   return () => {
-  //     document.body.removeChild(tawkScript);
-  //     document.head.removeChild(style);
-  //     clearInterval(intervalId);
-  //   };
-  // }, []);
+  
 
   const isPdfViewer = pathname.startsWith("/reports/pdf-viewer");
   return (
@@ -82,10 +36,11 @@ const DashboardLayoutContent: React.FC<React.PropsWithChildren> = function ({
               // isCollapsed ? "lg:ml-[4.5rem]" : "lg:ml-64"  
             )}
           >
+            {/* @ts-ignore */}
             {!isPdfViewer && <SidebarMenu isOpen={isOpen} setIsOpen={setIsOpen} />}
             <div className={`w-full h-screen overflow-y-auto ${isPdfViewer ? "p-0" : "p-5"
               }`}>
-              <AdminHeader isOpen={isOpen} setIsOpen={setIsOpen} />
+              {/* <AdminHeader isOpen={isOpen} setIsOpen={setIsOpen} /> */}
               {children}
               {/* <Footer /> */}
             </div>

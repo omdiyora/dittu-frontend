@@ -53,13 +53,13 @@ const ImageUpload = ({ files, setFiles }: any) => {
             <div
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
-                className="border-2 border-dashed border-blue-400 rounded-xl p-10 flex flex-col items-center justify-center text-center bg-white"
+                className="border-2 border-dashed border-black rounded-xl p-10 flex flex-col items-center justify-center text-center bg-white"
             >
-                <UploadCloud size={40} className="text-blue-500 mb-3" />
+                <UploadCloud size={40} className="text-black mb-3" />
 
                 <button
                     onClick={() => document.getElementById("fileInput")?.click()}
-                    className="bg-blue-500 text-white px-5 py-2 rounded-full mb-2"
+                    className="bg-black text-white px-5 py-2 rounded-full mb-2"
                 >
                     Browse
                 </button>
@@ -85,7 +85,7 @@ const ImageUpload = ({ files, setFiles }: any) => {
                         <div key={i} className="flex justify-between items-center">
 
                             <div className="flex items-center gap-2">
-                                <ImageIcon size={18} className="text-blue-500" />
+                                <ImageIcon size={18} className="text-black" />
                                 <span className="text-sm">{file.name}</span>
                             </div>
 
@@ -93,7 +93,7 @@ const ImageUpload = ({ files, setFiles }: any) => {
                                 {file.progress < 100 ? (
                                     <div className="w-24 h-2 bg-gray-200 rounded">
                                         <div
-                                            className="h-2 bg-blue-500 rounded"
+                                            className="h-2 bg-black rounded"
                                             style={{ width: `${file.progress}%` }}
                                         />
                                     </div>

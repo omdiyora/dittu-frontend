@@ -32,7 +32,7 @@ const config: Config = {
         textInputWidth: "46%",
       },
       fontFamily: {
-        nunito: ["var(--font-nunito)", "sans-serif"],
+        nunito: ["var(--font-body-family)", "sans-serif"],
       },
     },
   },

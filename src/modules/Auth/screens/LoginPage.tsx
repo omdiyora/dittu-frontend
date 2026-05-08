@@ -38,7 +38,7 @@ const LoginPages = () => {
                             <p className="text-sm text-muted-foreground mt-2">
                                 {isLogin
                                     ? "Please enter your credentials"
-                                    : "Start your skincare journey"}
+                                    : "Please enter your credentials"}
                             </p>
                         </div>
 

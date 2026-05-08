@@ -21,11 +21,11 @@ const CreateProduct = () => {
   const [files, setFiles] = useState([]);
   const [accordionData, setAccordionData] = useState([]);
 
-  console.log(accordionData, 'accordionData');
+
   const imagesURL = files.map((e: any) => e.url)
   const handleSubmit = async (values: any) => {
     try {
-      const res = await fetch("/api/products", {
+      const res = await fetch(`/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,14 +47,12 @@ const CreateProduct = () => {
 
       if (res.ok) {
         enqueueSnackbar("Product created successfully", { variant: "success" });
-        router.push("/dashboard/products");
+        router.push("/admin/product");
       }
     } catch (err) {
       enqueueSnackbar("Error creating product", { variant: "error" });
     }
   };
-
-
 
 
   return (
@@ -79,6 +77,7 @@ const CreateProduct = () => {
             price: "",
             original_price: "",
             images: "",
+            badge_type: "",
             badge: "",
             sizes: "",
             stock: '',
@@ -97,7 +96,7 @@ const CreateProduct = () => {
 
                 {/* Name */}
                 <Field label="Product Name">
-                  <Input name="name" value={values.name} onChange={handleChange} aria-label="Product Name" />
+                  <Input name="name" value={values.name} onChange={handleChange} aria-label="Product Name" placeholder="Enter product name" />
                 </Field>
 
                 {/* Category */}
@@ -106,22 +105,20 @@ const CreateProduct = () => {
                     name="category"
                     value={values.category}
                     onChange={handleChange}
+                    placeholder="Enter category name"
                   />
                 </Field>
 
-                {/* Badge */}
-                <Field label="Badge">
-                  <Select
-                    placeholder="Select badge"
-                    selectedKeys={[values.badge]}
-                    onChange={(e) => setFieldValue("badge", e.target.value)}
-                  >
-                    <SelectItem key="sale">Sale</SelectItem>
-                    <SelectItem key="featured">Featured</SelectItem>
-                    <SelectItem key="bestseller">Bestseller</SelectItem>
-                    <SelectItem key="new">New</SelectItem>
-                  </Select>
+                <Field label="Sizes (comma separated)">
+                  <Input
+                    name="sizes"
+                    placeholder="45ml,75ml,100ml"
+                    value={values.sizes}
+                    onChange={handleChange}
+
+                  />
                 </Field>
+
 
                 {/* Price */}
                 <Field label="Price">
@@ -130,6 +127,7 @@ const CreateProduct = () => {
                     name="price"
                     value={values.price}
                     onChange={handleChange}
+                    placeholder="Enter price"
                   />
                 </Field>
 
@@ -140,6 +138,7 @@ const CreateProduct = () => {
                     name="original_price"
                     value={values.original_price}
                     onChange={handleChange}
+                    placeholder="Enter original price"
                   />
                 </Field>
 
@@ -152,36 +151,31 @@ const CreateProduct = () => {
                     name="stock"
                     value={values.stock}
                     onChange={handleChange}
+                    placeholder="Enter stock"
                   />
                 </Field>
 
                 {/* Sizes */}
-                <Field label="Sizes (comma separated)">
-                  <Input
-                    name="sizes"
-                    placeholder="45ml,75ml,100ml"
-                    value={values.sizes}
-                    onChange={handleChange}
-                  />
+                {/* Badge */}
+                <Field label="Badge Type">
+                  <Select
+                    placeholder="Select badge"
+                    selectedKeys={[values.badge_type]}
+                    onChange={(e) => setFieldValue("badge_type", e.target.value)}
+                  >
+                    <SelectItem key="sale">Sale</SelectItem>
+                    <SelectItem key="featured">Featured</SelectItem>
+                    <SelectItem key="bestseller">Bestseller</SelectItem>
+                    <SelectItem key="new">New</SelectItem>
+                  </Select>
                 </Field>
 
                 {/* Images */}
-                <Field label="Images (comma separated URLs)">
+                <Field label="Badge">
                   <Input
-                    name="images"
-                    placeholder="img1.jpg,img2.jpg"
-                    value={values.images}
-                    onChange={handleChange}
-                  />
-                </Field>
-
-
-
-                {/* Skin Type */}
-                <Field label="Skin Type">
-                  <Input
-                    name="skin_type"
-                    value={values.skin_type}
+                    name="badge"
+                    placeholder="Enter badge name"
+                    value={values.badge}
                     onChange={handleChange}
                   />
                 </Field>
@@ -204,6 +198,7 @@ const CreateProduct = () => {
                   value={values.description}
                   onChange={handleChange}
                   className="mt-2"
+                  placeholder="Enter description"
                 />
               </div>
 
