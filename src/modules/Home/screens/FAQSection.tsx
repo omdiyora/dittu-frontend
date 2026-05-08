@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface FAQItem {
   question: string;
@@ -27,6 +28,7 @@ const faqs: FAQItem[] = [
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(1);
+    const router = useRouter()
 
   return (
     <section className="bg-[#fcfaf7] py-16">
@@ -117,7 +119,7 @@ export default function FAQSection() {
                   Shoot our team an email & we’ll get back to you ASAP
                 </p>
 
-                <button className="bg-white text-[#1a1a1a] text-xs tracking-widest uppercase px-8 py-3 rounded-full hover:opacity-90 transition">
+                <button onClick={() => router.push('/contact')} className="bg-white text-[#1a1a1a] text-xs tracking-widest uppercase px-8 py-3 rounded-full hover:opacity-90 transition">
                   CONTACT US
                 </button>
 

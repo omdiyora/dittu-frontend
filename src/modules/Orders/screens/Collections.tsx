@@ -146,10 +146,10 @@ export default function Collections() {
                     <div className="flex flex-col lg:flex-row gap-10">
 
                         {/* Sidebar */}
-                        <FilterSidebar
-                        // setSelectedFilters={setSelectedFilters}
-                        // selectedFilters={selectedFilters}
-                        />
+                        {/* <FilterSidebar */}
+                        {/* // setSelectedF/ilters={setSelectedFilters} */}
+                        {/* // selectedFilt/ers={selectedFilters} */}
+                        {/* /> */}
 
                         {/* Products Grid */}
                         <section className="flex-1">

@@ -118,7 +118,7 @@ export default function HandpickedSection() {
               </p>
             </div>
             <a
-              href="#"
+              href="/collections"
               className="btn-primary mt-8 self-start"
               style={{
                 background: '#1a1a1a',

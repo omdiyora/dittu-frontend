@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function BeforeAfterSection() {
+      const router = useRouter()
   const [sliderPos, setSliderPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -87,12 +89,12 @@ export default function BeforeAfterSection() {
                   </div>
 
                   {/* PRODUCT INFO */}
-                  <div className="mt-5 flex justify-between text-sm text-[#1a1a1a]">
+                  {/* <div className="mt-5 flex justify-between text-sm text-[#1a1a1a]">
                     <a href="#" className="border-b border-black/20 hover:border-black">
                       Ultimate Facelift Day Cream
                     </a>
                     <span>$30.00</span>
-                  </div>
+                  </div> */}
 
                 </div>
               </div>
@@ -118,7 +120,7 @@ export default function BeforeAfterSection() {
                   for a healthy, radiant complexion.
                 </p>
 
-                <button className="w-fit px-6 py-3 bg-black text-white text-xs tracking-widest uppercase rounded-full hover:opacity-90 transition">
+                <button onClick={() => router.push('/collections')} className="w-fit px-6 py-3 bg-black text-white text-xs tracking-widest uppercase rounded-full hover:opacity-90 transition">
                   SHOP THIS PRODUCT
                 </button>
 

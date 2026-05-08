@@ -1,7 +1,11 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export default function BannerSection() {
+
+    const router = useRouter()
+
   return (
     <section className="py-10 px-6 md:px-10 bg-[#fcfaf7]">
 
@@ -31,7 +35,7 @@ export default function BannerSection() {
                 Naturally Strong, Beautiful Skin
               </h3>
 
-              <button className="bg-white text-black text-xs px-6 py-3 rounded-full tracking-widest uppercase hover:bg-black hover:text-white transition-all duration-300">
+              <button  onClick={() => router.push('/collections')} className="bg-white text-black text-xs px-6 py-3 rounded-full tracking-widest uppercase hover:bg-black hover:text-white transition-all duration-300">
                 SHOP NOW
               </button>
 
@@ -62,7 +66,7 @@ export default function BannerSection() {
                 Resilient Skin, Everyday Glow
               </h3>
 
-              <button className="bg-white text-black text-xs px-5 py-2.5 md:px-6 md:py-3 rounded-full tracking-widest uppercase">
+              <button onClick={() => router.push('/collections')} className="bg-white text-black text-xs px-5 py-2.5 md:px-6 md:py-3 rounded-full tracking-widest uppercase">
                 SHOP NOW
               </button>
 

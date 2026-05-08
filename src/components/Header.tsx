@@ -70,7 +70,7 @@ const Header: React.FC = () => {
 
           {/* CTA */}
           <a
-            href="#products"
+            href="/collections"
             className="text-[11px] font-semibold uppercase tracking-widest bg-white text-black px-7 py-2.5 hover:bg-accent hover:text-primary transition-all duration-300"
             style={{ borderRadius: 0 }}
           >

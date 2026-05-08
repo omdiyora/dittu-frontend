@@ -1,15 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
 
-export default function FilterSidebar() {
+type FilterSidebarProps = {
+    selectedFilters: {
+        popular: string[];
+        category: string[];
+    };
+    setSelectedFilters: React.Dispatch<
+        React.SetStateAction<{
+            popular: string[];
+            category: string[];
+        }>
+    >;
+};
+
+export default function FilterSidebar({
+    setSelectedFilters,
+    selectedFilters,
+}: FilterSidebarProps) {
 
     const skinOption = [
-        { id: 1, name: 'Dry Skin (1)', disabled: false },
-        { id: 2, name: 'Normal Skin (2)', disabled: false },
-        { id: 3, name: 'Oily Skin (1)', disabled: false },
-        { id: 4, name: 'Sensitive Skin (0)', disabled: true },
+        { id: 1, name: 'Body Care', disabled: false },
+        { id: 2, name: 'Clean Care', disabled: false },
+        { id: 3, name: 'Hair Care', disabled: false },
+        { id: 4, name: 'Skin Care', disabled: false },
+        { id: 5, name: 'Moisturizer Care', disabled: false },
     ];
 
     const productOption = [
@@ -17,20 +33,12 @@ export default function FilterSidebar() {
         { id: 2, name: 'Featured', disabled: false },
         { id: 3, name: 'Best selling', disabled: false },
         { id: 4, name: 'Sale', disabled: false },
-        { id: 5, name: 'Price, low to high', disabled: false },
-        { id: 6, name: 'Price, high to low', disabled: false },
     ];
 
-
     const [openSections, setOpenSections] = useState({
-        price: true,
-        size: false,
-        availability: true,
-        skin: true,
+        popular: true,
+        category: true,
     });
-
-
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
     const toggle = (key: keyof typeof openSections) => {
         setOpenSections((prev) => ({
@@ -39,12 +47,26 @@ export default function FilterSidebar() {
         }));
     };
 
+    const allFilters = [
+        ...selectedFilters.popular,
+        ...selectedFilters.category,
+    ];
+
+    const removeFilter = (filter: string) => {
+        setSelectedFilters((prev) => ({
+            popular: prev.popular.filter((f) => f !== filter),
+            category: prev.category.filter((f) => f !== filter),
+        }));
+    };
+
     return (
         <aside className="w-full lg:w-[300px] space-y-6 text-sm">
-            {selectedFilters.length > 0 && (
+
+            {/* Selected Filters */}
+            {allFilters.length > 0 && (
                 <div className="flex flex-wrap items-center gap-3 mb-6">
 
-                    {selectedFilters.map((filter, index) => (
+                    {allFilters.map((filter, index) => (
                         <div
                             key={index}
                             className="flex items-center gap-2 border rounded-full px-3 py-1 text-sm bg-[#fcfaf7]"
@@ -52,11 +74,7 @@ export default function FilterSidebar() {
                             <span className="uppercase">{filter}</span>
 
                             <button
-                                onClick={() =>
-                                    setSelectedFilters((prev) =>
-                                        prev.filter((f) => f !== filter)
-                                    )
-                                }
+                                onClick={() => removeFilter(filter)}
                                 className="text-gray-500 hover:text-black"
                             >
                                 ×
@@ -66,7 +84,12 @@ export default function FilterSidebar() {
 
                     {/* Clear All */}
                     <button
-                        onClick={() => setSelectedFilters([])}
+                        onClick={() =>
+                            setSelectedFilters({
+                                popular: [],
+                                category: [],
+                            })
+                        }
                         className="text-sm underline ml-2"
                     >
                         CLEAR ALL
@@ -74,64 +97,52 @@ export default function FilterSidebar() {
                 </div>
             )}
 
-            {/* PRICE */}
-            <div>
-                <div
-                    className="flex justify-between items-center cursor-pointer mb-3"
-                    onClick={() => toggle('price')}
-                >
-                    <h3 className="font-medium">PRICE</h3>
-                    <span>{openSections.price ? '−' : '+'}</span>
-                </div>
-
-                {openSections.price && (
-                    <div>
-                        <input type="range" className="w-full accent-black" />
-                        <div className="flex justify-between mt-3 gap-2">
-                            <div className="border rounded-full px-3 py-1 w-full text-center">
-                                $ 0
-                            </div>
-                            <div className="border rounded-full px-3 py-1 w-full text-center">
-                                $ 210.00
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-
+            {/* POPULAR PICKS */}
             <div className="border-t pt-4">
                 <div
-                    className="flex justify-between items-center cursor-pointer mb-3 p-2 text-base"
-                    onClick={() => toggle('skin')}
+                    className="flex justify-between items-center cursor-pointer mb-3 p-2"
+                    onClick={() => toggle('popular')}
                 >
-                    <h3 className="font-medium text-base">SKIN TYPE</h3>
-                    <span className="text-[30px]">{openSections.skin ? '−' : '+'}</span>
+                    <h3 className="font-medium text-base">
+                        POPULAR PICKS
+                    </h3>
+
+                    <span className="text-[30px]">
+                        {openSections.popular ? '−' : '+'}
+                    </span>
                 </div>
 
-                {openSections.skin && (
+                {openSections.popular && (
                     <div className="space-y-3 p-2">
                         {productOption.map((item) => (
                             <label
                                 key={item.id}
-                                className={`flex items-center gap-3 ${item.disabled
-                                    ? 'text-gray-400 cursor-not-allowed'
-                                    : 'cursor-pointer'
-                                    } group`}
+                                className={`flex items-center gap-3 ${
+                                    item.disabled
+                                        ? 'text-gray-400 cursor-not-allowed'
+                                        : 'cursor-pointer'
+                                }`}
                             >
-                                {/* Input */}
                                 <input
                                     type="checkbox"
                                     disabled={item.disabled}
-                                    checked={selectedFilters.includes(item.name)}
+                                    checked={selectedFilters.popular.includes(item.name)}
                                     onChange={(e) => {
                                         if (e.target.checked) {
-                                            setSelectedFilters((prev) =>
-                                                prev.includes(item.name) ? prev : [...prev, item.name]
-                                            );
+                                            setSelectedFilters((prev) => ({
+                                                ...prev,
+                                                popular: [
+                                                    ...prev.popular,
+                                                    item.name,
+                                                ],
+                                            }));
                                         } else {
-                                            setSelectedFilters((prev) =>
-                                                prev.filter((f) => f !== item.name)
-                                            );
+                                            setSelectedFilters((prev) => ({
+                                                ...prev,
+                                                popular: prev.popular.filter(
+                                                    (f) => f !== item.name
+                                                ),
+                                            }));
                                         }
                                     }}
                                     className="hidden"
@@ -140,60 +151,79 @@ export default function FilterSidebar() {
                                 {/* Custom Checkbox */}
                                 <div
                                     className={`w-[16px] h-[16px] border flex items-center justify-center
-                                    ${item.disabled ? 'border-gray-200' : 'border-gray-300'}`}
+                                    ${
+                                        item.disabled
+                                            ? 'border-gray-200'
+                                            : 'border-gray-300'
+                                    }`}
                                 >
                                     <div
                                         className={`w-[10px] h-[10px] transition
-                                                ${item.disabled
+                                        ${
+                                            item.disabled
                                                 ? 'bg-gray-300'
-                                                : selectedFilters.includes(item.name)
-                                                    ? 'bg-[#e07a5f] opacity-100'
-                                                    : 'opacity-0'
-                                            }`}
+                                                : selectedFilters.popular.includes(item.name)
+                                                ? 'bg-[#e07a5f] opacity-100'
+                                                : 'opacity-0'
+                                        }`}
                                     />
                                 </div>
 
-                                <span className="text-[14px]">{item.name}</span>
+                                <span className="text-[14px]">
+                                    {item.name}
+                                </span>
                             </label>
                         ))}
                     </div>
-                )
-                }
-            </div >
-            {/* SKIN TYPE */}
+                )}
+            </div>
+
+            {/* CATEGORY TYPE */}
             <div className="border-t pt-4">
                 <div
-                    className="flex justify-between items-center cursor-pointer mb-3 p-2 text-base"
-                    onClick={() => toggle('skin')}
+                    className="flex justify-between items-center cursor-pointer mb-3 p-2"
+                    onClick={() => toggle('category')}
                 >
-                    <h3 className="font-medium text-base">SKIN TYPE</h3>
-                    <span className="text-[30px]">{openSections.skin ? '−' : '+'}</span>
+                    <h3 className="font-medium text-base">
+                        CATEGORY TYPE
+                    </h3>
+
+                    <span className="text-[30px]">
+                        {openSections.category ? '−' : '+'}
+                    </span>
                 </div>
 
-                {openSections.skin && (
+                {openSections.category && (
                     <div className="space-y-3 p-2">
                         {skinOption.map((item) => (
                             <label
                                 key={item.id}
-                                className={`flex items-center gap-3 ${item.disabled
-                                    ? 'text-gray-400 cursor-not-allowed'
-                                    : 'cursor-pointer'
-                                    } group`}
+                                className={`flex items-center gap-3 ${
+                                    item.disabled
+                                        ? 'text-gray-400 cursor-not-allowed'
+                                        : 'cursor-pointer'
+                                }`}
                             >
-                                {/* Input */}
                                 <input
                                     type="checkbox"
                                     disabled={item.disabled}
-                                    checked={selectedFilters.includes(item.name)}
+                                    checked={selectedFilters.category.includes(item.name)}
                                     onChange={(e) => {
                                         if (e.target.checked) {
-                                            setSelectedFilters((prev) =>
-                                                prev.includes(item.name) ? prev : [...prev, item.name]
-                                            );
+                                            setSelectedFilters((prev) => ({
+                                                ...prev,
+                                                category: [
+                                                    ...prev.category,
+                                                    item.name,
+                                                ],
+                                            }));
                                         } else {
-                                            setSelectedFilters((prev) =>
-                                                prev.filter((f) => f !== item.name)
-                                            );
+                                            setSelectedFilters((prev) => ({
+                                                ...prev,
+                                                category: prev.category.filter(
+                                                    (f) => f !== item.name
+                                                ),
+                                            }));
                                         }
                                     }}
                                     className="hidden"
@@ -202,26 +232,32 @@ export default function FilterSidebar() {
                                 {/* Custom Checkbox */}
                                 <div
                                     className={`w-[16px] h-[16px] border flex items-center justify-center
-                                    ${item.disabled ? 'border-gray-200' : 'border-gray-300'}`}
+                                    ${
+                                        item.disabled
+                                            ? 'border-gray-200'
+                                            : 'border-gray-300'
+                                    }`}
                                 >
                                     <div
                                         className={`w-[10px] h-[10px] transition
-                                                ${item.disabled
+                                        ${
+                                            item.disabled
                                                 ? 'bg-gray-300'
-                                                : selectedFilters.includes(item.name)
-                                                    ? 'bg-[#e07a5f] opacity-100'
-                                                    : 'opacity-0'
-                                            }`}
+                                                : selectedFilters.category.includes(item.name)
+                                                ? 'bg-[#e07a5f] opacity-100'
+                                                : 'opacity-0'
+                                        }`}
                                     />
                                 </div>
 
-                                <span className="text-[14px]">{item.name}</span>
+                                <span className="text-[14px]">
+                                    {item.name}
+                                </span>
                             </label>
                         ))}
                     </div>
-                )
-                }
-            </div >
-        </aside >
+                )}
+            </div>
+        </aside>
     );
 }

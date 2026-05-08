@@ -184,12 +184,17 @@ export default function Collections() {
 
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedFilters, setSelectedFilters] = useState({
+    popular: [] as string[],
+    category: [] as string[],
+});
+
+    console.log(selectedFilters,'selectedFilters');
+    
+
     const { addToCart } = useCart(); // ✅ ADD
 
     const API_ENDPOINT = `/api/products`;
-
-
-    
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -233,6 +238,55 @@ export default function Collections() {
         // });
     };
 
+
+    const filteredProducts = products.filter((product) => {
+
+    // POPULAR FILTER
+    const popularMatch =
+        selectedFilters.popular.length === 0 ||
+        selectedFilters.popular.some((filter) => {
+
+            const filterValue = filter.toLowerCase();
+
+            // Example logic
+            if (filterValue === 'new') {
+                return product.badge?.toLowerCase() === 'new';
+            }
+
+            if (filterValue === 'featured') {
+                return product.is_active === true;
+            }
+
+            if (filterValue === 'best selling') {
+                return product.stock > 100;
+            }
+
+            if (filterValue === 'sale') {
+                return !!product.original_price;
+            }
+
+            return true;
+        });
+
+    // CATEGORY FILTER
+    const categoryMatch =
+        selectedFilters.category.length === 0 ||
+        selectedFilters.category.some((filter) => {
+
+            const cleanFilter = filter
+                .toLowerCase()
+                .replace(/\s/g, '');
+
+            const cleanCategory = product.category
+                ?.toLowerCase()
+                .replace(/\s/g, '');
+
+            return cleanCategory.includes(cleanFilter);
+        });
+
+    return popularMatch && categoryMatch;
+});
+
     return (
         <>
 
@@ -250,8 +304,11 @@ export default function Collections() {
 
                         {/* Sidebar */}
                         <FilterSidebar
-                        // setSelectedFilters={setSelectedFilters}
-                        // selectedFilters={selectedFilters}
+                        // @ts-ignore
+                        setSelectedFilters={setSelectedFilters}
+                        // @ts-ignore
+                        selectedFilters={selectedFilters}
+
                         />
 
                         {/* Products Grid */}
@@ -259,18 +316,19 @@ export default function Collections() {
 
                             {/* Top Bar */}
                             <div className="flex justify-between items-center mb-6">
-                                <p className="text-sm">{products.length} products</p>
-                                <select className="border rounded-full px-4 py-2 text-sm focus:outline-none">
+                                <p className="text-sm"></p>
+                                <p className="text-sm">{filteredProducts.length} products</p>
+                                {/* <select className="border rounded-full px-4 py-2 text-sm focus:outline-none">
                                     <option>Best selling</option>
                                     <option>Price: Low to High</option>
                                     <option>Price: High to Low</option>
-                                </select>
+                                </select> */}
 
                             </div>
 
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {products.map((product) => {
+                                {filteredProducts.map((product) => {
                                     const mainImage = product.images?.[0] || "/placeholder.png";
                                     const hoverImage =
                                         product.images?.[1] || product.images?.[0];

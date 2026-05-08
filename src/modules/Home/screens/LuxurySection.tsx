@@ -6,27 +6,27 @@ const categories = [
     {
         name: 'Body Care',
         image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Body_Care_r1xtaa.png',
-        href: '#',
+        href: '/collections/bodycare',
     },
     {
         name: 'Clean Care',
         image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Clean_Care_m4bra1.png',
-        href: '#',
+        href: '/collections/cleanser',
     },
     {
         name: 'Hair Care',
         image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996120/Hair_Care_voplwa.png',
-        href: '#',
+        href: '/collections/haircare',
     },
     {
         name: 'Skin Care',
         image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Skin_Care_vywmex.png',
-        href: '#',
+        href: '/collections/skincare',
     },
     {
         name: 'Moisturizer Care',
         image: 'https://res.cloudinary.com/dbfyydres/image/upload/v1777996777/Moisturizer_Care_petilv.png',
-        href: '#',
+        href: '/collections/moisturizer',
     },
 ];
 
