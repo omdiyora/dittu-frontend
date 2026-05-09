@@ -188,8 +188,6 @@ export default function Collections() {
     popular: [] as string[],
     category: [] as string[],
 });
-
-    console.log(selectedFilters,'selectedFilters');
     
 
     const { addToCart } = useCart(); // ✅ ADD

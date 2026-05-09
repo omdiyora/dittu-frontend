@@ -77,7 +77,7 @@ function ProductCard({ product }: { product: ApiProduct }) {
 }
 
 export default function FeaturedProducts() {
-    const [activeTab, setActiveTab] = useState<'skin' | 'body'>('skin');
+    const [activeTab, setActiveTab] = useState<'skincare' | 'bodycare'>('skincare');
     const [productss, setProducts] = useState<ApiProduct[]>([]);
 
     const API_ENDPOINT = `/api/products`;
@@ -99,10 +99,10 @@ export default function FeaturedProducts() {
 
     // Dynamic Filter
     const products =
-        activeTab === 'skin'
+        activeTab === 'skincare'
             ? productss.filter(
                   (item) =>
-                      item.category?.toLowerCase() === 'moisturizer'
+                      item.category?.toLowerCase() === 'skincare'
               )
             : productss.filter(
                   (item) =>
@@ -127,9 +127,9 @@ export default function FeaturedProducts() {
 
                     <div className="flex gap-6">
                         <button
-                            onClick={() => setActiveTab('skin')}
+                            onClick={() => setActiveTab('skincare')}
                             className={`text-xs font-medium tracking-widest uppercase pb-2 transition-all ${
-                                activeTab === 'skin'
+                                activeTab === 'skincare'
                                     ? 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
                                     : 'text-[#1a1a1a] opacity-40 hover:opacity-70'
                             }`}
@@ -138,9 +138,9 @@ export default function FeaturedProducts() {
                         </button>
 
                         <button
-                            onClick={() => setActiveTab('body')}
+                            onClick={() => setActiveTab('bodycare')}
                             className={`text-xs font-medium tracking-widest uppercase pb-2 transition-all ${
-                                activeTab === 'body'
+                                activeTab === 'bodycare'
                                     ? 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
                                     : 'text-[#1a1a1a] opacity-40 hover:opacity-70'
                             }`}
