@@ -139,7 +139,7 @@ export default function Collections() {
                         <div className="max-w-[1200px] w-full px-4 text-center">
                             <h1 className="text-[28px] font-medium">Shop All</h1>
                             <p className="text-sm text-gray-500 mt-1">
-                                Explore our full collection of beauty essentials.s
+                                Explore our full collection of beauty essentials.
                             </p>
                         </div>
                     </div>
