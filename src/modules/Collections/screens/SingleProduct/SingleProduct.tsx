@@ -78,7 +78,7 @@ export default function SingleProduct() {
 
                         {/* LEFT: IMAGE GRID */}
 
-                        <ProductGallery product={productData?.images} />
+                        {productData && <ProductGallery product={productData?.images} />}
 
                         {/* RIGHT: PRODUCT INFO */}
                         <ProductInfo product={productData} />

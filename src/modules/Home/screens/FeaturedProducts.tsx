@@ -1,6 +1,8 @@
 'use client';
 
+import { useCart } from '@/context/CartContext';
 import React, { useEffect, useState } from 'react';
+import Link from "next/link";
 
 interface ApiProduct {
     id: string;
@@ -23,6 +25,28 @@ function getBadgeStyle(type?: string | null) {
 
 function ProductCard({ product }: { product: ApiProduct }) {
     const [hovered, setHovered] = useState(false);
+    const { addToCart } = useCart(); // ✅ ADD
+    const handleAddToCart = (product: any) => {
+        // @ts-ignore
+        addToCart({
+            id: product?.id,
+            name: product?.name,
+            price:
+                typeof product?.price === "string"
+                    ? Number(product?.price.replace(/[^\d]/g, ""))
+                    : product?.price,
+            image: product?.image || product?.images?.[0] || "",
+        });
+
+        // enqueueSnackbar("Added to cart", {
+        //     variant: "success",
+        //     anchorOrigin: {
+        //         vertical: "bottom",
+        //         horizontal: "right",
+        //     },
+        //     autoHideDuration: 1500,
+        // });
+    };
 
     return (
         <div
@@ -31,47 +55,58 @@ function ProductCard({ product }: { product: ApiProduct }) {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            <div
-                className="relative overflow-hidden rounded-lg"
-                style={{ background: '#f5f0e8', aspectRatio: '3/4' }}
+            <Link
+                href={`/products/${product.id}`}
+                className="block cursor-pointer"
             >
-                <img
-                    src={product.images?.[0]}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-all duration-500"
-                />
+                <div
+                    className="relative overflow-hidden rounded-lg"
+                    style={{ background: '#f5f0e8', aspectRatio: '3/4' }}
+                >
+                    <img
+                        src={product.images?.[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-all duration-500"
+                    />
 
-                {product.badge && (
-                    <span
-                        className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded bg-black text-white"
-                        style={getBadgeStyle(product.badge_type)}
-                    >
-                        {product.badge}
-                    </span>
-                )}
+                    {product.badge && (
+                        <span
+                            className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded bg-black text-white"
+                            style={getBadgeStyle(product.badge_type)}
 
-                <button className="choose-options-btn">
-                    Choose options
-                </button>
-            </div>
-
-            <div className="mt-3 px-1">
-                <h3 className="text-sm font-medium text-[#1a1a1a]">
-                    {product.name}
-                </h3>
-
-                <div className="flex items-center gap-2 mt-1">
-                    <span className="text-sm font-medium text-[#1a1a1a]">
-                        ₹{product.price}.00
-                    </span>
-
-                    {product.original_price && (
-                        <span className="text-sm text-[#1a1a1a] opacity-50 line-through">
-                            ₹{product.original_price}.00
+                        >
+                            {product.badge}
                         </span>
                     )}
+
+                    <button className="choose-options-btn"
+                        onClick={(e) => {
+                            e.preventDefault(); // stop Link navigation
+                            e.stopPropagation(); // stop bubbling
+                            handleAddToCart(product);
+                        }}>
+                        Add to cart
+                    </button>
                 </div>
-            </div>
+
+                <div className="mt-3 px-1">
+                    <h3 className="text-sm font-medium text-[#1a1a1a]">
+                        {product.name}
+                    </h3>
+
+                    <div className="flex items-center gap-2 mt-1">
+                        <span className="text-sm font-medium text-[#1a1a1a]">
+                            ₹{product.price}.00
+                        </span>
+
+                        {product.original_price && (
+                            <span className="text-sm text-[#1a1a1a] opacity-50 line-through">
+                                ₹{product.original_price}.00
+                            </span>
+                        )}
+                    </div>
+                </div>
+            </Link>
         </div>
     );
 }
@@ -101,13 +136,15 @@ export default function FeaturedProducts() {
     const products =
         activeTab === 'skincare'
             ? productss.filter(
-                  (item) =>
-                      item.category?.toLowerCase() === 'skincare'
-              )
+                (item) =>
+                    item.category?.toLowerCase() === 'skincare'
+            )
             : productss.filter(
-                  (item) =>
-                      item.category?.toLowerCase() === 'bodycare'
-              );
+                (item) =>
+                    item.category?.toLowerCase() === 'bodycare'
+            );
+
+
 
     return (
         <section className="py-16 bg-[#fcfaf7]">
@@ -128,22 +165,20 @@ export default function FeaturedProducts() {
                     <div className="flex gap-6">
                         <button
                             onClick={() => setActiveTab('skincare')}
-                            className={`text-xs font-medium tracking-widest uppercase pb-2 transition-all ${
-                                activeTab === 'skincare'
-                                    ? 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
-                                    : 'text-[#1a1a1a] opacity-40 hover:opacity-70'
-                            }`}
+                            className={`text-xs font-medium tracking-widest uppercase pb-2 transition-all ${activeTab === 'skincare'
+                                ? 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
+                                : 'text-[#1a1a1a] opacity-40 hover:opacity-70'
+                                }`}
                         >
                             SKIN CARE
                         </button>
 
                         <button
                             onClick={() => setActiveTab('bodycare')}
-                            className={`text-xs font-medium tracking-widest uppercase pb-2 transition-all ${
-                                activeTab === 'bodycare'
-                                    ? 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
-                                    : 'text-[#1a1a1a] opacity-40 hover:opacity-70'
-                            }`}
+                            className={`text-xs font-medium tracking-widest uppercase pb-2 transition-all ${activeTab === 'bodycare'
+                                ? 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
+                                : 'text-[#1a1a1a] opacity-40 hover:opacity-70'
+                                }`}
                         >
                             BODY CARE
                         </button>

@@ -2,7 +2,7 @@
 
 import { useCart } from '@/context/CartContext';
 import React, { useEffect, useState } from 'react';
-
+import Link from "next/link";
 interface ApiProduct {
   id: string;
   name: string;
@@ -34,7 +34,7 @@ function ProductCard({
 }) {
   const [hovered, setHovered] = useState(false);
 
-  
+
 
   return (
     <div
@@ -42,59 +42,64 @@ function ProductCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div
-        className="relative overflow-hidden rounded-lg"
-        style={{ background: '#f5f0e8', aspectRatio: '3/4' }}
+      <Link
+        href={`/products/${product.id}`}
+        className="block cursor-pointer"
       >
-        <img
-          src={product.images?.[0]}
-          alt={product.name}
-          className="w-full h-full object-cover transition-all duration-500 scale-100 hover:scale-105"
-        />
+        <div
+          className="relative overflow-hidden rounded-lg"
+          style={{ background: '#f5f0e8', aspectRatio: '3/4' }}
+        >
+          <img
+            src={product.images?.[0]}
+            alt={product.name}
+            className="w-full h-full object-cover transition-all duration-500 scale-100 hover:scale-105"
+          />
 
-        {product.badge && (
-          <span
-            className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded"
-            style={getBadgeStyle(product.badge_type)}
-          >
-            {product.badge}
-          </span>
-        )}
+          {product.badge && (
+            <span
+              className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded"
+              style={getBadgeStyle(product.badge_type)}
+            >
+              {product.badge}
+            </span>
+          )}
 
-        <button 
-        className="choose-options-btn" 
-        onClick={(e) => {
-                              e.preventDefault(); // stop Link navigation
-                              e.stopPropagation(); // stop bubbling
-                              handleAddToCart(product);
-                            }}>
-          Add to cart
-        </button>
-      </div>
+          <button
+            className="choose-options-btn"
+            onClick={(e) => {
+              e.preventDefault(); // stop Link navigation
+              e.stopPropagation(); // stop bubbling
+              handleAddToCart(product);
+            }}>
+            Add to cart
+          </button>
+        </div>
 
-      <div className="mt-3">
-        <h3 className="text-sm font-medium text-[#1a1a1a]">
-          {product.name}
-        </h3>
+        <div className="mt-3">
+          <h3 className="text-sm font-medium text-[#1a1a1a]">
+            {product.name}
+          </h3>
 
-        <div className="flex items-center gap-2 mt-1">
-          {product.original_price ? (
-            <>
+          <div className="flex items-center gap-2 mt-1">
+            {product.original_price ? (
+              <>
+                <span className="text-sm font-medium text-[#1a1a1a]">
+                  {formatPrice(product.price)}
+                </span>
+
+                <span className="text-sm text-[#1a1a1a] opacity-50 line-through">
+                  {formatPrice(product.original_price)}
+                </span>
+              </>
+            ) : (
               <span className="text-sm font-medium text-[#1a1a1a]">
                 {formatPrice(product.price)}
               </span>
-
-              <span className="text-sm text-[#1a1a1a] opacity-50 line-through">
-                {formatPrice(product.original_price)}
-              </span>
-            </>
-          ) : (
-            <span className="text-sm font-medium text-[#1a1a1a]">
-              {formatPrice(product.price)}
-            </span>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }
@@ -106,19 +111,19 @@ export default function HandpickedSection() {
 
   const handleAddToCart = (product: ApiProduct) => {
     // @ts-ignore
-  addToCart({
-    id: product?.id,
-    name: product?.name,
-    price:
-      typeof product?.price === 'string'
-      // @ts-ignore
-        ? Number(product?.price?.replace(/[^\d]/g, ''))
-        : product?.price,
-    image: product?.images?.[0] || '',
-  });
-};
+    addToCart({
+      id: product?.id,
+      name: product?.name,
+      price:
+        typeof product?.price === 'string'
+          // @ts-ignore
+          ? Number(product?.price?.replace(/[^\d]/g, ''))
+          : product?.price,
+      image: product?.images?.[0] || '',
+    });
+  };
 
-const API_ENDPOINT = `/api/products`;
+  const API_ENDPOINT = `/api/products`;
 
   useEffect(() => {
     const fetchProducts = async () => {

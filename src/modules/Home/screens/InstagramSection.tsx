@@ -47,7 +47,7 @@ export default function InstagramSection() {
             </h2>
 
             <p className="text-sm text-[#1a1a1a]/70 mb-6 max-w-[320px] mx-auto">
-              Tag <strong>@dittu</strong> in your Instagram photos for a chance to be featured here.
+              Tag <strong>@dittu.9</strong> in your Instagram photos for a chance to be featured here.
             </p>
 
             <a
