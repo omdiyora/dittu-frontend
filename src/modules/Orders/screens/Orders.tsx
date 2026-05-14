@@ -40,8 +40,11 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import ViewOrders from "../form/ViewOrder";
+import OrderViewPage from "../form/ViewOrder";
+import { useRouter } from "next/navigation";
 
 export default function AdminOrders() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [ordersLists, setOrderLists] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,12 +89,14 @@ export default function AdminOrders() {
   };
 
   const formattedOrders = ordersLists.map((order) => {
-    console.log(order.customer?.first_name, 'order.customer?.first_name');
+    
 
     return {
+      order_id: order.id,
       id: order.order_id,
       date: new Date(order.order_date).toLocaleString(), // or format as needed
       customer: `${order.customer?.first_name || ""} ${order.customer?.last_name || ""}`,
+      customer_mail: order.customer?.email,
       total: `₹${order.total}`,
       paymentStatus: order.payment_status,
       paymentAction: order.payment_actions,
@@ -120,7 +125,7 @@ export default function AdminOrders() {
   return (
     <div className="bg-[#f6f6f7] min-h-screen p-5">
 
-      <ViewOrders />
+      {/* <OrderViewPage /> */}
 
       <div className="max-w-full mx-auto">
         {/* Header */}
@@ -167,6 +172,35 @@ export default function AdminOrders() {
           </div>
         </div>
 
+        <div className="grid grid-cols-4 gap-4 mb-5">
+          <div className="bg-white rounded-2xl p-5 border">
+            <p className="text-sm text-gray-500">
+              Total Orders
+            </p>
+
+            <h2 className="text-2xl font-bold mt-2">
+              {ordersLists.length}
+            </h2>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border">
+            <p className="text-sm text-gray-500">
+              Total Revenue
+            </p>
+
+            <h2 className="text-2xl font-bold mt-2">
+              ₹
+              {ordersLists
+                .reduce(
+                  (acc, item) =>
+                    acc + Number(item.total),
+                  0
+                )
+                .toLocaleString()}
+            </h2>
+          </div>
+        </div>
+
         {/* Table Card */}
         <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
           {/* Top Filter */}
@@ -208,59 +242,132 @@ export default function AdminOrders() {
             </Button>
           </div>
 
-          {/* Orders Table */}
           <Table
             removeWrapper
             aria-label="Orders Table"
+            isStriped={false}
             classNames={{
+              base: "min-h-[500px]",
               table: "min-w-full",
-              th: "bg-[#fafafa] text-gray-600 text-xs font-semibold border-b h-10",
-              td: "py-4 text-sm border-b border-gray-100",
+              thead: "sticky top-0 z-10",
+              th: `
+      bg-[#fafafa]
+      text-gray-500
+      text-[11px]
+      uppercase
+      tracking-wider
+      font-semibold
+      border-b
+      border-gray-200
+      h-12
+    `,
+              td: `
+      py-5
+      text-sm
+      border-b
+      border-gray-100
+      align-middle
+    `,
+              tr: "hover:bg-[#fafafa] transition-colors duration-200",
             }}
           >
             <TableHeader>
               <TableColumn>Order</TableColumn>
-              <TableColumn>Date</TableColumn>
               <TableColumn>Customer</TableColumn>
+              <TableColumn>Date</TableColumn>
               <TableColumn>Total</TableColumn>
-              <TableColumn>Payment status</TableColumn>
-              <TableColumn>Fulfillment status</TableColumn>
-              <TableColumn>Items</TableColumn>
-              <TableColumn>Delivery status</TableColumn>
-              <TableColumn>Delivery method</TableColumn>
-              <TableColumn>Payment actions</TableColumn>
+              <TableColumn>Payment</TableColumn>
+              <TableColumn>Products</TableColumn>
+              <TableColumn>Delivery</TableColumn>
+              <TableColumn>Actions</TableColumn>
             </TableHeader>
 
             <TableBody emptyContent="No orders found">
               {formattedOrders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="font-semibold text-blue-700 cursor-pointer">
-                    {order.id}
+                <TableRow
+                  key={order.id}
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => router.push(`/admin/orders/view/${order.order_id}`)}
+                >
+                  {/* ORDER ID */}
+
+                  <TableCell>
+                    <div>
+                      <p className="font-semibold text-[#111827]">
+                        {order.id}
+                      </p>
+
+                      <p className="text-xs text-gray-400 mt-1">
+                        {order.transactionId}
+                      </p>
+                    </div>
                   </TableCell>
 
-                  <TableCell>{order.date}</TableCell>
+                  {/* CUSTOMER */}
 
-                  <TableCell>{order.customer}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-semibold">
+                        {order.customer.charAt(0)}
+                      </div>
 
-                  <TableCell>{order.total}</TableCell>
+                      <div>
+                        <p className="font-medium text-[#111827]">
+                          {order.customer}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {order.customer_mail}
+                        </p>
+                      </div>
+                    </div>
+                  </TableCell>
+
+                  {/* DATE */}
+
+                  <TableCell>
+                    <div>
+                      <p className="text-sm text-[#111827]">
+                        {order.date}
+                      </p>
+
+                      <p className="text-xs text-gray-400 mt-1">
+                        Today
+                      </p>
+                    </div>
+                  </TableCell>
+
+                  {/* PRODUCTS */}
+
+
+
+                  {/* TOTAL */}
+
+                  <TableCell>
+                    <div>
+                      <p className="font-semibold text-[#111827]">
+                        {order.total}
+                      </p>
+
+                      <p className="text-xs text-green-600 mt-1">
+                        Paid via UPI
+                      </p>
+                    </div>
+                  </TableCell>
+
+                  {/* PAYMENT STATUS */}
 
                   <TableCell>
                     <Chip
-                      size="sm"
-                      radius="sm"
-                      className="bg-gray-100 text-gray-700 border border-gray-200"
+                      radius="full"
+                      className={`
+              px-3
+              ${order.paymentStatus === "Paid"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                        }
+            `}
                     >
                       {order.paymentStatus}
-                    </Chip>
-                  </TableCell>
-
-                  <TableCell>
-                    <Chip
-                      size="sm"
-                      radius="sm"
-                      className="bg-yellow-100 text-yellow-800 border border-yellow-200"
-                    >
-                      {order.fulfillmentStatus}
                     </Chip>
                   </TableCell>
 
@@ -273,63 +380,87 @@ export default function AdminOrders() {
                       </PopoverTrigger>
 
                       <PopoverContent className="p-0 bg-transparent shadow-none border-none">
-                        <div className="w-[340px] bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
-                          {/* Header */}
-                          <div className="p-3 border-b border-gray-100">
-                            <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium">
-                              Fulfillment in progress
-                            </span>
+                        <div className="w-[360px] bg-white rounded-3xl border border-gray-200 shadow-2xl overflow-hidden">
+                          <div className="p-4 border-b border-gray-100">
+                            <h3 className="font-semibold text-[#111827]">
+                              Order Items
+                            </h3>
+
+                            <p className="text-xs text-gray-400 mt-1">
+                              {order.items}
+                            </p>
                           </div>
 
-                          {/* Shipping Box */}
-                          <div className="p-4">
-                            <div className="bg-[#f7f7f7] rounded-2xl p-4">
-                              <p className="text-sm font-medium text-black mb-4">Shipping</p>
+                          <div className="p-4 space-y-4">
+                            {order.orderItems.map(
+                              (item: any, index: number) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center justify-between"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <img
+                                      src={item.image}
+                                      alt={item.name}
+                                      className="w-14 h-14 rounded-2xl border object-cover"
+                                    />
 
-                              <div className="space-y-4">
-                                {order.orderItems.map((item: any, index: any) => (
-                                  <div
-                                    key={index}
-                                    className="flex items-start justify-between gap-3"
-                                  >
-                                    <div className="flex gap-3">
-                                      <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="w-12 h-12 rounded-md object-cover border"
-                                      />
-
-                                      <p className="text-sm text-[#1f1f1f] leading-6 underline">
+                                    <div>
+                                      <p className="text-sm font-medium text-[#111827]">
                                         {item.name}
                                       </p>
-                                    </div>
 
-                                    <span className="text-sm font-medium whitespace-nowrap">
-                                      × {item.qty}
-                                    </span>
+                                      <p className="text-xs text-gray-400 mt-1">
+                                        Qty: {item.qty}
+                                      </p>
+                                    </div>
                                   </div>
-                                ))}
-                              </div>
-                            </div>
+
+                                  <span className="text-sm font-semibold">
+                                    × {item.qty}
+                                  </span>
+                                </div>
+                              )
+                            )}
                           </div>
                         </div>
                       </PopoverContent>
                     </Popover>
                   </TableCell>
 
-                  <TableCell>{order.deliveryStatus}</TableCell>
+                  {/* DELIVERY */}
 
-                  <TableCell>{order.deliveryMethod}</TableCell>
+                  <TableCell>
+                    <div>
+                      <p className="text-sm font-medium text-[#111827]">
+                        {order.deliveryStatus}
+                      </p>
+
+                      <p className="text-xs text-gray-400 mt-1">
+                        Shipping
+                      </p>
+                    </div>
+                  </TableCell>
+
+
+
+                  {/* ACTIONS */}
+
                   <TableCell>
                     {order.paymentAction === "Pending" ? (
-                      <div className="flex gap-2">
+                      <div className="flex items-center gap-2">
                         <Button
                           size="sm"
-                          className="bg-green-600 text-white"
+                          className="
+                  bg-black
+                  text-white
+                  font-medium
+                  rounded-xl
+                "
                           onClick={() => {
                             setSelectedOrderId(order.id);
                             setIsModalOpen(true);
-                            setInputValue(order.transactionId)
+                            setInputValue(order.transactionId);
                           }}
                         >
                           Accept
@@ -338,15 +469,24 @@ export default function AdminOrders() {
                         <Button
                           size="sm"
                           variant="bordered"
-                          className="border-red-400 text-red-600"
-                          onClick={() => handlePaymentAction(order.id, "Declined")}
+                          className="
+                  border-gray-300
+                  text-gray-700
+                  rounded-xl
+                "
+                          onClick={() =>
+                            handlePaymentAction(
+                              order.id,
+                              "Declined"
+                            )
+                          }
                         >
                           Decline
                         </Button>
                       </div>
                     ) : (
                       <Chip
-                        size="sm"
+                        radius="full"
                         className={
                           order.paymentAction === "Accepted"
                             ? "bg-green-100 text-green-700"
@@ -361,6 +501,8 @@ export default function AdminOrders() {
               ))}
             </TableBody>
           </Table>
+
+          {/* Orders Table */}
         </div>
       </div>
       <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} hideCloseButton>
@@ -386,7 +528,7 @@ export default function AdminOrders() {
             </Button>
 
             <Button
-              className="bg-green-600 text-white"
+              className="bg-black text-white"
               onClick={() => {
                 handlePaymentActionModal(selectedOrderId, "Accepted", inputValue);
                 setIsModalOpen(false);

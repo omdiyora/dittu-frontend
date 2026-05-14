@@ -121,13 +121,13 @@ const CreateProduct = () => {
 
 
                 {/* Price */}
-                <Field label="Price">
+                <Field label="Selling Price">
                   <Input
                     type="number"
                     name="price"
                     value={values.price}
                     onChange={handleChange}
-                    placeholder="Enter price"
+                    placeholder="Enter selling price ₹ 499"
                   />
                 </Field>
 
@@ -138,7 +138,7 @@ const CreateProduct = () => {
                     name="original_price"
                     value={values.original_price}
                     onChange={handleChange}
-                    placeholder="Enter original price"
+                    placeholder="Enter original price ₹ 899"
                   />
                 </Field>
 

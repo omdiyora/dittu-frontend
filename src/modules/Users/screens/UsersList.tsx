@@ -79,16 +79,17 @@ export default function UsersList() {
     }
   };
 
+
   const formattedOrders = ordersLists.map((item) => {
 
     return {
       id: item.id,
       customer: `${item.first_name || ""} ${item.last_name || ""}`,
       email: item.email,
-      phone: item.email,
-      orders: item.email,
-      amountSpend: item.email,
-      accountStatus: item.account_status,
+      phone: 'N/A',
+      orders: 'N/A',
+      amountSpend: 'N/A',
+      accountStatus: 'N/A',
       createdAt: new Date(item.created_at).toLocaleString(), // or format as needed
 
     };

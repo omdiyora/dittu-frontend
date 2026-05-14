@@ -1,248 +1,501 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import {
     Button,
     Chip,
-    Card,
-    CardBody,
+    Input,
+    Select,
+    SelectItem,
+    Textarea,
     Divider,
-    Avatar,
 } from "@heroui/react";
-import { Input, Select, SelectItem } from "@nextui-org/react";
 
-const DELIVERY_STATUS = [
-    { key: "pending", label: "Pending" },
-    { key: "processing", label: "Processing" },
-    { key: "shipped", label: "Shipped" },
-    { key: "out_for_delivery", label: "Out for Delivery" },
-    { key: "delivered", label: "Delivered" },
-];
+import {
+    Package,
+    User,
+    CreditCard,
+    Truck,
+    Download,
+    Printer,
+    CheckCheck,
+} from "lucide-react";
+import { useRouter, useParams } from "next/navigation";
 
-export default function ViewOrders() {
+const ordessr = {
+    order_id: "#0001",
+    order_date: "May 4, 2026",
+
+    subtotal: 1499,
+    shipping: 50,
+    total: 1549,
+
+    payment_status: "Paid",
+    payment_mode: "UPI",
+    transaction_id: "1234567890",
+
+    fulfillment_status: "Unfulfilled",
+    delivery_status: "Prepared for shipment",
+
+    tracking_id: "DITTU123456",
+
+    expected_delivery: "2026-05-10",
+
+    customer: {
+        first_name: "Om",
+        last_name: "Diyora",
+        email: "omdiyoraa@gmail.com",
+        phone: "+91 9876543210",
+        address: "Surat, Gujarat, India - 395006",
+    },
+
+    items: [
+        {
+            name: "Intense Repair Body Cream",
+            quantity: 1,
+            price: 1499,
+            image:
+                "https://res.cloudinary.com/dbfyydres/image/upload/v1775563321/products/entrbxufy8rif0emj5bv.png",
+        },
+    ],
+};
+
+export default function OrderViewPage() {
     const [order, setOrder] = useState<any>(null);
-    const [status, setStatus] = useState("pending");
-    const [expectedDate, setExpectedDate] = useState("");
-
-
+    const [deliveryStatus, setDeliveryStatus] = useState(
+        order?.delivery_status
+    );
+    const params = useParams();
 
     useEffect(() => {
-        const fetchOrder = async () => {
-            const res = await fetch(`/api/order`);
-            const data = await res.json();
-            setOrder(data[0]); // assuming single for now
-        };
-        fetchOrder();
-    }, []);
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch("/api/order");
+                const data = await res.json();
 
-    if (!order) return <div>Loading...</div>;
+                const singleOrder = data.find(
+                    (e: any) => e.id.toString() === params.id
+                );
+
+                console.log(singleOrder, "singleOrder");
+
+                setOrder(singleOrder);
+
+                setDeliveryStatus(singleOrder?.delivery_status || "Pending");
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchProducts();
+    }, [params.id]);
+
+    const [note, setNote] = useState("");
+
+    const deliveryStatuses = [
+        "Pending",
+        "Confirmed",
+        "Processing",
+        "Packed",
+        "Ready to Ship",
+        "Shipped",
+        "In Transit",
+        "Out for Delivery",
+        "Delivered",
+        "Failed Delivery",
+        "Returned",
+        "Return Requested",
+        "Refunded",
+        "Cancelled",
+    ];
+
+
 
     return (
-        <div className="p-6 grid grid-cols-12 gap-6 bg-gray-100 min-h-screen">
+        <div className="min-h-screen bg-[#f6f6f7] p-6">
+            {/* HEADER */}
 
-            {/* LEFT SIDE */}
-            <div className="col-span-8 space-y-6">
+            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-8">
+                <div>
+                    <div className="flex items-center gap-3 flex-wrap">
+                        <h1 className="text-3xl font-bold tracking-tight text-[#111827]">
+                            {order?.order_id}
+                        </h1>
 
-                {/* ORDER STATUS */}
-                <Card>
-                    <CardBody className="space-y-4">
-                        <div className="flex justify-between items-center">
-                            <Chip color="success" variant="flat">
-                                {order.fulfillment_status}
-                            </Chip>
-                            <span className="text-gray-500 text-sm">
-                                {order.order_id}
-                            </span>
-                        </div>
-
-                        <p className="text-sm text-gray-500">
-                            {new Date(order.order_date).toDateString()}
-                        </p>
-
-                        {/* PRODUCT */}
-                        {order.items.map((item: any) => (
-                            <div
-                                key={item.id}
-                                className="flex items-center justify-between border rounded-xl p-3"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <img
-                                        src={item.image}
-                                        className="w-14 h-14 rounded-md object-cover"
-                                    />
-                                    <div>
-                                        <p className="font-medium">{item.name}</p>
-                                    </div>
-                                </div>
-
-                                <div className="text-right">
-                                    <p>₹{item.price}.00 × {item.quantity} </p>
-                                    <p className="font-semibold">
-                                        ₹{item.price * item.quantity}.00
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
-
-                        {/* ACTION BUTTONS */}
-                        <div className="flex gap-3">
-                            <Button color="primary" variant="flat">
-                                Mark as delivered
-                            </Button>
-                            <Button color="default" variant="solid">
-                                + Add tracking
-                            </Button>
-                        </div>
-                    </CardBody>
-                </Card>
-
-                {/* PAYMENT SUMMARY */}
-                <Card>
-                    <CardBody className="space-y-3">
-
-                        <Chip variant="flat" color="danger">
-                            Refunded
+                        <Chip className="bg-green-100 text-green-700 border border-green-200">
+                            {order?.payment_status}
                         </Chip>
 
-                        <div className="flex justify-between text-sm">
-                            <span>Original order</span>
-                            <span>{new Date(order.order_date).toDateString()}</span>
-                            <span>₹{order.total}</span>
-                        </div>
+                        <Chip className="bg-orange-100 text-orange-700 border border-orange-200">
+                            {order?.fulfillment_status}
+                        </Chip>
+                    </div>
 
-                        <Divider />
+                    <p className="text-gray-500 mt-2">
+                        Order placed on {order?.order_date}
+                    </p>
+                </div>
 
-                        <div className="flex justify-between text-sm">
-                            <span>Subtotal</span>
-                            <span>1 item</span>
-                            <span>₹{order.total}</span>
-                        </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                    <Button
+                        variant="bordered"
+                        startContent={<CheckCheck size={16} />}
+                        className="rounded-2xl border-gray-300"
+                    >
+                        Mark to paid
+                    </Button>
+                    <Button
+                        startContent={<Download size={16} />}
+                        className="bg-black text-white rounded-2xl"
+                    >
+                        Download Invoice
+                    </Button>
 
-                        <div className="flex justify-between text-sm">
-                            <span>Taxes</span>
-                            <span>IGST 18%</span>
-                            <span>₹{Math.round(order.total * 0.18)}</span>
-                        </div>
-
-                        <Divider />
-
-                        <div className="flex justify-between font-semibold">
-                            <span>Total</span>
-                            <span>₹{Math.round(order.total * 1.18)}</span>
-                        </div>
-
-                        <Divider />
-
-                        <div className="flex justify-between text-sm">
-                            <span>Paid</span>
-                            <span>₹{Math.round(order.total * 1.18)}</span>
-                        </div>
-
-                        <div className="flex justify-between text-sm">
-                            <span>Refunded</span>
-                            <span>-₹{Math.round(order.total * 1.18)}</span>
-                        </div>
-
-                        <div className="flex justify-between font-semibold">
-                            <span>Net payment</span>
-                            <span>₹0.00</span>
-                        </div>
-                    </CardBody>
-                </Card>
+                    <Button
+                        variant="bordered"
+                        startContent={<Printer size={16} />}
+                        className="rounded-2xl border-gray-300"
+                    >
+                        Print Label
+                    </Button>
+                </div>
             </div>
 
-            {/* RIGHT SIDE */}
-            <div className="col-span-4 space-y-6">
+            {/* MAIN GRID */}
 
-                {/* NOTES */}
-                <Card>
-                    <CardBody className="space-y-4">
-                        {/* Notes */}
-                        <div>
-                            <p className="font-semibold mb-2">Notes</p>
-                            <p className="text-sm text-gray-500">
-                                {order.notes || "No notes from customer"}
-                            </p>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                {/* LEFT SIDE */}
+
+                <div className="xl:col-span-2 space-y-6">
+                    {/* PRODUCTS */}
+
+                    <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-6">
+                        <div className="flex items-center gap-3 mb-6">
+                            <Package size={20} />
+
+                            <h2 className="text-2xl font-semibold text-[#111827]">
+                                Ordered Products
+                            </h2>
                         </div>
 
-                        {/* Delivery Status Select */}
-                        <Select
-                            label="Delivery Status"
-                            selectedKeys={[status]}
-                            onSelectionChange={(keys: any) => {
-                                const value = Array.from(keys)[0];
-                                setStatus(value as string);
-                            }}
-                        >
-                            {DELIVERY_STATUS.map((item) => (
-                                <SelectItem key={item.key}>{item.label}</SelectItem>
+                        <div className="space-y-5">
+                            {order?.items.map((item: any, index: any) => (
+                                <div
+                                    key={index}
+                                    className="
+                    flex
+                    flex-col
+                    md:flex-row
+                    md:items-center
+                    md:justify-between
+                    gap-5
+                    border
+                    border-gray-100
+                    rounded-3xl
+                    p-5
+                    hover:shadow-md
+                    transition-all
+                  "
+                                >
+                                    <div className="flex items-center gap-5">
+                                        <img
+                                            src={item?.image}
+                                            alt={item?.name}
+                                            className="
+                        w-24
+                        h-24
+                        rounded-3xl
+                        object-cover
+                        border
+                        shadow-sm
+                      "
+                                        />
+
+                                        <div>
+                                            <h3 className="font-semibold text-lg text-[#111827]">
+                                                {item?.name}
+                                            </h3>
+
+                                            <p className="text-sm text-gray-500 mt-2">
+                                                Quantity: {item?.quantity}
+                                            </p>
+
+                                            <p className="text-sm text-gray-500">
+                                                SKU: DITTU-001
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="text-right">
+                                        <p className="text-2xl font-bold">
+                                            ₹{item?.quantity * item?.price}
+                                        </p>
+                                    </div>
+                                </div>
                             ))}
-                        </Select>
+                        </div>
+                    </div>
 
-                        {/* Expected Delivery Date */}
-                        <Input
-                            type="date"
-                            label="Expected Delivery Date"
-                            value={expectedDate}
-                            onChange={(e: any) => setExpectedDate(e.target.value)}
-                        />
-                    </CardBody>
-                </Card>
+                    {/* ORDER + PAYMENT + DELIVERY */}
 
-                {/* CUSTOMER */}
-                <Card>
-                    <CardBody className="space-y-3">
-                        <p className="font-semibold">Customer</p>
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        {/* LEFT COLUMN */}
 
-                        <div className="flex items-center gap-3">
-                            <Avatar name={order.customer.first_name} />
-                            <div>
-                                <p className="font-medium">
-                                    {order.customer.first_name} {order.customer.last_name}
-                                </p>
-                                <p className="text-sm text-blue-500 cursor-pointer">
-                                    2 orders
-                                </p>
+                        <div className="space-y-6">
+                            {/* ORDER SUMMARY */}
+
+                            <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-6">
+                                <h2 className="text-2xl font-semibold text-[#111827] mb-6">
+                                    Order Summary
+                                </h2>
+
+                                <div className="space-y-5">
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-gray-500">
+                                            Subtotal
+                                        </p>
+
+                                        <p className="font-medium">
+                                            ₹{order?.total}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-gray-500">
+                                            Shipping
+                                        </p>
+
+                                        <p className="font-medium">
+                                            ₹{order?.shipping}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-gray-500">
+                                            Discount
+                                        </p>
+
+                                        <p className="font-medium text-green-600">
+                                            - ₹0
+                                        </p>
+                                    </div>
+
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-gray-500">
+                                            Tax
+                                        </p>
+
+                                        <p className="font-medium">
+                                            ₹0
+                                        </p>
+                                    </div>
+
+                                    <Divider />
+
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-xl font-bold">
+                                            Total
+                                        </p>
+
+                                        <p className="text-3xl font-bold">
+                                            ₹{order?.total}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <Divider />
+                        {/* RIGHT COLUMN */}
 
                         <div>
-                            <p className="text-sm font-medium">Contact information</p>
-                            <p className="text-sm text-gray-500">
-                                {order.customer.email || "No email provided"}
-                            </p>
+                            {/* DELIVERY MANAGEMENT */}
+                            <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <CreditCard size={20} />
+
+                                    <h2 className="text-2xl font-semibold text-[#111827]">
+                                        Payment Details
+                                    </h2>
+                                </div>
+
+                                <div className="space-y-5">
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Payment Method
+                                        </p>
+
+                                        <p className="font-medium mt-1">
+                                            {order?.payment_mode}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-gray-500">
+                                            Transaction ID
+                                        </p>
+
+                                        <p className="font-medium mt-1 break-all">
+                                            {order?.transaction_id}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-gray-500 mb-2">
+                                            Payment Status
+                                        </p>
+
+                                        <Chip className="bg-green-100 text-green-700 border border-green-200">
+                                            {order?.payment_status}
+                                        </Chip>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {/* RIGHT SIDEBAR */}
+
+                <div className="space-y-6">
+                    {/* CUSTOMER DETAILS */}
+                    <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-6">
+                        <div className="flex items-center gap-3 mb-6">
+                            <Truck size={20} />
+
+                            <h2 className="text-2xl font-semibold text-[#111827]">
+                                Delivery Management
+                            </h2>
                         </div>
 
-                        <div>
-                            <p className="text-sm font-medium">Shipping address</p>
-                            <p className="text-sm text-gray-500">
-                                No shipping address provided
-                            </p>
+                        <div className="space-y-6">
+                            {/* DELIVERY STATUS */}
+
+                            <Select
+                                label="Delivery Status"
+                                selectedKeys={[deliveryStatus]}
+                                onSelectionChange={(keys: any) =>
+                                    setDeliveryStatus(Array.from(keys)[0] as string)
+                                }
+                            >
+                                {deliveryStatuses.map((status) => (
+                                    <SelectItem key={status}>
+                                        {status}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+
+                            {/* DELIVERY DATE */}
+
+                            <Input
+                                type="date"
+                                label="Expected Delivery Date"
+                                defaultValue={order?.expected_delivery}
+                            />
+
+                            {/* TRACKING ID */}
+
+                            <Input
+                                label="Tracking ID"
+                                placeholder="Enter tracking id"
+                                defaultValue={order?.tracking_id}
+                            />
+
+                            {/* COURIER */}
+
+                            <Input
+                                label="Courier Partner Name"
+                                placeholder="Enter tracking id"
+                                defaultValue={order?.tracking_id}
+                            />
+
+                            {/* NOTES */}
+
+                            <Textarea
+                                label="Admin Notes"
+                                placeholder="Write delivery instructions..."
+                                minRows={6}
+                                value={note}
+                                onChange={(e) =>
+                                    setNote(e.target.value)
+                                }
+                            />
+
+                            {/* ACTIONS */}
+
+                            <div className="flex items-center justify-end gap-3 pt-2">
+                                <Button
+                                    variant="bordered"
+                                    className="rounded-2xl border-gray-300"
+                                >
+                                    Cancel
+                                </Button>
+
+                                <Button className="bg-black text-white rounded-2xl px-8">
+                                    Update Order
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-6 sticky top-6">
+                        <div className="flex items-center gap-3 mb-6">
+                            <User size={20} />
+
+                            <h2 className="text-2xl font-semibold text-[#111827]">
+                                Customer Details
+                            </h2>
                         </div>
 
-                        <div>
-                            <p className="text-sm font-medium">Billing address</p>
-                            <p className="text-sm text-gray-500">
-                                No billing address provided
-                            </p>
+                        <div className="space-y-5">
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Customer
+                                </p>
+
+                                <p className="font-medium mt-1">
+                                    {order?.customer.first_name}{" "}
+                                    {order?.customer.last_name}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Email
+                                </p>
+
+                                <p className="font-medium mt-1 break-all">
+                                    {order?.customer.email}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Phone
+                                </p>
+
+                                <p className="font-medium mt-1">
+                                    {order?.customer.phone}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Address
+                                </p>
+
+                                <p className="font-medium mt-1 leading-7">
+                                    {order?.customer.address}
+                                </p>
+                            </div>
+
+                            <Chip className="bg-blue-100 text-blue-700 border border-blue-200">
+                                Returning Customer
+                            </Chip>
                         </div>
-                    </CardBody>
-                </Card>
-
-                {/* CONVERSION SUMMARY */}
-                <Card>
-                    <CardBody>
-                        <p className="font-semibold mb-2">Conversion summary</p>
-                        <p className="text-sm text-gray-500">
-                            There aren't any conversion details available for this order
-                        </p>
-                    </CardBody>
-                </Card>
-
+                    </div>
+                </div>
             </div>
         </div>
-
     );
 }
