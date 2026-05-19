@@ -74,14 +74,15 @@ export default function SingleProduct() {
 
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-8">
 
                         {/* LEFT: IMAGE GRID */}
 
                         {productData && <ProductGallery product={productData?.images} />}
 
                         {/* RIGHT: PRODUCT INFO */}
-                        <ProductInfo product={productData} />
+                        {productData && <ProductInfo product={productData} />}
+
 
                     </div>
                 </div>

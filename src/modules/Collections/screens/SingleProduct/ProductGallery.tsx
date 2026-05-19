@@ -3,33 +3,35 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-const images = [
-    'https://zest-cosmo.myshopify.com/cdn/shop/files/69.jpg?v=1740561521&width=800',
-    'https://zest-cosmo.myshopify.com/cdn/shop/files/3a.jpg?v=1740561521&width=800',
-    'https://zest-cosmo.myshopify.com/cdn/shop/files/72.jpg?v=1740561715&width=800',
-    'https://zest-cosmo.myshopify.com/cdn/shop/files/73.jpg?v=1740561767&width=800',
-];
-
 export default function ProductGallery({ product }: any) {
-    const [selectedImage, setSelectedImage] = useState(product && product[0]);
-
-    console.log(product,'productproduct');
-    
+    const [selectedImage, setSelectedImage] = useState(
+        product && product[0]
+    );
 
     return (
-        <div className="flex gap-4">
+        <div className="flex flex-col-reverse md:flex-row gap-4">
 
-            {/* LEFT: Thumbnails */}
-            <div className="flex flex-col gap-3">
+            {/* LEFT / BOTTOM Thumbnails */}
+            <div
+                className="
+        flex md:flex-col gap-3
+        overflow-x-auto md:overflow-visible
+        scrollbar-hide
+        pb-1
+    "
+            >
                 {product?.map((img: any, index: any) => (
                     <div
                         key={index}
                         onClick={() => setSelectedImage(img)}
-                        className={`w-[70px] h-[70px] border rounded-md overflow-hidden cursor-pointer
-              ${selectedImage === img
+                        className={`
+                            min-w-[70px] w-[70px] h-[70px]
+                            border rounded-md overflow-hidden cursor-pointer flex-shrink-0
+                            ${selectedImage === img
                                 ? 'border-black'
                                 : 'border-gray-200'
-                            }`}
+                            }
+                        `}
                     >
                         <Image
                             src={img}
@@ -42,14 +44,22 @@ export default function ProductGallery({ product }: any) {
                 ))}
             </div>
 
-            {/* RIGHT: Main Image */}
-            <div className="w-[550px] h-[550px]  rounded-lg  flex items-center justify-center">
+            {/* Main Image */}
+            <div className="
+                w-full 
+                h-[320px] 
+                sm:h-[420px] 
+                md:w-[550px] 
+                md:h-[550px]
+                rounded-lg
+                flex items-center justify-center
+            ">
                 <Image
                     src={selectedImage}
                     alt="product"
                     width={550}
                     height={550}
-                    className="object-contain max-w-full max-h-full transition duration-300 "
+                    className="object-contain max-w-full max-h-full transition duration-300"
                 />
             </div>
 

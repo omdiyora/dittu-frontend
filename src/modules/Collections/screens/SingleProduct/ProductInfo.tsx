@@ -2,22 +2,24 @@
 
 import { useEffect, useState } from 'react';
 import { Heart, Plus, Truck, Package } from 'lucide-react';
-import { useCart } from "@/context/CartContext"; // ✅ ADD
+import { useCart } from "@/context/CartContext";
 import { useSnackbar } from "notistack";
 import { useSession } from "next-auth/react";
 
 export default function ProductInfo({ product }: any) {
   const { data: session } = useSession();
+
   const [open, setOpen] = useState<string | null>('features');
   const [currentUser, setCurrentUser] = useState<any>();
+
   const { enqueueSnackbar } = useSnackbar();
-  const { addToCart } = useCart(); // ✅ ADD
+  const { addToCart } = useCart();
 
   const toggle = (section: string) => {
     setOpen(open === section ? null : section);
   };
 
-  // 🔥 Reusable Accordion Item
+  // Accordion
   const AccordionItem = ({
     title,
     id,
@@ -30,7 +32,7 @@ export default function ProductInfo({ product }: any) {
     const isOpen = open === id;
 
     return (
-      <div className="border-b">
+      <div className="border-b border-gray-200">
         <button
           onClick={() => toggle(id)}
           className="w-full flex justify-between items-center py-4 text-[14px] font-medium hover:text-black transition"
@@ -45,7 +47,9 @@ export default function ProductInfo({ product }: any) {
         </button>
 
         <div
-          className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          className={`grid transition-all duration-300 ease-in-out ${isOpen
+              ? 'grid-rows-[1fr] opacity-100'
+              : 'grid-rows-[0fr] opacity-0'
             }`}
         >
           <div className="overflow-hidden">
@@ -58,7 +62,7 @@ export default function ProductInfo({ product }: any) {
     );
   };
 
-  // ✅ HANDLE ADD TO CART
+  // Add To Cart
   const handleAddToCart = () => {
     // @ts-ignore
     addToCart({
@@ -81,9 +85,12 @@ export default function ProductInfo({ product }: any) {
     });
   };
 
+  // Fetch User
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchUser = async () => {
       try {
+        if (!session?.user?.id) return;
+
         const res = await fetch(`/api/users/${session?.user.id}`);
         const data = await res.json();
 
@@ -93,24 +100,18 @@ export default function ProductInfo({ product }: any) {
       }
     };
 
-    fetchOrders();
+    fetchUser();
   }, [session]);
 
-
-
-
+  // Wishlist
   const handleWishlist = async () => {
     try {
-      // Example:
-      // current user wishlist
       const currentWishlist = currentUser?.wishlist || [];
 
       const productId = product?.id;
 
-      // Check already exists
       const alreadyExists = currentWishlist.includes(productId);
 
-      // Toggle wishlist
       const updatedWishlist = alreadyExists
         ? currentWishlist.filter((id: string) => id !== productId)
         : [...currentWishlist, productId];
@@ -142,6 +143,7 @@ export default function ProductInfo({ product }: any) {
           autoHideDuration: 1500,
         }
       );
+
       const res = await fetch(`/api/users/${session?.user.id}`);
       const data = await res.json();
 
@@ -159,88 +161,135 @@ export default function ProductInfo({ product }: any) {
   const isWishlisted = currentUser?.wishlist?.includes(product?.id);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mb-4">
 
-      {/* Top Info */}
-      <div className="space-y-2">
+      {/* Product Info */}
+      <div className="space-y-3">
 
         {product?.badge && (
-          <span className="inline-block bg-green-700 text-white text-[12px] px-2 py-[2px] rounded">
+          <span className="inline-block bg-green-700 text-white text-[12px] px-2 py-[4px] rounded-md">
             {product?.badge}
           </span>
         )}
 
-        <h1 className="text-[28px] font-medium leading-tight text-gray-900">
+        {/* Title */}
+        <h1 className="text-[34px] sm:text-[28px] leading-[1.1] font-medium text-gray-900">
           {product?.name}
         </h1>
 
-        {/* <div className="text-[18px] font-medium text-gray-900">
-          {product?.price}
-        </div> */}
-        <div className="text-[18px] font-medium text-gray-900">
-          <span className="font-medium">₹{product?.price}</span>
+        {/* Price */}
+        <div className="flex items-center gap-2 text-[20px] font-medium text-gray-900">
+
+          <span>
+            ₹{product?.price}
+          </span>
 
           {product?.original_price && (
-            <span className="line-through text-gray-400 ml-2">
+            <span className="line-through text-gray-400 text-[18px] font-normal">
               ₹{product?.original_price}
             </span>
           )}
+
         </div>
 
+        {/* Rating */}
         <div className="flex items-center gap-1 text-[14px] leading-none">
           <span className="text-orange-500">★★★★★</span>
-          <span className="text-gray-500">(3)</span>
+
+          <span className="text-gray-500">
+            (3)
+          </span>
         </div>
 
       </div>
 
-      {/* CTA */}
-      <div className="grid grid-cols-[1fr_1fr_auto] gap-3">
+      {/* CTA Buttons */}
+      <div className="flex flex-col sm:grid sm:grid-cols-[1fr_1fr_auto] gap-3">
 
-        {/* ✅ UPDATED BUTTON */}
+        {/* Add To Cart */}
         <button
           onClick={handleAddToCart}
-          className="bg-black text-white py-3 rounded-full font-medium hover:opacity-90 transition"
+          className="
+            bg-black text-white
+            h-[52px] sm:h-[56px]
+            px-6
+            rounded-full
+            text-[15px] sm:text-[16px]
+            font-medium
+            hover:opacity-90
+            transition
+            w-full
+          "
         >
           ADD TO CART
         </button>
 
-        <button className="border border-black py-3 rounded-full font-medium hover:bg-black hover:text-white transition">
+        {/* Buy Now */}
+        <button
+          className="
+            border border-black
+            h-[52px] sm:h-[56px]
+            px-6
+            rounded-full
+            text-[15px] sm:text-[16px]
+            font-medium
+            hover:bg-black hover:text-white
+            transition
+            w-full
+          "
+        >
           BUY NOW
         </button>
 
+        {/* Wishlist */}
         <button
           onClick={handleWishlist}
-          className={`w-[48px] h-[48px] rounded-full flex items-center justify-center transition
-  ${isWishlisted
+          className={`
+            w-full sm:w-[56px]
+            h-[52px] sm:h-[56px]
+            rounded-full
+            flex items-center justify-center
+            transition
+            ${isWishlisted
               ? "bg-black text-white border-black"
               : "border border-black hover:bg-black hover:text-white"
-            }`}
+            }
+          `}
         >
-          <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />
+          <Heart
+            size={18}
+            fill={isWishlisted ? "currentColor" : "none"}
+          />
         </button>
 
       </div>
 
       {/* Delivery Info */}
-      <div className="border-t pt-4 space-y-3 text-[14px] text-black">
+      <div className="border-t border-gray-200 pt-5 space-y-4 text-[14px] text-black">
 
-        <div className="flex items-center gap-2">
-          <Truck size={16} />
-          <span>Estimated delivery: Mar 30 – Apr 03</span>
+        <div className="flex items-center gap-3">
+          <Truck size={17} />
+
+          <span>
+            Estimated delivery: Mar 30 – Apr 03
+          </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Package size={16} />
-          <span>30-day money-back guarantee</span>
+        <div className="flex items-center gap-3">
+          <Package size={17} />
+
+          <span>
+            30-day money-back guarantee
+          </span>
         </div>
 
       </div>
 
       {/* Accordion */}
-      {/* Accordion */}
-      <div className="border-t pt-4">
+      <div className="border-t border-gray-200 pt-4">
+
         {product?.product_details?.length > 0 ? (
+
           product.product_details.map((item: any, index: number) => (
             <AccordionItem
               key={index}
@@ -250,9 +299,15 @@ export default function ProductInfo({ product }: any) {
               {item.accordion_description}
             </AccordionItem>
           ))
+
         ) : (
-          <p className="text-sm text-gray-500">No product details available.</p>
+
+          <p className="text-sm text-gray-500">
+            No product details available.
+          </p>
+
         )}
+
       </div>
 
     </div>
