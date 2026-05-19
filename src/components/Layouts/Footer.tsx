@@ -11,7 +11,7 @@ const pages = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#192c38', color: 'white' }} className='mt-12'>
+    <footer style={{ background: '#192c38', color: 'white' }} >
 
       {/* TOP SECTION */}
       <div className="container lg:px-12 mx-auto px-6 md:px-10 py-16">

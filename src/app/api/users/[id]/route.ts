@@ -9,10 +9,13 @@ export async function GET(
 ) {
   try {
     const { data, error } = await supabase
-      .from("users")
-      .select("id, email, user_name, first_name, last_name, role, avatar_url")
+      .from("dittu_users")
+      .select("id, email, user_name, first_name, last_name, role, avatar_url,wishlist")
       .eq("id", params.id)
       .single();
+
+      console.log(params.id,'params.id');
+      
 
     if (error || !data) {
       return NextResponse.json(
@@ -47,6 +50,7 @@ export async function PUT(
       last_name,
       role,
       avatar_url,
+      wishlist,
     } = await request.json();
 
     let updatedData: any = {
@@ -57,16 +61,17 @@ export async function PUT(
       role,
       avatar_url,
       updated_at: new Date().toISOString(),
+      wishlist,
     };
 
     // ✅ Only update password if provided
     if (password) {
-    //   const hashedPassword = await bcrypt.hash(password, 10);
+      //   const hashedPassword = await bcrypt.hash(password, 10);
       updatedData.password = password;
     }
 
     const { data, error } = await supabase
-      .from("profiles")
+      .from("dittu_users")
       .update(updatedData)
       .eq("id", params.id)
       .select("id, email, user_name, first_name, last_name, role, avatar_url")
@@ -102,7 +107,7 @@ export async function DELETE(
 ) {
   try {
     const { data, error } = await supabase
-      .from("profiles")
+      .from("dittu_users")
       .delete()
       .eq("id", params.id)
       .select("id")

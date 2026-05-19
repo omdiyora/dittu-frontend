@@ -52,7 +52,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
                     {/* PRODUCT */}
                     {
                         cart.map((item: any) => (
-                            <div key={item.id} className="flex gap-4 items-start">
+                            <div key={item.id} className="flex gap-4 items-start mt-4">
 
                                 {/* IMAGE */}
                                 <img
@@ -104,6 +104,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
                                         </button>
                                     </div>
                                 </div>
+                                <hr />
                             </div>
                         ))
                     }

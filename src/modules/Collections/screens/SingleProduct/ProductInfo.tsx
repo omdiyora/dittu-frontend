@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Heart, Plus, Truck, Package } from 'lucide-react';
 import { useCart } from "@/context/CartContext"; // ✅ ADD
 import { useSnackbar } from "notistack";
+import { useSession } from "next-auth/react";
 
 export default function ProductInfo({ product }: any) {
+  const { data: session } = useSession();
   const [open, setOpen] = useState<string | null>('features');
-
+  const [currentUser, setCurrentUser] = useState<any>();
   const { enqueueSnackbar } = useSnackbar();
   const { addToCart } = useCart(); // ✅ ADD
 
@@ -79,6 +81,83 @@ export default function ProductInfo({ product }: any) {
     });
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch(`/api/users/${session?.user.id}`);
+        const data = await res.json();
+
+        setCurrentUser(data.data || []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrders();
+  }, [session]);
+
+
+
+
+  const handleWishlist = async () => {
+    try {
+      // Example:
+      // current user wishlist
+      const currentWishlist = currentUser?.wishlist || [];
+
+      const productId = product?.id;
+
+      // Check already exists
+      const alreadyExists = currentWishlist.includes(productId);
+
+      // Toggle wishlist
+      const updatedWishlist = alreadyExists
+        ? currentWishlist.filter((id: string) => id !== productId)
+        : [...currentWishlist, productId];
+
+      const response = await fetch(`/api/users/${session?.user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          wishlist: updatedWishlist,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update wishlist");
+      }
+
+      enqueueSnackbar(
+        alreadyExists
+          ? "Removed from wishlist"
+          : "Added to wishlist",
+        {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+          autoHideDuration: 1500,
+        }
+      );
+      const res = await fetch(`/api/users/${session?.user.id}`);
+      const data = await res.json();
+
+      setCurrentUser(data.data || []);
+
+    } catch (error) {
+      console.error(error);
+
+      enqueueSnackbar("Something went wrong", {
+        variant: "error",
+      });
+    }
+  };
+
+  const isWishlisted = currentUser?.wishlist?.includes(product?.id);
+
   return (
     <div className="space-y-6">
 
@@ -130,8 +209,15 @@ export default function ProductInfo({ product }: any) {
           BUY NOW
         </button>
 
-        <button className="w-[48px] h-[48px] border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition">
-          <Heart size={18} />
+        <button
+          onClick={handleWishlist}
+          className={`w-[48px] h-[48px] rounded-full flex items-center justify-center transition
+  ${isWishlisted
+              ? "bg-black text-white border-black"
+              : "border border-black hover:bg-black hover:text-white"
+            }`}
+        >
+          <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />
         </button>
 
       </div>

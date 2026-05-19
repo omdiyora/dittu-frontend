@@ -28,6 +28,7 @@ declare module "next-auth" {
       client_organization_name: any;
       user_activity: any;
       account_status: any;
+      wishlist: any;
     };
   }
 }

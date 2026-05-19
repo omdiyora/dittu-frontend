@@ -3,8 +3,18 @@
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
+import {
+  User,
+  Mail,
+  Shield,
+  Lock,
+  Save,
+  MapPin,
+} from "lucide-react";
+
 const UserAccount = () => {
-  const { data: session, update } = useSession();
+  const { data: session, update } =
+    useSession();
 
   const [form, setForm] = useState({
     first_name: "",
@@ -12,59 +22,121 @@ const UserAccount = () => {
     email: "",
     username: "",
     password: "",
+
+    // Address
+    address: "",
+    city: "",
+    state: "",
+    postal_code: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
-  // ✅ Prefill
+  // Prefill
   useEffect(() => {
     if (session?.user) {
       setForm({
-        first_name: session.user.first_name || "",
-        last_name: session.user.last_name || "",
-        email: session.user.email || "",
-        username: session.user.username || "",
+        first_name:
+          session.user.first_name ||
+          "",
+
+        last_name:
+          session.user.last_name ||
+          "",
+
+        email:
+          session.user.email || "",
+
+        username:
+          session.user.username ||
+          "",
+
         password: "",
+
+        address:
+
+          "",
+
+        city:
+          "",
+
+        state:
+          "",
+
+        postal_code:
+          "",
       });
     }
   }, [session]);
 
-  // ✅ Handle change
+  // Handle Change
   const handleChange = (e: any) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.value,
     });
   };
 
-  // ✅ Submit
-  const handleSubmit = async (e: any) => {
+  // Submit
+  const handleSubmit = async (
+    e: any
+  ) => {
     e.preventDefault();
+
     setLoading(true);
 
     try {
-      const res = await fetch("/api/user/update", {
-        method: "PUT",
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        "/api/user/update",
+        {
+          method: "PUT",
+          body: JSON.stringify(
+            form
+          ),
+        }
+      );
 
-      const data = await res.json();
+      const data =
+        await res.json();
 
       if (res.ok) {
-        alert("Profile updated ✅");
+        alert(
+          "Profile updated ✅"
+        );
 
-        // update session
         await update({
           ...session,
           user: {
             ...session?.user,
-            first_name: form.first_name,
-            last_name: form.last_name,
-            username: form.username,
+
+            first_name:
+              form.first_name,
+
+            last_name:
+              form.last_name,
+
+            username:
+              form.username,
+
+            address:
+              form.address,
+
+            city: form.city,
+
+            state:
+              form.state,
+
+            postal_code:
+              form.postal_code,
           },
         });
       } else {
-        alert(data.message || "Error updating profile");
+        alert(
+          data.message ||
+          "Error updating profile"
+        );
       }
     } catch (error) {
       console.log(error);
@@ -74,106 +146,410 @@ const UserAccount = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl border shadow-sm">
+    <div className="min-h-screen bg-[#f7f3ee] px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-serif tracking-tight text-black sm:text-5xl">
+            Account Settings
+          </h1>
 
-        {/* HEADER */}
-        <h1 className="text-2xl font-semibold mb-1">
-          Account Settings
-        </h1>
-        <p className="text-gray-500 mb-6 text-sm">
-          Manage your personal information
-        </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-black/55 sm:text-base">
+            Manage your profile,
+            security, and address
+            details in one elegant
+            place.
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Main Card */}
+        <div className="overflow-hidden rounded-[32px] border border-white/60 bg-white/70 shadow-[0_20px_60px_rgba(0,0,0,0.06)] backdrop-blur-xl">
 
-          {/* NAME ROW */}
-          <div className="grid grid-cols-2 gap-4">
+          <form
+            onSubmit={
+              handleSubmit
+            }
+            className="relative p-5 sm:p-8"
+          >
+
+
+            {/* Personal Info */}
             <div>
-              <label className="text-sm text-gray-600">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="first_name"
-                value={form.first_name}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-black"
-              />
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f7f3ee]">
+                  <User
+                    size={
+                      20
+                    }
+                  />
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-semibold">
+                    Personal Information
+                  </h2>
+
+                  <p className="text-sm text-black/50">
+                    Update
+                    your
+                    personal
+                    details
+                  </p>
+                </div>
+              </div>
+
+              {/* Name */}
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <Field
+                  label="First Name"
+                  icon={
+                    User
+                  }
+                >
+                  <input
+                    type="text"
+                    name="first_name"
+                    value={
+                      form.first_name
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    className="input-style"
+                  />
+                </Field>
+
+                <Field
+                  label="Last Name"
+                  icon={
+                    User
+                  }
+                >
+                  <input
+                    type="text"
+                    name="last_name"
+                    value={
+                      form.last_name
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    className="input-style"
+                  />
+                </Field>
+              </div>
+
+              {/* Email + Username */}
+              <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                <Field
+                  label="Email Address"
+                  icon={
+                    Mail
+                  }
+                >
+                  <input
+                    type="email"
+                    name="email"
+                    value={
+                      form.email
+                    }
+                    disabled
+                    className="input-style bg-[#f5f5f5]"
+                  />
+                </Field>
+
+                <Field
+                  label="Username"
+                  icon={
+                    Shield
+                  }
+                >
+                  <input
+                    type="text"
+                    name="username"
+                    value={
+                      form.username
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    className="input-style"
+                  />
+                </Field>
+              </div>
             </div>
 
+            {/* Divider */}
+            <div className="my-10 border-t border-black/5" />
+
+            {/* Security */}
             <div>
-              <label className="text-sm text-gray-600">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="last_name"
-                value={form.last_name}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-black"
-              />
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f7f3ee]">
+                  <Lock
+                    size={
+                      20
+                    }
+                  />
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-semibold">
+                    Security
+                  </h2>
+
+                  <p className="text-sm text-black/50">
+                    Update
+                    your
+                    password
+                    securely
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <Field
+                  label="New Password"
+                  icon={
+                    Lock
+                  }
+                >
+                  <input
+                    type="password"
+                    name="password"
+                    value={
+                      form.password
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Enter new password"
+                    className="input-style"
+                  />
+                </Field>
+
+                <Field
+                  label="Confirm Password"
+                  icon={
+                    Lock
+                  }
+                >
+                  <input
+                    type="password"
+                    placeholder="Confirm password"
+                    className="input-style"
+                  />
+                </Field>
+              </div>
             </div>
-          </div>
 
-          {/* EMAIL */}
-          <div>
-            <label className="text-sm text-gray-600">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              disabled
-              className="w-full border rounded-lg px-3 py-2 mt-1 bg-gray-100"
-            />
-          </div>
+            {/* Divider */}
+            <div className="my-10 border-t border-black/5" />
 
-          {/* USERNAME */}
-          <div>
-            <label className="text-sm text-gray-600">
-              Username
-            </label>
-            <input
-              type="text"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
+            {/* Address Section */}
+            <div>
+              <div className="mb-6 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f7f3ee]">
+                  <MapPin
+                    size={
+                      20
+                    }
+                  />
+                </div>
 
-          {/* PASSWORD */}
-          <div>
-            <label className="text-sm text-gray-600">
-              New Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Enter new password"
-              className="w-full border rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
+                <div>
+                  <h2 className="text-xl font-semibold">
+                    Address
+                    Information
+                  </h2>
 
-          {/* BUTTON */}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-black text-white px-6 py-2 rounded-lg hover:opacity-90 transition"
-            >
-              {loading ? "Updating..." : "Save Changes"}
-            </button>
-          </div>
+                  <p className="text-sm text-black/50">
+                    Manage
+                    your
+                    shipping
+                    and
+                    billing
+                    address
+                  </p>
+                </div>
+              </div>
 
-        </form>
+              {/* Address */}
+              <div className="grid grid-cols-1 gap-5">
+                <Field
+                  label="Street Address"
+                  icon={
+                    MapPin
+                  }
+                >
+                  <textarea
+                    name="address"
+                    value={
+                      form.address
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Enter your address"
+                    rows={
+                      4
+                    }
+                    className="input-style resize-none"
+                  />
+                </Field>
+              </div>
+
+              {/* City + State */}
+              <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                <Field
+                  label="City"
+                  icon={
+                    MapPin
+                  }
+                >
+                  <input
+                    type="text"
+                    name="city"
+                    value={
+                      form.city
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Enter city"
+                    className="input-style"
+                  />
+                </Field>
+
+                <Field
+                  label="State"
+                  icon={
+                    MapPin
+                  }
+                >
+                  <input
+                    type="text"
+                    name="state"
+                    value={
+                      form.state
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Enter state"
+                    className="input-style"
+                  />
+                </Field>
+              </div>
+
+              {/* Postal Code */}
+              <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+                <Field
+                  label="Postal Code"
+                  icon={
+                    MapPin
+                  }
+                >
+                  <input
+                    type="text"
+                    name="postal_code"
+                    value={
+                      form.postal_code
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    placeholder="Enter postal code"
+                    className="input-style"
+                  />
+                </Field>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="mt-10 flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                className="rounded-2xl border border-black/10 bg-white px-6 py-3 text-sm font-medium transition-all duration-300 hover:bg-black hover:text-white"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                disabled={
+                  loading
+                }
+                className="flex items-center justify-center gap-2 rounded-2xl bg-black px-6 py-3 text-sm font-medium text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90"
+              >
+                <Save
+                  size={
+                    16
+                  }
+                />
+
+                {loading
+                  ? "Updating..."
+                  : "Save Changes"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
+
+      {/* Input Styles */}
+      <style jsx>{`
+                .input-style {
+                    width: 100%;
+                    border-radius: 18px;
+                    border: 1px solid
+                        rgba(0, 0, 0, 0.08);
+                    background: rgba(
+                        255,
+                        255,
+                        255,
+                        0.75
+                    );
+                    padding: 14px 16px;
+                    font-size: 14px;
+                    outline: none;
+                    transition: all 0.3s ease;
+                    backdrop-filter: blur(
+                        12px
+                    );
+                }
+
+                .input-style:focus {
+                    border-color: black;
+                    box-shadow: 0 0 0 4px
+                        rgba(0, 0, 0, 0.04);
+                }
+
+                textarea.input-style {
+                    min-height: 120px;
+                }
+            `}</style>
     </div>
   );
 };
 
 export default UserAccount;
+
+/* Field */
+const Field = ({
+  label,
+  icon: Icon,
+  children,
+}: any) => {
+  return (
+    <div>
+      <label className="mb-2 flex items-center gap-2 text-sm font-medium text-black/70">
+        <Icon size={15} />
+
+        {label}
+      </label>
+
+      {children}
+    </div>
+  );
+};

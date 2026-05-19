@@ -27,9 +27,11 @@ export async function POST(req: Request) {
       original_price,
       images,
       badge,
-      sizes,
+      badge_type,
       product_details,
       stock,
+      p_images,
+      category
     } = body;
 
     const slug = name.toLowerCase().replace(/\s+/g, "-");
@@ -45,9 +47,11 @@ export async function POST(req: Request) {
           original_price,
           images,
           badge,
-          sizes,
+          badge_type,
           product_details,
           stock,
+          p_images,
+          category
         },
       ])
       .select()

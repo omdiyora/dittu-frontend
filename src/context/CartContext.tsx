@@ -25,6 +25,9 @@ export const CartProvider = ({ children }: any) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  console.log(cart,'cart');
+  
+
   const CART_KEY = "cart";
 
   // ✅ Load from localStorage

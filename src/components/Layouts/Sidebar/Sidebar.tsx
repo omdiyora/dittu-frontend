@@ -17,7 +17,7 @@ const topMenu = [
     {
         title: "Insights",
         items: [
-            { name: "Dashboard", icon: LayoutDashboard, route: "/admin/dashboard" },
+            // { name: "Dashboard", icon: LayoutDashboard, route: "/admin/dashboard" },
             { name: "Analytics", icon: BarChart3, route: "/admin/analytics" },
         ],
     },

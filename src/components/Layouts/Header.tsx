@@ -84,9 +84,9 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
             <div className="relative group">
               <a href="/collections" className="text-xs font-medium tracking-widest uppercase text-[#1a1a1a] hover:opacity-60 transition-opacity flex items-center gap-1">
                 COLLECTIONS
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                {/* <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
                   <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                </svg> */}
               </a>
             </div>
           </nav>

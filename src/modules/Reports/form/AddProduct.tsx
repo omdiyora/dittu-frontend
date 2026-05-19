@@ -18,13 +18,15 @@ import AccordionForm from "./AccordionForm";
 const CreateProduct = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<any[]>([]);
   const [accordionData, setAccordionData] = useState([]);
 
 
-  const imagesURL = files.map((e: any) => e.url)
+  const imagesURL = files && files?.map((item, index) => (item?.image_url))
   const handleSubmit = async (values: any) => {
     try {
+      console.log(values.badge_type, 'values.badge_type');
+
       const res = await fetch(`/api/products`, {
         method: "POST",
         headers: {
@@ -33,6 +35,7 @@ const CreateProduct = () => {
         body: JSON.stringify({
           ...values,
           name: values.name,
+          category: values.category,
           images: imagesURL,
           description: values.description,
           price: values.price,
@@ -40,8 +43,9 @@ const CreateProduct = () => {
           badge: values.badge,
           stock: values.stock,
           is_active: values.is_active,
-          sizes: values.sizes.split(","),
           product_details: accordionData,
+          badge_type: values.badge_type,
+          p_images: files
         }),
       });
 
@@ -54,6 +58,10 @@ const CreateProduct = () => {
     }
   };
 
+  console.log(files, 'files');
+  console.log(
+    files && files?.map((item, index) => (item?.image_url))
+    , 'filesfiles');
 
   return (
     <div className="bg-white rounded-md">
@@ -79,7 +87,6 @@ const CreateProduct = () => {
             images: "",
             badge_type: "",
             badge: "",
-            sizes: "",
             stock: '',
             category: "",
             skin_type: "",
@@ -109,15 +116,7 @@ const CreateProduct = () => {
                   />
                 </Field>
 
-                <Field label="Sizes (comma separated)">
-                  <Input
-                    name="sizes"
-                    placeholder="45ml,75ml,100ml"
-                    value={values.sizes}
-                    onChange={handleChange}
 
-                  />
-                </Field>
 
 
                 {/* Price */}
@@ -159,9 +158,15 @@ const CreateProduct = () => {
                 {/* Badge */}
                 <Field label="Badge Type">
                   <Select
+                    // label=""
+                    aria-labelledby="Badge Type"
+                    name="badge_type"
                     placeholder="Select badge"
-                    selectedKeys={[values.badge_type]}
-                    onChange={(e) => setFieldValue("badge_type", e.target.value)}
+                    selectedKeys={values.badge_type ? [values.badge_type] : []}
+                    onSelectionChange={(keys) => {
+                      const value = Array.from(keys)[0] as string;
+                      setFieldValue("badge_type", value);
+                    }}
                   >
                     <SelectItem key="sale">Sale</SelectItem>
                     <SelectItem key="featured">Featured</SelectItem>
@@ -214,7 +219,7 @@ const CreateProduct = () => {
                 </Button>
                 <Button
                   variant="flat"
-                  onClick={() => router.push("/dashboard/products")}
+                  onClick={() => router.push("/admin/product")}
                 >
                   Cancel
                 </Button>

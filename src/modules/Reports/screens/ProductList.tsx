@@ -26,10 +26,10 @@ import {
     Download,
     Filter,
 } from "lucide-react";
-import { Select, SelectItem } from "@heroui/react";
+// import { Select, SelectItem } from "@heroui/react";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import { Select, SelectItem } from "@nextui-org/react";
 export default function ProductTable() {
     const router = useRouter();
     const [products, setProducts] = useState<any[]>([]);
@@ -202,7 +202,7 @@ export default function ProductTable() {
                                     </TableCell>
 
                                     <TableCell>
-                                        <span className="text-sm text-gray-700">
+                                        <span className="text-sm text-gray-700 capitalize">
                                             {product.badge_type || ""}
                                         </span>
                                     </TableCell>

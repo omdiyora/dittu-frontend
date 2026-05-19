@@ -6,12 +6,10 @@ import {
     Button,
     Chip,
     Input,
-    Select,
-    SelectItem,
     Textarea,
     Divider,
 } from "@heroui/react";
-
+import { Select, SelectItem } from "@nextui-org/react";
 import {
     Package,
     User,
@@ -23,49 +21,16 @@ import {
 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 
-const ordessr = {
-    order_id: "#0001",
-    order_date: "May 4, 2026",
 
-    subtotal: 1499,
-    shipping: 50,
-    total: 1549,
-
-    payment_status: "Paid",
-    payment_mode: "UPI",
-    transaction_id: "1234567890",
-
-    fulfillment_status: "Unfulfilled",
-    delivery_status: "Prepared for shipment",
-
-    tracking_id: "DITTU123456",
-
-    expected_delivery: "2026-05-10",
-
-    customer: {
-        first_name: "Om",
-        last_name: "Diyora",
-        email: "omdiyoraa@gmail.com",
-        phone: "+91 9876543210",
-        address: "Surat, Gujarat, India - 395006",
-    },
-
-    items: [
-        {
-            name: "Intense Repair Body Cream",
-            quantity: 1,
-            price: 1499,
-            image:
-                "https://res.cloudinary.com/dbfyydres/image/upload/v1775563321/products/entrbxufy8rif0emj5bv.png",
-        },
-    ],
-};
 
 export default function OrderViewPage() {
     const [order, setOrder] = useState<any>(null);
-    const [deliveryStatus, setDeliveryStatus] = useState(
-        order?.delivery_status
-    );
+    const [deliveryStatus, setDeliveryStatus] = useState("");
+    const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
+    const [trackingId, setTrackingId] = useState("");
+    const [courierPartnerName, setCourierPartnerName] = useState("");
+    const [note, setNote] = useState("");
+
     const params = useParams();
 
     useEffect(() => {
@@ -78,11 +43,28 @@ export default function OrderViewPage() {
                     (e: any) => e.id.toString() === params.id
                 );
 
-                console.log(singleOrder, "singleOrder");
-
                 setOrder(singleOrder);
 
-                setDeliveryStatus(singleOrder?.delivery_status || "Pending");
+                setDeliveryStatus(
+                    singleOrder?.delivery_status || "Pending"
+                );
+
+                setExpectedDeliveryDate(
+                    singleOrder?.expected_delivery_date || ""
+                );
+
+                setTrackingId(
+                    singleOrder?.tracking_id || ""
+                );
+
+                setCourierPartnerName(
+                    singleOrder?.courier_partner_name || ""
+                );
+
+                setNote(
+                    singleOrder?.notes || ""
+                );
+
             } catch (error) {
                 console.log(error);
             }
@@ -91,7 +73,6 @@ export default function OrderViewPage() {
         fetchProducts();
     }, [params.id]);
 
-    const [note, setNote] = useState("");
 
     const deliveryStatuses = [
         "Pending",
@@ -108,8 +89,36 @@ export default function OrderViewPage() {
         "Return Requested",
         "Refunded",
         "Cancelled",
-    ];
+    ]
 
+
+    const handleUpdate = async () => {
+        try {
+            const res = await fetch(`/api/order/${order?.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    expected_delivery_date: expectedDeliveryDate,
+                    delivery_status: deliveryStatus,
+                    tracking_id: trackingId,
+                    courier_partner_name: courierPartnerName,
+                    notes: note,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                alert("Order updated successfully");
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 
     return (
@@ -370,57 +379,69 @@ export default function OrderViewPage() {
                         </div>
 
                         <div className="space-y-6">
-                            {/* DELIVERY STATUS */}
 
-                            <Select
-                                label="Delivery Status"
-                                selectedKeys={[deliveryStatus]}
-                                onSelectionChange={(keys: any) =>
-                                    setDeliveryStatus(Array.from(keys)[0] as string)
-                                }
-                            >
-                                {deliveryStatuses.map((status) => (
-                                    <SelectItem key={status}>
-                                        {status}
-                                    </SelectItem>
-                                ))}
-                            </Select>
+                            {/* DELIVERY STATUS */}
+                            <Field label="Delivery Status">
+                                <Select
+                                    // label="Delivery Status"
+                                    selectedKeys={[deliveryStatus || order?.delivery_status]}
+                                    onSelectionChange={(keys: any) =>
+                                        setDeliveryStatus(Array.from(keys)[0] as string)
+                                    }
+                                >
+                                    {deliveryStatuses.map((status) => (
+                                        <SelectItem key={status}>
+                                            {status}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+                            </Field>
 
                             {/* DELIVERY DATE */}
-
-                            <Input
-                                type="date"
-                                label="Expected Delivery Date"
-                                defaultValue={order?.expected_delivery}
-                            />
+                            <Field label="Expected Delivery Date">
+                                <Input
+                                    type="date"
+                                    placeholder="Expected Delivery Date"
+                                    value={expectedDeliveryDate}
+                                    onChange={(e) =>
+                                        setExpectedDeliveryDate(e.target.value)
+                                    }
+                                />
+                            </Field>
 
                             {/* TRACKING ID */}
-
-                            <Input
-                                label="Tracking ID"
-                                placeholder="Enter tracking id"
-                                defaultValue={order?.tracking_id}
-                            />
+                            <Field label="Tracking ID">
+                                <Input
+                                    placeholder="Tracking ID"
+                                    value={trackingId}
+                                    onChange={(e) =>
+                                        setTrackingId(e.target.value)
+                                    }
+                                />
+                            </Field>
 
                             {/* COURIER */}
-
-                            <Input
-                                label="Courier Partner Name"
-                                placeholder="Enter tracking id"
-                                defaultValue={order?.tracking_id}
-                            />
+                            <Field label="Courier Partner Name">
+                                <Input
+                                    placeholder="Courier Partner Name"
+                                    value={courierPartnerName}
+                                    onChange={(e) =>
+                                        setCourierPartnerName(e.target.value)
+                                    }
+                                />
+                            </Field>
 
                             {/* NOTES */}
-
-                            <Textarea
-                                label="Admin Notes"
-                                placeholder="Write delivery instructions..."
-                                minRows={6}
-                                value={note}
-                                onChange={(e) =>
-                                    setNote(e.target.value)
-                                }
-                            />
+                            <Field label="Notes">
+                                <Textarea
+                                    placeholder="Notes"
+                                    minRows={6}
+                                    value={note}
+                                    onChange={(e) =>
+                                        setNote(e.target.value)
+                                    }
+                                />
+                            </Field>
 
                             {/* ACTIONS */}
 
@@ -432,7 +453,7 @@ export default function OrderViewPage() {
                                     Cancel
                                 </Button>
 
-                                <Button className="bg-black text-white rounded-2xl px-8">
+                                <Button className="bg-black text-white rounded-2xl px-8" onPress={handleUpdate}>
                                     Update Order
                                 </Button>
                             </div>
@@ -497,5 +518,12 @@ export default function OrderViewPage() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
+
+const Field = ({ label, children }: any) => (
+    <div>
+        <label className="text-sm font-medium pl-2">{label}</label>
+        <div className="mt-2">{children}</div>
+    </div>
+);

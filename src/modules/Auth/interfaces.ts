@@ -34,4 +34,5 @@ export type User = {
   passwordtoken: null;
   role: string;
   module_role_id: any;
+  wishlist: any;
 };

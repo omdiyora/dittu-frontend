@@ -11,14 +11,14 @@ import {
   Button,
   Input,
   Chip,
-  Select,
-  SelectItem,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
 } from "@heroui/react";
 
+import { Select, SelectItem } from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import {
   Search,
   ChevronDown,
@@ -43,6 +43,47 @@ import ViewOrders from "../form/ViewOrder";
 import OrderViewPage from "../form/ViewOrder";
 import { useRouter } from "next/navigation";
 
+
+const deliveryStatusColors: Record<string, string> = {
+  Pending: "bg-gray-100 text-gray-700",
+
+  Confirmed: "bg-blue-100 text-blue-700",
+
+  Processing: "bg-yellow-100 text-yellow-700",
+
+  Packed: "bg-orange-100 text-orange-700",
+
+  "Ready to Ship": "bg-cyan-100 text-cyan-700",
+
+  Shipped: "bg-indigo-100 text-indigo-700",
+
+  "In Transit": "bg-purple-100 text-purple-700",
+
+  "Out for Delivery": "bg-pink-100 text-pink-700",
+
+  Delivered: "bg-green-100 text-green-700",
+
+  "Failed Delivery": "bg-red-100 text-red-700",
+
+  Returned: "bg-red-100 text-red-700",
+
+  "Return Requested": "bg-amber-100 text-amber-700",
+
+  Refunded: "bg-emerald-100 text-emerald-700",
+
+  Cancelled: "bg-zinc-200 text-zinc-700",
+};
+
+const tabs = [
+  { key: "all", label: "All" },
+  { key: "Confirmed", label: "Confirmed" },
+  { key: "Packed", label: "Packed" },
+  { key: "Ready to Ship", label: "Ready to Ship" },
+  { key: "Out for Delivery", label: "Out for Delivery" },
+  { key: "Delivered", label: "Delivered" },
+  { key: "Cancelled", label: "Cancelled" },
+];
+
 export default function AdminOrders() {
   const router = useRouter();
   const [search, setSearch] = useState("");
@@ -50,6 +91,7 @@ export default function AdminOrders() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
+  const [selectedTab, setSelectedTab] = useState("all");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -61,35 +103,9 @@ export default function AdminOrders() {
     fetchProducts();
   }, []);
 
-  const handlePaymentAction = async (orderId: string, action: string) => {
-    try {
-      const res = await fetch(`/api/order/${orderId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          payment_actions: action,
-        }),
-      });
 
-      if (!res.ok) throw new Error("Failed to update");
-
-      // Update UI instantly (no refresh)
-      setOrderLists((prev) =>
-        prev.map((order) =>
-          order.order_id === orderId
-            ? { ...order, payment_actions: action }
-            : order
-        )
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const formattedOrders = ordersLists.map((order) => {
-    
 
     return {
       order_id: order.id,
@@ -113,13 +129,50 @@ export default function AdminOrders() {
     };
   });
 
-  const handlePaymentActionModal = (
+  const filteredOrders = formattedOrders.filter((order) => {
+    if (selectedTab === "all") return true;
+
+    const statusMap: Record<string, string> = {
+      confirmed: "Confirmed",
+      ready_to_ship: "Ready to Ship",
+      out_delivered: "Out for Delivery",
+      Delivered: "Delivered",
+      Cancelled: "Cancelled",
+    };
+
+    console.log(statusMap[selectedTab],'statusMap[selectedTab]',order.deliveryStatus);
+    
+
+    return order.deliveryStatus === statusMap[selectedTab];
+  });
+
+  const handlePaymentActionModal = async (
     id: string | null,
     status: string,
     note?: string
   ) => {
-    console.log(id, status, note);
-    // API call here
+    try {
+      const res = await fetch(`/api/order/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          payment_actions: status,
+        }),
+      });
+
+      const data = await res.json();
+
+      const ress = await fetch(`/api/order`);
+      const dataaa = await ress.json();
+      setOrderLists(dataaa || []);
+
+
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   return (
@@ -172,35 +225,6 @@ export default function AdminOrders() {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 mb-5">
-          <div className="bg-white rounded-2xl p-5 border">
-            <p className="text-sm text-gray-500">
-              Total Orders
-            </p>
-
-            <h2 className="text-2xl font-bold mt-2">
-              {ordersLists.length}
-            </h2>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border">
-            <p className="text-sm text-gray-500">
-              Total Revenue
-            </p>
-
-            <h2 className="text-2xl font-bold mt-2">
-              ₹
-              {ordersLists
-                .reduce(
-                  (acc, item) =>
-                    acc + Number(item.total),
-                  0
-                )
-                .toLocaleString()}
-            </h2>
-          </div>
-        </div>
-
         {/* Table Card */}
         <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
           {/* Top Filter */}
@@ -241,6 +265,28 @@ export default function AdminOrders() {
               <MoreVertical size={16} />
             </Button>
           </div>
+          <Tabs
+            selectedKey={selectedTab}
+            onSelectionChange={(key) => setSelectedTab(key as string)}
+            variant="underlined"
+            className="border-b border-gray-200"
+          >
+            {tabs.map((tab) => {
+              const count =
+                tab.key === "all"
+                  ? formattedOrders.length
+                  : formattedOrders.filter(
+                    (order) => order.deliveryStatus === tab.key
+                  ).length;
+
+              return (
+                <Tab
+                  key={tab.key}
+                  title={`${tab.label} (${count})`}
+                />
+              );
+            })}
+          </Tabs>
 
           <Table
             removeWrapper
@@ -279,11 +325,11 @@ export default function AdminOrders() {
               <TableColumn>Payment</TableColumn>
               <TableColumn>Products</TableColumn>
               <TableColumn>Delivery</TableColumn>
-              <TableColumn>Actions</TableColumn>
+              <TableColumn>Payment Actions</TableColumn>
             </TableHeader>
 
             <TableBody emptyContent="No orders found">
-              {formattedOrders.map((order) => (
+              {filteredOrders.map((order) => (
                 <TableRow
                   key={order.id}
                   className="cursor-pointer hover:bg-gray-50"
@@ -416,9 +462,9 @@ export default function AdminOrders() {
                                     </div>
                                   </div>
 
-                                  <span className="text-sm font-semibold">
+                                  {/* <span className="text-sm font-semibold">
                                     × {item.qty}
-                                  </span>
+                                  </span> */}
                                 </div>
                               )
                             )}
@@ -431,15 +477,14 @@ export default function AdminOrders() {
                   {/* DELIVERY */}
 
                   <TableCell>
-                    <div>
-                      <p className="text-sm font-medium text-[#111827]">
-                        {order.deliveryStatus}
-                      </p>
-
-                      <p className="text-xs text-gray-400 mt-1">
-                        Shipping
-                      </p>
-                    </div>
+                    <Chip
+                      radius="full"
+                      className={`
+    ${deliveryStatusColors[order.deliveryStatus] || "bg-gray-100 text-gray-700"}
+  `}
+                    >
+                      {order.deliveryStatus}
+                    </Chip>
                   </TableCell>
 
 
@@ -458,30 +503,12 @@ export default function AdminOrders() {
                   rounded-xl
                 "
                           onClick={() => {
-                            setSelectedOrderId(order.id);
+                            setSelectedOrderId(order.order_id);
                             setIsModalOpen(true);
                             setInputValue(order.transactionId);
                           }}
                         >
                           Accept
-                        </Button>
-
-                        <Button
-                          size="sm"
-                          variant="bordered"
-                          className="
-                  border-gray-300
-                  text-gray-700
-                  rounded-xl
-                "
-                          onClick={() =>
-                            handlePaymentAction(
-                              order.id,
-                              "Declined"
-                            )
-                          }
-                        >
-                          Decline
                         </Button>
                       </div>
                     ) : (
@@ -521,10 +548,14 @@ export default function AdminOrders() {
 
           <ModalFooter>
             <Button
-              variant="light"
-              onClick={() => setIsModalOpen(false)}
+              variant="bordered"
+              onClick={() => {
+                handlePaymentActionModal(selectedOrderId, "Decline", inputValue);
+                setIsModalOpen(false);
+                setInputValue("");
+              }}
             >
-              Cancel
+              Decline
             </Button>
 
             <Button

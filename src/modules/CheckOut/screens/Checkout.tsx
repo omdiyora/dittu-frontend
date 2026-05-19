@@ -110,10 +110,8 @@ export default function Checkout() {
         payment_status: 'Paid',
         payment_actions: 'Pending',
         payment_mode: paymentMethod,
-        fulfillment_status: 'Unfulfilled',
-        delivery_status: 'Prepared for shipment',
+        delivery_status: 'Prepared',
         items: cart,
-        return_status: 'Pending',
         notes: formData.notes,
         transaction_id: txnId,
         created_by: session?.user?.id,
@@ -209,8 +207,11 @@ export default function Checkout() {
 
           <Formik
             initialValues={{
-              name: session?.user
-                ? `${session.user.first_name ?? ""} ${session.user.last_name ?? ""}`
+              first_name: session?.user
+                ? `${session.user.first_name ?? ""}`
+                : "",
+              last_name: session?.user
+                ? `${session.user.last_name ?? ""}`
                 : "",
               email: session?.user.email || "",
               phone_number: "",
@@ -229,7 +230,7 @@ export default function Checkout() {
                   <Field label="First name *">
                     <Input
                       name="name"
-                      value={values.name}
+                      value={values.first_name}
                       onChange={handleChange}
                       variant="bordered"
                       placeholder="Enter full name"
@@ -238,7 +239,7 @@ export default function Checkout() {
                   <Field label="Last name *">
                     <Input
                       name="name"
-                      value={values.name}
+                      value={values.last_name}
                       onChange={handleChange}
                       variant="bordered"
                       placeholder="Enter full name"

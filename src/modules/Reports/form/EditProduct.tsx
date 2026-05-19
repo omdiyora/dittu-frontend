@@ -27,8 +27,8 @@ const EditProduct = () => {
 
     const productId = params?.id;
 
-    console.log(productData,'params');
-    
+    console.log(productData, 'params');
+
 
     // Fetch single product
     useEffect(() => {
@@ -44,7 +44,7 @@ const EditProduct = () => {
                     const formattedImages = data.images.map((img: string) => ({
                         url: img,
                     }));
-                    setFiles(formattedImages);
+                    setFiles(data.p_images);
                 }
 
                 // Set accordion data
@@ -65,7 +65,7 @@ const EditProduct = () => {
 
     const handleSubmit = async (values: any) => {
         try {
-            const imagesURL = files.map((file: any) => file.url);
+            const imagesURL = files && files?.map((item, index) => (item?.image_url))
 
             const res = await fetch(`/api/products/${productId}`, {
                 method: "PUT",
@@ -75,11 +75,8 @@ const EditProduct = () => {
                 body: JSON.stringify({
                     ...values,
                     images: imagesURL,
-                    sizes:
-                        typeof values.sizes === "string"
-                            ? values.sizes.split(",")
-                            : values.sizes,
                     product_details: accordionData,
+                    p_images: files
                 }),
             });
 
@@ -93,8 +90,11 @@ const EditProduct = () => {
                 enqueueSnackbar("Failed to update product", {
                     variant: "error",
                 });
+                console.log(res, 'error');
             }
         } catch (error) {
+            console.log(error, 'error');
+
             enqueueSnackbar("Error updating product", {
                 variant: "error",
             });
@@ -127,10 +127,10 @@ const EditProduct = () => {
                         original_price: productData?.original_price || "",
                         badge_type: productData?.badge_type || "",
                         badge: productData?.badge || "",
-                        sizes: productData?.sizes?.join(",") || "",
                         stock: productData?.stock || "",
                         category: productData?.category || "",
                         is_active: productData?.is_active ?? true,
+                        p_images: productData?.p_images || "",
                     }}
                     onSubmit={handleSubmit}
                 >
@@ -155,16 +155,6 @@ const EditProduct = () => {
                                         value={values.category}
                                         onChange={handleChange}
                                         placeholder="Enter category"
-                                    />
-                                </Field>
-
-                                {/* Sizes */}
-                                <Field label="Sizes">
-                                    <Input
-                                        name="sizes"
-                                        value={values.sizes}
-                                        onChange={handleChange}
-                                        placeholder="45ml,75ml,100ml"
                                     />
                                 </Field>
 
@@ -204,12 +194,10 @@ const EditProduct = () => {
                                 {/* Badge Type */}
                                 <Field label="Badge Type">
                                     <Select
-                                        selectedKeys={values.badge_type}
-                                        onChange={(e) =>
-                                            setFieldValue("badge_type", e.target.value)
-                                        }
+                                        aria-labelledby="Badge Type"
                                         placeholder="Select badge"
-                                        // defaultSelectedKeys={values.badge_type}
+                                        selectedKeys={[values.badge_type]}
+                                        onChange={(e) => setFieldValue("badge_type", e.target.value)}
                                     >
                                         <SelectItem key="sale">Sale</SelectItem>
                                         <SelectItem key="featured">Featured</SelectItem>

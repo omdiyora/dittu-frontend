@@ -17,6 +17,9 @@ export async function GET() {
         .from("dittu_users")
         .select("*");
 
+        console.log(users,'users');
+        
+
     if (orderError || userError) {
         return NextResponse.json(
             { error: orderError?.message || userError?.message },
