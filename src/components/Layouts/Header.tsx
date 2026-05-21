@@ -42,7 +42,7 @@ const Header = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) => {
     { label: 'Collections', href: '/collections' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Wishlist', href: '/wishlist' },
+    { label: 'Wishlist', href: '/account/wishlist' },
     { label: 'My Account', href: '/account' },
   ];
 
