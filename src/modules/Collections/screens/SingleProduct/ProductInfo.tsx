@@ -48,8 +48,8 @@ export default function ProductInfo({ product }: any) {
 
         <div
           className={`grid transition-all duration-300 ease-in-out ${isOpen
-              ? 'grid-rows-[1fr] opacity-100'
-              : 'grid-rows-[0fr] opacity-0'
+            ? 'grid-rows-[1fr] opacity-100'
+            : 'grid-rows-[0fr] opacity-0'
             }`}
         >
           <div className="overflow-hidden">
@@ -160,6 +160,9 @@ export default function ProductInfo({ product }: any) {
 
   const isWishlisted = currentUser?.wishlist?.includes(product?.id);
 
+  console.log(product, 'product');
+
+
   return (
     <div className="space-y-6 mb-4">
 
@@ -189,17 +192,24 @@ export default function ProductInfo({ product }: any) {
               ₹{product?.original_price}
             </span>
           )}
+          <div className="flex items-center gap-1 text-[14px] leading-none">
+            <span className="text-orange-500">★★★★★</span>
+
+            <span className="text-gray-500">
+              (3)
+            </span>
+          </div>
 
         </div>
 
         {/* Rating */}
-        <div className="flex items-center gap-1 text-[14px] leading-none">
+        {/* <div className="flex items-center gap-1 text-[14px] leading-none">
           <span className="text-orange-500">★★★★★</span>
 
           <span className="text-gray-500">
             (3)
           </span>
-        </div>
+        </div> */}
 
       </div>
 
@@ -268,20 +278,20 @@ export default function ProductInfo({ product }: any) {
       <div className="border-t border-gray-200 pt-5 space-y-4 text-[14px] text-black">
 
         <div className="flex items-center gap-3">
-          <Truck size={17} />
+          {/* <Truck size={17} /> */}
 
           <span>
-            Estimated delivery: Mar 30 – Apr 03
+            {product?.description}
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <Package size={17} />
 
           <span>
             30-day money-back guarantee
           </span>
-        </div>
+        </div> */}
 
       </div>
 

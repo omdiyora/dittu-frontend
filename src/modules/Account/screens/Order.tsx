@@ -14,6 +14,8 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const tabs = [
     "All Orders",
@@ -118,31 +120,225 @@ const Order = () => {
         }
     };
 
-
     const handleReview = async () => {
         try {
             const productId = selectedReviewOrder?.items?.[0]?.id;
 
-            const res = await fetch(`/api/products/${productId}`, {
-                method: "PUT",
+            const res = await fetch(`/api/ratings`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    review: {
-                        userId: session?.user?.id,
-                        rating,
-                        message: reviewMessage,
-                    },
+                    name: `${session?.user?.first_name} ${session?.user?.last_name}`,
+                    customer_id: session?.user?.id,
+                    product_id: productId,
+                    rating: rating,
+                    message: reviewMessage
                 }),
             });
 
             const data = await res.json();
-
-            console.log(data);
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const downloadInvoice = (selectedOrder: any) => {
+        const doc = new jsPDF("p", "mm", "a4");
+
+        // ================================
+        // COLORS
+        // ================================
+        const black = "#111111";
+        const gray = "#666666";
+        const lightGray = "#f5f5f5";
+
+        // ================================
+        // PAGE SIZE
+        // ================================
+        const pageWidth = doc.internal.pageSize.getWidth();
+
+        // ================================
+        // BACKGROUND HEADER
+        // ================================
+        doc.setFillColor(17, 17, 17);
+        doc.rect(0, 0, pageWidth, 45, "F");
+
+        // ================================
+        // BRAND
+        // ================================
+        doc.setTextColor(255, 255, 255);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(28);
+        doc.text("DITTU", 14, 20);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        doc.text("Luxury Skincare & Beauty", 14, 28);
+
+        // ================================
+        // INVOICE TITLE
+        // ================================
+        doc.setFontSize(24);
+        doc.text("INVOICE", 150, 22);
+
+        doc.setFontSize(10);
+        doc.text(`Invoice #: ${selectedOrder.order_id}`, 150, 30);
+
+        // ================================
+        // RESET TEXT COLOR
+        // ================================
+        doc.setTextColor(0, 0, 0);
+
+        // ================================
+        // ORDER DETAILS CARD
+        // ================================
+        doc.setFillColor(245, 245, 245);
+        doc.roundedRect(14, 55, 182, 35, 4, 4, "F");
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text("Order Details", 20, 65);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+
+        doc.text(
+            `Order Date: ${new Date(
+                selectedOrder.order_date
+            ).toLocaleDateString()}`,
+            20,
+            75
+        );
+
+        doc.text(
+            `Payment Mode: ${selectedOrder.payment_mode.toUpperCase()}`,
+            20,
+            82
+        );
+
+        doc.text(
+            `Payment Status: ${selectedOrder.payment_status}`,
+            110,
+            75
+        );
+
+        doc.text(
+            `Delivery Status: ${selectedOrder.delivery_status}`,
+            110,
+            82
+        );
+
+        // ================================
+        // BILL TO
+        // ================================
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+
+        doc.text("Bill To", 14, 110);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+
+        doc.text(
+            `${selectedOrder.customer.first_name} ${selectedOrder.customer.last_name}`,
+            14,
+            120
+        );
+
+        doc.text(selectedOrder.customer.email, 14, 127);
+
+        doc.text(selectedOrder.customer.phone, 14, 134);
+
+        doc.text(selectedOrder.state || "India", 14, 141);
+
+        // ================================
+        // PRODUCTS TABLE
+        // ================================
+        autoTable(doc, {
+            startY: 155,
+
+            head: [["Product", "Price", "Qty", "Total"]],
+
+            body: selectedOrder.items.map((item: any) => [
+                item.name,
+                `₹${item.price}`,
+                item.quantity,
+                `₹${item.price * item.quantity}`,
+            ]),
+
+            theme: "plain",
+
+            headStyles: {
+                fillColor: [17, 17, 17],
+                textColor: [255, 255, 255],
+                fontSize: 11,
+                fontStyle: "bold",
+                cellPadding: 5,
+            },
+
+            bodyStyles: {
+                fontSize: 10,
+                textColor: [50, 50, 50],
+                cellPadding: 5,
+            },
+
+            alternateRowStyles: {
+                fillColor: [248, 248, 248],
+            },
+
+            styles: {
+                overflow: "linebreak",
+            },
+        });
+
+        // ================================
+        // TOTAL SECTION
+        // ================================
+        const finalY = (doc as any).lastAutoTable.finalY;
+
+        doc.setFillColor(17, 17, 17);
+
+        doc.roundedRect(120, finalY + 12, 76, 25, 4, 4, "F");
+
+        doc.setTextColor(255, 255, 255);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+
+        doc.text("Grand Total", 128, finalY + 24);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+
+        doc.text(`₹${selectedOrder.total}`, 128, finalY + 33);
+
+        // ================================
+        // FOOTER
+        // ================================
+        doc.setTextColor(100, 100, 100);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+
+        doc.text(
+            "Thank you for shopping with DITTU.",
+            14,
+            finalY + 55
+        );
+
+        doc.text(
+            "This is a computer generated invoice.",
+            14,
+            finalY + 62
+        );
+
+        // ================================
+        // SAVE PDF
+        // ================================
+        doc.save(`invoice-${selectedOrder.order_id}.pdf`);
     };
 
     return (
@@ -550,7 +746,7 @@ const Order = () => {
                                     Close
                                 </Button>
 
-                                <Button className="w-full rounded-2xl bg-black text-white sm:w-auto">
+                                <Button onClick={() => downloadInvoice(selectedOrder)} className="w-full rounded-2xl bg-black text-white sm:w-auto">
                                     Download Invoice
                                 </Button>
                             </ModalFooter>
